@@ -8,6 +8,6 @@ variable "aws_default_tags" {
   type        = map(string)
   description = "Default tags added to all AWS resources."
   default = {
-    Project = "foundational-soa"
+    Project = "foundational-soa-root"
   }
 }
