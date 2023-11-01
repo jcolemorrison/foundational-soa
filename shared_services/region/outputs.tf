@@ -18,6 +18,11 @@ output "transit_gateway_cidr_block" {
   value       = one(aws_ec2_transit_gateway.main.transit_gateway_cidr_blocks)
 }
 
+output "transit_gateway_resource_share_arn" {
+  description = "ARN of the resource share for transit gateway"
+  value       = aws_ram_resource_share.main.arn
+}
+
 output "vpc_id" {
   description = "ID of the VPC"
   value       = module.vpc.vpc_id

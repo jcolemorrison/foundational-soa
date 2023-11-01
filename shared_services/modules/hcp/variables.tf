@@ -17,6 +17,11 @@ variable "hvn_cidr_block" {
 
 # Use transit gateway to connect VPC and HVN
 
+variable "aws_ram_resource_share_arn" {
+  type        = string
+  description = "AWS RAM resource share ARN."
+}
+
 variable "transit_gateway_arn" {
   type        = string
   description = "Transit gateway ARN."

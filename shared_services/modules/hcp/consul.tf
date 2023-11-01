@@ -60,6 +60,6 @@ resource "hcp_consul_cluster" "consul" {
 }
 
 resource "hcp_consul_cluster_root_token" "consul" {
-  count              = var.hcp_consul_name != null ? 1 : 0
+  count      = var.hcp_consul_name != null ? 1 : 0
   cluster_id = hcp_consul_cluster.consul.0.cluster_id
 }
