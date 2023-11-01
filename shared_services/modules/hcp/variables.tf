@@ -20,13 +20,11 @@ variable "hvn_cidr_block" {
 variable "transit_gateway_arn" {
   type        = string
   description = "Transit gateway ARN."
-  default     = ""
 }
 
 variable "transit_gateway_id" {
   type        = string
   description = "Transit gateway ID."
-  default     = ""
 }
 
 variable "tags" {
@@ -60,7 +58,7 @@ variable "hcp_consul_tier" {
   description = "Tier for HCP Consul cluster. Must be `development`, `standard`, or `plus`."
   default     = "development"
   validation {
-    condition     = contains(["development", "standard", "plus"], var.hcp_consul_tier)
+    condition     = contains(["development", "standard", "plus"], lower(var.hcp_consul_tier))
     error_message = "Not a valid option for hcp_vault_tier."
   }
 }

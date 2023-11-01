@@ -9,3 +9,8 @@ resource "hcp_vault_cluster" "vault" {
   primary_link = var.hcp_vault_primary_link
   paths_filter = var.hcp_vault_paths_filter
 }
+
+resource "hcp_vault_cluster_admin_token" "vault" {
+  count      = var.hcp_vault_name != null ? 1 : 0
+  cluster_id = hcp_vault_cluster.vault.0.cluster_id
+}
