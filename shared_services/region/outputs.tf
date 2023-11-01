@@ -24,6 +24,16 @@ output "vpc_cidr_block" {
 }
 
 output "vpc_public_subnet_ids" {
-  description = "IDs of the VPC's public subnets"
+  description = "IDs of the VPC's public subnets."
   value = module.vpc.public_subnet_ids
+}
+
+output "vpc_public_route_table_id" {
+  description = "ID of the VPC's public route table."
+  value = module.vpc.public_route_table_id
+}
+
+output "vpc_private_route_table_id" {
+  description = "ID of the VPC's private route table."
+  value = module.vpc.private_route_table_id
 }
