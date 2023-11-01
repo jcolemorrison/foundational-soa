@@ -55,7 +55,7 @@ output "hcp_hvn_cidr_blocks" {
   value = {
     "us-east-1" = module.hcp_us_east_1.hvn_cidr_block
     "us-west-2" = module.hcp_us_west_2.hvn_cidr_block
-    "eu-west-1" = module.hcp_eu_west_1.vpc_cidr_block
+    "eu-west-1" = module.hcp_eu_west_1.hvn_cidr_block
   }
   description = "HCP HVN CIDRs for the various regions"
 }
