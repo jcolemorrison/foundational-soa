@@ -32,3 +32,30 @@ output "hcp_eu_west_1" {
   sensitive   = true
   description = "HCP Consul and Vault attributes for eu-west-1"
 }
+
+output "transit_gateway_ids" {
+  value = {
+    "us-east-1" = module.network_us_east_1.transit_gateway_id
+    "us-west-2" = module.network_us_west_2.transit_gateway_id
+    "eu-west-1" = module.network_eu_west_1.transit_gateway_id
+  }
+  description = "Transit gateways for the various regions"
+}
+
+output "shared_services_cidr_blocks" {
+  value = {
+    "us-east-1" = module.network_us_east_1.vpc_cidr_block
+    "us-west-2" = module.network_us_west_2.vpc_cidr_block
+    "eu-west-1" = module.network_eu_west_1.vpc_cidr_block
+  }
+  description = "Shared Services of VPC CIDRs for the various regions"
+}
+
+output "hcp_hvn_cidr_blocks" {
+  value = {
+    "us-east-1" = module.hcp_us_east_1.hvn_cidr_block
+    "us-west-2" = module.hcp_us_west_2.hvn_cidr_block
+    "eu-west-1" = module.hcp_eu_west_1.vpc_cidr_block
+  }
+  description = "HCP HVN CIDRs for the various regions"
+}
