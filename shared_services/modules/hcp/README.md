@@ -39,17 +39,17 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_ec2_transit_gateway_vpc_attachment_accepter.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_transit_gateway_vpc_attachment_accepter) | resource |
 | [aws_ram_principal_association.transit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ram_principal_association) | resource |
-| [aws_ram_resource_association.transit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ram_resource_association) | resource |
-| [aws_ram_resource_share.transit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ram_resource_share) | resource |
 | [aws_security_group_rule.hcp_consul](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.hcp_consul_clients](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
-| [hcp_aws_transit_gateway_attachment.transit](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/aws_transit_gateway_attachment) | resource |
+| [hcp_aws_transit_gateway_attachment.hcp](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/aws_transit_gateway_attachment) | resource |
 | [hcp_boundary_cluster.boundary](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/boundary_cluster) | resource |
 | [hcp_consul_cluster.consul](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/consul_cluster) | resource |
+| [hcp_consul_cluster_root_token.consul](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/consul_cluster_root_token) | resource |
 | [hcp_hvn.hvn](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/hvn) | resource |
+| [hcp_hvn_route.route](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/hvn_route) | resource |
 | [hcp_vault_cluster.vault](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/vault_cluster) | resource |
+| [hcp_vault_cluster_admin_token.vault](https://registry.terraform.io/providers/hashicorp/hcp/latest/docs/resources/vault_cluster_admin_token) | resource |
 | [random_password.boundary](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_pet.boundary](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/pet) | resource |
 
@@ -57,6 +57,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aws_ram_resource_share_arn"></a> [aws\_ram\_resource\_share\_arn](#input\_aws\_ram\_resource\_share\_arn) | AWS RAM resource share ARN. | `string` | n/a | yes |
 | <a name="input_hcp_boundary_name"></a> [hcp\_boundary\_name](#input\_hcp\_boundary\_name) | Name for HCP Boundary cluster. If left as an empty string, a cluster will not be created. | `string` | `null` | no |
 | <a name="input_hcp_boundary_tier"></a> [hcp\_boundary\_tier](#input\_hcp\_boundary\_tier) | HCP Boundary Tier | `string` | `"Standard"` | no |
 | <a name="input_hcp_consul_datacenter"></a> [hcp\_consul\_datacenter](#input\_hcp\_consul\_datacenter) | Datacenter for HCP Consul cluster. If undefined, uses `hcp_consul_name`. | `string` | `null` | no |
@@ -77,13 +78,20 @@ No modules.
 | <a name="input_hvn_name"></a> [hvn\_name](#input\_hvn\_name) | Name of HashiCorp Virtual Network. | `string` | n/a | yes |
 | <a name="input_hvn_region"></a> [hvn\_region](#input\_hvn\_region) | AWS region for HashiCorp Virtual Network. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags for AWS resources | `map(string)` | `{}` | no |
+<<<<<<< HEAD
 | <a name="input_transit_gateway_arn"></a> [transit\_gateway\_arn](#input\_transit\_gateway\_arn) | Transit gateway ARN. | `string` | `""` | no |
 | <a name="input_transit_gateway_id"></a> [transit\_gateway\_id](#input\_transit\_gateway\_id) | Transit gateway ID. | `string` | `""` | no |
+=======
+| <a name="input_transit_gateway_arn"></a> [transit\_gateway\_arn](#input\_transit\_gateway\_arn) | Transit gateway ARN. | `string` | n/a | yes |
+| <a name="input_transit_gateway_id"></a> [transit\_gateway\_id](#input\_transit\_gateway\_id) | Transit gateway ID. | `string` | n/a | yes |
+| <a name="input_vpc_cidr_block"></a> [vpc\_cidr\_block](#input\_vpc\_cidr\_block) | VPC CIDR block to route with HVN | `string` | n/a | yes |
+>>>>>>> origin/main
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
+<<<<<<< HEAD
 | <a name="output_hcp_boundary_endpoint"></a> [hcp\_boundary\_endpoint](#output\_hcp\_boundary\_endpoint) | Public endpoint of HCP Boundary. |
 | <a name="output_hcp_boundary_id"></a> [hcp\_boundary\_id](#output\_hcp\_boundary\_id) | ID of HCP Boundary. |
 | <a name="output_hcp_consul_datacenter"></a> [hcp\_consul\_datacenter](#output\_hcp\_consul\_datacenter) | Datacenter of HCP Consul Cluster. |
@@ -96,4 +104,9 @@ No modules.
 | <a name="output_hcp_vault_private_endpoint"></a> [hcp\_vault\_private\_endpoint](#output\_hcp\_vault\_private\_endpoint) | Private endpoint of HCP Vault. |
 | <a name="output_hcp_vault_public_endpoint"></a> [hcp\_vault\_public\_endpoint](#output\_hcp\_vault\_public\_endpoint) | Public endpoint of HCP Vault. |
 | <a name="output_hcp_vault_self_link"></a> [hcp\_vault\_self\_link](#output\_hcp\_vault\_self\_link) | Self link of HCP Vault. |
+=======
+| <a name="output_hcp_boundary"></a> [hcp\_boundary](#output\_hcp\_boundary) | HCP Boundary cluster details |
+| <a name="output_hcp_consul"></a> [hcp\_consul](#output\_hcp\_consul) | HCP Consul cluster details |
+| <a name="output_hcp_vault"></a> [hcp\_vault](#output\_hcp\_vault) | HCP Vault cluster details |
+>>>>>>> origin/main
 | <a name="output_hvn_id"></a> [hvn\_id](#output\_hvn\_id) | ID of HashiCorp Virtual Network. |

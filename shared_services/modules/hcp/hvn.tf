@@ -27,9 +27,3 @@ resource "hcp_hvn_route" "route" {
   destination_cidr = var.vpc_cidr_block
   target_link      = hcp_aws_transit_gateway_attachment.hcp.self_link
 }
-
-resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "hcp" {
-  depends_on                    = [hcp_aws_transit_gateway_attachment.hcp]
-  transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.hcp.provider_transit_gateway_attachment_id
-  tags                          = local.tags
-}

@@ -3,6 +3,16 @@ output "hvn_id" {
   description = "ID of HashiCorp Virtual Network."
 }
 
+output "hvn_cidr_block" {
+  value       = hcp_hvn.hvn.cidr_block
+  description = "CIDR block of HashiCorp Virtual Network."
+}
+
+output "hvn_self_link" {
+  value = hcp_hvn.hvn.self_link
+  description = "Self link of HashiCorp Virtual Network for peering."
+}
+
 ## HCP Consul Attributes
 
 output "hcp_consul" {

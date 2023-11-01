@@ -63,13 +63,9 @@ resource "aws_route" "us_east_1_to_eu_west_1_tgw_private" {
   transit_gateway_id     = module.network_us_east_1.transit_gateway_id
 }
 
-# HCP
+# HCP Consul, Vault, and Boundary clusters - primary
 module "hcp_us_east_1" {
   source = "./modules/hcp"
-
-  providers = {
-    aws = aws
-  }
 
   hvn_name       = local.us_east_1
   hvn_region     = local.us_east_1
@@ -89,4 +85,17 @@ module "hcp_us_east_1" {
   hcp_vault_public_endpoint = true
 
   hcp_boundary_name = "${local.prefix}-${local.us_east_1}"
+}
+
+### VPC Route - us-east-1 to HashiCorp Cloud Platform Virtual Network
+resource "aws_route" "us_east_1_to_hvn_tgw_public" {
+  destination_cidr_block = module.hcp_us_east_1.hvn_cidr_block
+  route_table_id         = module.network_us_east_1.vpc_public_route_table_id
+  transit_gateway_id     = module.network_us_east_1.transit_gateway_id
+}
+
+resource "aws_route" "us_east_1_to_hvn_tgw_private" {
+  destination_cidr_block = module.hcp_us_east_1.hvn_cidr_block
+  route_table_id         = module.network_us_east_1.vpc_private_route_table_id
+  transit_gateway_id     = module.network_us_east_1.transit_gateway_id
 }
