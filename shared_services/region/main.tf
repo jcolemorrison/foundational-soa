@@ -32,12 +32,12 @@ resource "aws_ram_resource_association" "main" {
   resource_share_arn = aws_ram_resource_share.main.arn
 }
 
-resource "aws_ram_principal_association" "main" {
+resource "aws_ram_principal_association" "organization" {
   resource_share_arn = aws_ram_resource_share.main.arn
   principal = var.organization_arn
 }
 
-resource "aws_ram_principal_association" "main" {
+resource "aws_ram_principal_association" "external" {
   count              = var.external_principals > 0 ? var.external_principals : 0
   principal          = var.external_principals[count.index]
   resource_share_arn = aws_ram_resource_share.main.arn
