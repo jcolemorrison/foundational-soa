@@ -6,6 +6,6 @@ data "aws_availability_zones" "available" {
   state = "available"
   filter {
     name   = "group-name"
-    values = [data.data.aws_region.current.name]
+    values = [data.aws_region.current.name]
   }
 }

@@ -38,7 +38,7 @@ resource "aws_ram_principal_association" "organization" {
 }
 
 resource "aws_ram_principal_association" "external" {
-  count              = var.external_principals > 0 ? var.external_principals : 0
+  count              = length(var.external_principals) > 0 ? length(var.external_principals) : 0
   principal          = var.external_principals[count.index]
   resource_share_arn = aws_ram_resource_share.main.arn
 }
