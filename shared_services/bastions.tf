@@ -9,7 +9,7 @@ resource "aws_instance" "bastion_us_east_1" {
   instance_type = "t3.micro"
   key_name = var.keypair_us_east_1
   vpc_security_group_ids = [aws_security_group.bastion_us_east_1.id]
-  subnet_id = module.network_us_east_1.vpc_public_subnet_ids[0].id
+  subnet_id = module.network_us_east_1.vpc_public_subnet_ids[0]
 
   associate_public_ip_address = true
 
@@ -69,7 +69,7 @@ resource "aws_instance" "bastion_us_west_2" {
   instance_type = "t3.micro"
   key_name = var.keypair_us_west_2
   vpc_security_group_ids = [aws_security_group.bastion_us_west_2.id]
-  subnet_id = module.network_us_west_2.vpc_public_subnet_ids[0].id
+  subnet_id = module.network_us_west_2.vpc_public_subnet_ids[0]
 
   associate_public_ip_address = true
 
@@ -139,7 +139,7 @@ resource "aws_instance" "bastion_eu_west_1" {
   instance_type = "t3.micro"
   key_name = var.keypair_eu_west_1
   vpc_security_group_ids = [aws_security_group.bastion_eu_west_1.id]
-  subnet_id = module.network_eu_west_1.vpc_public_subnet_ids[0].id
+  subnet_id = module.network_eu_west_1.vpc_public_subnet_ids[0]
 
   associate_public_ip_address = true
 
