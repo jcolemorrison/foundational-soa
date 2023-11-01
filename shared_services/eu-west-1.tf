@@ -132,3 +132,11 @@ resource "aws_route" "eu_west_1_to_hvn_tgw_private" {
 
   provider = aws.eu_west_1
 }
+
+### Set up peering connection between eu-west-1 and us-west-2
+### Not required for us-east-1 because HCP Vault performance replication
+### handles it.
+resource "hcp_hvn_peering_connection" "eu_west_1_to_us_west_2" {
+  hvn_1 = module.hcp_eu_west_1.hvn_self_link
+  hvn_2 = module.hcp_us_west_2.hvn_self_link
+}
