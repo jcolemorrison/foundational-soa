@@ -86,6 +86,12 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "us_east_1_to_us_
   transit_gateway_attachment_id = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
 }
 
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_east_1" {
+  vpc_id = module.network_us_east_1.vpc_id
+  subnet_ids = module.network_us_east_1.vpc_public_subnet_ids
+  transit_gateway_id = module.network_us_east_1.transit_gateway_id
+}
+
 ### TGW Route - us-west-2 routes to us-east-1
 resource "aws_ec2_transit_gateway_route" "us_west_2_to_us_east_1" {
   destination_cidr_block         = module.network_us_east_1.vpc_cidr_block
