@@ -86,21 +86,21 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "us_east_1_to_us_
   transit_gateway_attachment_id = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
 }
 
-# ### Route - us-west-2 routes to us-east-1
-# resource "aws_ec2_transit_gateway_route" "us_west_2_to_us_east_1" {
-#   destination_cidr_block         = module.network_us_east_1.vpc_cidr_block
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
-#   transit_gateway_route_table_id = module.network_us_west_2.transit_gateway_route_table_id
+### Route - us-west-2 routes to us-east-1
+resource "aws_ec2_transit_gateway_route" "us_west_2_to_us_east_1" {
+  destination_cidr_block         = module.network_us_east_1.vpc_cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
+  transit_gateway_route_table_id = module.network_us_west_2.transit_gateway_route_table_id
 
-#   provider = aws.us_west_2
-# }
+  provider = aws.us_west_2
+}
 
-# ### Route - us-east-1 routes to us-west-2
-# resource "aws_ec2_transit_gateway_route" "us_east_1_to_us_west_2" {
-#   destination_cidr_block         = module.network_us_west_2.vpc_cidr_block
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
-#   transit_gateway_route_table_id = module.network_us_east_1.transit_gateway_route_table_id
-# }
+### Route - us-east-1 routes to us-west-2
+resource "aws_ec2_transit_gateway_route" "us_east_1_to_us_west_2" {
+  destination_cidr_block         = module.network_us_west_2.vpc_cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
+  transit_gateway_route_table_id = module.network_us_east_1.transit_gateway_route_table_id
+}
 
 
 
@@ -117,21 +117,21 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "us_east_1_to_eu_
   transit_gateway_attachment_id = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
 }
 
-# ### Route - eu-west-1 to us-east-1
-# resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_east_1" {
-#   destination_cidr_block         = module.network_us_east_1.vpc_cidr_block
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
-#   transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
+### Route - eu-west-1 to us-east-1
+resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_east_1" {
+  destination_cidr_block         = module.network_us_east_1.vpc_cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
 
-#   provider = aws.eu_west_1
-# }
+  provider = aws.eu_west_1
+}
 
-# ### Route - us-east-1 to eu-west-1
-# resource "aws_ec2_transit_gateway_route" "us_east_1_to_eu_west_1" {
-#   destination_cidr_block         = module.network_eu_west_1.vpc_cidr_block
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
-#   transit_gateway_route_table_id = module.network_us_east_1.transit_gateway_route_table_id
-# }
+### Route - us-east-1 to eu-west-1
+resource "aws_ec2_transit_gateway_route" "us_east_1_to_eu_west_1" {
+  destination_cidr_block         = module.network_eu_west_1.vpc_cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_us_east_1.transit_gateway_route_table_id
+}
 
 
 
@@ -150,20 +150,20 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "us_west_2_to_eu_
   provider = aws.us_west_2
 }
 
-# ### Route - eu-west-1 to us-west-2
-# resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_west_2" {
-#   destination_cidr_block         = module.network_us_west_2.vpc_cidr_block
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
-#   transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
+### Route - eu-west-1 to us-west-2
+resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_west_2" {
+  destination_cidr_block         = module.network_us_west_2.vpc_cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
 
-#   provider = aws.eu_west_1
-# }
+  provider = aws.eu_west_1
+}
 
-# ### Route - us-west-2 to eu-west-1
-# resource "aws_ec2_transit_gateway_route" "us_west_2_to_eu_west_1" {
-#   destination_cidr_block         = module.network_eu_west_1.vpc_cidr_block
-#   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
-#   transit_gateway_route_table_id = module.network_us_west_2.transit_gateway_route_table_id
+### Route - us-west-2 to eu-west-1
+resource "aws_ec2_transit_gateway_route" "us_west_2_to_eu_west_1" {
+  destination_cidr_block         = module.network_eu_west_1.vpc_cidr_block
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_us_west_2.transit_gateway_route_table_id
 
-#   provider = aws.us_west_2
-# }
+  provider = aws.us_west_2
+}
