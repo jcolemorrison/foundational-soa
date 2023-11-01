@@ -30,10 +30,6 @@ variable "keypair_eu_west_1" {
   default     = null
 }
 
-resource "random_pet" "prefix" {
-  length = 1
-}
-
 locals {
-  prefix = random_pet.prefix.id
+  prefix = "prod"
 }
