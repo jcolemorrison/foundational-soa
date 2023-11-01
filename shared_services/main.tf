@@ -137,6 +137,25 @@ resource "aws_route" "us_east_1_to_us_west_2_tgw_private" {
   transit_gateway_id = module.network_us_east_1.transit_gateway_id
 }
 
+### VPC Route - us-west-2 to us-east-1
+resource "aws_route" "us_west_2_to_us_east_1_tgw_public" {
+  destination_cidr_block = module.network_us_east_1.vpc_cidr_block
+  route_table_id = module.network_us_west_2.vpc_public_route_table_id
+  transit_gateway_id = module.network_us_west_2.transit_gateway_id
+
+  provider = aws.us_west_2
+}
+
+resource "aws_route" "us_west_2_to_us_east_1_tgw_private" {
+  destination_cidr_block = module.network_us_east_1.vpc_cidr_block
+  route_table_id = module.network_us_west_2.vpc_private_route_table_id
+  transit_gateway_id = module.network_us_west_2.transit_gateway_id
+
+  provider = aws.us_west_2
+}
+
+
+
 
 # Network Peering Connections - us-east-1 to eu-west-1
 resource "aws_ec2_transit_gateway_peering_attachment" "us_east_1_to_eu_west_1" {
