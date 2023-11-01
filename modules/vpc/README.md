@@ -8,12 +8,14 @@ i.e.
 
 ```
 shared_services (reserves 10.0.0.0/16)
-  region_us_east_1 transit gateway (occupies 10.0.0.0/22)
-  region_us_west_2 transit gateway (occupies 10.0.4.0/22)
-  region_eu_west_1 transit gateway (occupies 10.0.8.0/22)
-  region_us_east_1 VPC (occupies 10.0.12.0/22)
-  region_us_west_2 VPC (occupies 10.0.16.0/22)
-  region_eu_west_1 VPC (occupies 10.0.20.0/22)
+  region_us_east_1 VPC (occupies 10.0.0.0/22)
+  region_us_east_1 transit gateway (occupies 10.0.4.0/22)
+
+  region_us_west_2 VPC (occupies 10.0.8.0/22)
+  region_us_west_2 transit gateway (occupies 10.0.12.0/22)
+
+  region_eu_west_1 VPC (occupies 10.0.16.0/22)
+  region_eu_west_1 transit gateway (occupies 10.0.20.0/22)
 
 runtime_ec2 (reserves 10.1.0.0/16)
   region_us_east_1 VPC (occupies 10.1.0.0/22)
