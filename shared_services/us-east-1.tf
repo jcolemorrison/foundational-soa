@@ -1,11 +1,15 @@
+locals {
+  us_east_1 = "us-east-1"
+}
+
 # Network and Transit Gateway for us-east-1
 module "network_us_east_1" {
-  source = "./region"
-  vpc_cidr_block = "10.0.0.0/22"
-  region = "us-east-1"
-  tgw_asn = 64512
-  tgw_cidr_block = "10.0.4.0/22"
-  organization_arn = data.aws_organizations_organization.current.arn
+  source              = "./region"
+  vpc_cidr_block      = "10.0.0.0/22"
+  region              = local.us_east_1
+  tgw_asn             = 64512
+  tgw_cidr_block      = "10.0.4.0/22"
+  organization_arn    = data.aws_organizations_organization.current.arn
   external_principals = []
 }
 
@@ -36,25 +40,51 @@ resource "aws_ec2_transit_gateway_route" "us_east_1_to_eu_west_1" {
 ### VPC Route - us-east-1 to us-west-2
 resource "aws_route" "us_east_1_to_us_west_2_tgw_public" {
   destination_cidr_block = module.network_us_west_2.vpc_cidr_block
-  route_table_id = module.network_us_east_1.vpc_public_route_table_id
-  transit_gateway_id = module.network_us_east_1.transit_gateway_id
+  route_table_id         = module.network_us_east_1.vpc_public_route_table_id
+  transit_gateway_id     = module.network_us_east_1.transit_gateway_id
 }
 
 resource "aws_route" "us_east_1_to_us_west_2_tgw_private" {
   destination_cidr_block = module.network_us_west_2.vpc_cidr_block
-  route_table_id = module.network_us_east_1.vpc_private_route_table_id
-  transit_gateway_id = module.network_us_east_1.transit_gateway_id
+  route_table_id         = module.network_us_east_1.vpc_private_route_table_id
+  transit_gateway_id     = module.network_us_east_1.transit_gateway_id
 }
 
 ### VPC Route - us-east-1 to eu-west-1
 resource "aws_route" "us_east_1_to_eu_west_1_tgw_public" {
   destination_cidr_block = module.network_eu_west_1.vpc_cidr_block
-  route_table_id = module.network_us_east_1.vpc_public_route_table_id
-  transit_gateway_id = module.network_us_east_1.transit_gateway_id
+  route_table_id         = module.network_us_east_1.vpc_public_route_table_id
+  transit_gateway_id     = module.network_us_east_1.transit_gateway_id
 }
 
 resource "aws_route" "us_east_1_to_eu_west_1_tgw_private" {
   destination_cidr_block = module.network_eu_west_1.vpc_cidr_block
-  route_table_id = module.network_us_east_1.vpc_private_route_table_id
-  transit_gateway_id = module.network_us_east_1.transit_gateway_id
+  route_table_id         = module.network_us_east_1.vpc_private_route_table_id
+  transit_gateway_id     = module.network_us_east_1.transit_gateway_id
+}
+
+# HCP
+module "hcp_us_east_1" {
+  source = "./modules/hcp"
+
+  providers = {
+    aws = aws
+  }
+
+  hvn_name       = local.us_east_1
+  hvn_region     = local.us_east_1
+  hvn_cidr_block = "172.25.16.0/22"
+
+  transit_gateway_arn = module.network_us_east_1.transit_gateway_arn
+  transit_gateway_id  = module.network_us_east_1.transit_gateway_id
+
+  hcp_consul_name            = "${local.prefix}-${local.us_east_1}"
+  hcp_consul_tier            = "plus"
+  hcp_consul_public_endpoint = true
+
+  hcp_vault_name            = "${local.prefix}-${local.us_east_1}"
+  hcp_vault_tier            = "plus_small"
+  hcp_vault_public_endpoint = true
+
+  hcp_boundary_name = "${local.prefix}-${local.us_east_1}"
 }
