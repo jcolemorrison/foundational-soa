@@ -1,8 +1,8 @@
 locals {
   us_east_1 = "us-east-1"
-  transit_gateway_ids = data.terraform_remote_state.shared_services.transit_gateway_ids
-  shared_services_cidr_blocks = data.terraform_remote_state.shared_services.shared_services_cidr_blocks
-  hcp_hvn_cidr_blocks = data.terraform_remote_state.shared_services.hcp_hvn_cidr_blocks
+  transit_gateway_ids = data.terraform_remote_state.shared_services.outputs.transit_gateway_ids
+  shared_services_cidr_blocks = data.terraform_remote_state.shared_services.outputs.shared_services_cidr_blocks
+  hcp_hvn_cidr_blocks = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
 }
 
 module "us_east_1" {
