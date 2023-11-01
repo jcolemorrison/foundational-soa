@@ -3,7 +3,7 @@ variable "name" {
   description = "Name use across all resources related to this VPC"
 }
 
-variable "cidr" {
+variable "cidr_block" {
   type        = string
   description = "Cidr block for the VPC.  Using a /22 Subnet Mask for this project is recommended."
 }
@@ -34,6 +34,6 @@ variable "private_subnet_count" {
 
 variable "tags" {
   type        = map(string)
-  description = "Tags for AWS resources"
+  description = "Common tags for AWS resources"
   default     = {}
 }

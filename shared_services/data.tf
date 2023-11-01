@@ -12,3 +12,6 @@ data "aws_region" "current" {}
 
 # Current AWS Account being deployed into
 data "aws_caller_identity" "current" {}
+
+# Organization of the project
+data "aws_organizations_organization" "current" {}
