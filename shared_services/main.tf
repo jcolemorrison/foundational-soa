@@ -66,6 +66,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "us_west_2" {
   vpc_id = module.network_us_west_2.vpc_id
   subnet_ids = module.network_us_west_2.vpc_public_subnet_ids
   transit_gateway_id = module.network_us_west_2.transit_gateway_id
+
+  provider = aws.us_west_2
 }
 
 # Network and Transit Gateway for eu-west-1
@@ -87,6 +89,8 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "eu_west_1" {
   vpc_id = module.network_eu_west_1.vpc_id
   subnet_ids = module.network_eu_west_1.vpc_public_subnet_ids
   transit_gateway_id = module.network_eu_west_1.transit_gateway_id
+
+  provider = aws.eu_west_1
 }
 
 
