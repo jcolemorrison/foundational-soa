@@ -78,6 +78,7 @@ module "hcp_us_east_1" {
   aws_ram_resource_share_arn = module.network_us_east_1.transit_gateway_resource_share_arn
   transit_gateway_arn        = module.network_us_east_1.transit_gateway_arn
   transit_gateway_id         = module.network_us_east_1.transit_gateway_id
+  vpc_cidr_block             = module.network_us_east_1.vpc_cidr_block
 
   hcp_consul_name            = "${local.prefix}-${local.us_east_1}"
   hcp_consul_tier            = "plus"

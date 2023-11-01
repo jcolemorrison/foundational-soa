@@ -10,15 +10,9 @@ resource "aws_ram_principal_association" "transit" {
   principal          = hcp_hvn.hvn.provider_account_id
 }
 
-resource "aws_ram_resource_association" "transit" {
-  resource_share_arn = var.aws_ram_resource_share_arn
-  resource_arn       = var.transit_gateway_arn
-}
-
-resource "hcp_aws_transit_gateway_attachment" "transit" {
+resource "hcp_aws_transit_gateway_attachment" "hcp" {
   depends_on = [
-    aws_ram_principal_association.transit,
-    aws_ram_resource_association.transit,
+    aws_ram_principal_association.transit
   ]
 
   hvn_id                        = hcp_hvn.hvn.hvn_id
@@ -27,7 +21,15 @@ resource "hcp_aws_transit_gateway_attachment" "transit" {
   resource_share_arn            = var.aws_ram_resource_share_arn
 }
 
-resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "this" {
-  transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.transit.provider_transit_gateway_attachment_id
+resource "hcp_hvn_route" "route" {
+  hvn_link         = hcp_hvn.hvn.self_link
+  hvn_route_id     = "${var.hvn_name}-hvn-to-tgw-attachment"
+  destination_cidr = var.vpc_cidr_block
+  target_link      = hcp_aws_transit_gateway_attachment.hcp.self_link
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment_accepter" "hcp" {
+  depends_on                    = [hcp_aws_transit_gateway_attachment.hcp]
+  transit_gateway_attachment_id = hcp_aws_transit_gateway_attachment.hcp.provider_transit_gateway_attachment_id
   tags                          = local.tags
 }
