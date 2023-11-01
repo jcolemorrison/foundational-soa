@@ -233,7 +233,7 @@ resource "aws_ec2_transit_gateway_peering_attachment_accepter" "us_west_2_to_eu_
   provider = aws.us_west_2
 }
 
-### Route - eu-west-1 to us-west-2
+### TGW Route - eu-west-1 to us-west-2
 resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_west_2" {
   destination_cidr_block         = module.network_us_west_2.vpc_cidr_block
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
@@ -242,11 +242,45 @@ resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_west_2" {
   provider = aws.eu_west_1
 }
 
-### Route - us-west-2 to eu-west-1
+### TGW Route - us-west-2 to eu-west-1
 resource "aws_ec2_transit_gateway_route" "us_west_2_to_eu_west_1" {
   destination_cidr_block         = module.network_eu_west_1.vpc_cidr_block
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
   transit_gateway_route_table_id = module.network_us_west_2.transit_gateway_route_table_id
 
   provider = aws.us_west_2
+}
+
+### VPC Route - us-west-2 to eu-west-1
+resource "aws_route" "us_west_2_to_eu_west_1_tgw_public" {
+  destination_cidr_block = module.network_eu_west_1.vpc_cidr_block
+  route_table_id = module.network_us_west_2.vpc_public_route_table_id
+  transit_gateway_id = module.network_us_west_2.transit_gateway_id
+
+  provider = aws.us_west_2
+}
+
+resource "aws_route" "us_west_2_to_eu_west_1_tgw_private" {
+  destination_cidr_block = module.network_eu_west_1.vpc_cidr_block
+  route_table_id = module.network_us_west_2.vpc_private_route_table_id
+  transit_gateway_id = module.network_us_west_2.transit_gateway_id
+
+  provider = aws.us_west_2
+}
+
+### VPC Route - eu-west-1 to us-west-2
+resource "aws_route" "eu_west_1_to_us_west_2_tgw_public" {
+  destination_cidr_block = module.network_us_west_2.vpc_cidr_block
+  route_table_id = module.network_eu_west_1.vpc_public_route_table_id
+  transit_gateway_id = module.network_eu_west_1.transit_gateway_id
+
+  provider = aws.eu_west_1
+}
+
+resource "aws_route" "eu_west_1_to_us_west_2_tgw_private" {
+  destination_cidr_block = module.network_us_west_2.vpc_cidr_block
+  route_table_id = module.network_eu_west_1.vpc_private_route_table_id
+  transit_gateway_id = module.network_eu_west_1.transit_gateway_id
+
+  provider = aws.eu_west_1
 }
