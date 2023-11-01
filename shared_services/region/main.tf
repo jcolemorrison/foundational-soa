@@ -1,28 +1,28 @@
 # VPC
 module "vpc" {
-  source = "../../modules/vpc"
+  source     = "../../modules/vpc"
   cidr_block = var.vpc_cidr_block
-  name = "${var.region}-network"
+  name       = "${var.region}-network"
 }
 
 # Transit Gateway and RAM Shares
 resource "aws_ec2_transit_gateway" "main" {
   description = "transit gateway for ${var.region}"
 
-  amazon_side_asn = var.tgw_asn
-  auto_accept_shared_attachments = "enable"
+  amazon_side_asn                 = var.tgw_asn
+  auto_accept_shared_attachments  = "enable"
   default_route_table_association = "enable"
   default_route_table_propagation = "enable"
-  dns_support = "enable"
-  multicast_support = "disable"
-  transit_gateway_cidr_blocks = [var.tgw_cidr_block]
+  dns_support                     = "enable"
+  multicast_support               = "disable"
+  transit_gateway_cidr_blocks     = [var.tgw_cidr_block]
 
   tags = merge({ "Name" = "${var.region}-tgw" }, var.tags)
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
-  vpc_id = module.vpc.vpc_id
-  subnet_ids = module.vpc.public_subnet_ids
+  vpc_id             = module.vpc.vpc_id
+  subnet_ids         = module.vpc.public_subnet_ids
   transit_gateway_id = aws_ec2_transit_gateway.main.id
 }
 
@@ -40,7 +40,7 @@ resource "aws_ram_resource_association" "main" {
 
 resource "aws_ram_principal_association" "organization" {
   resource_share_arn = aws_ram_resource_share.main.arn
-  principal = var.organization_arn
+  principal          = var.organization_arn
 }
 
 resource "aws_ram_principal_association" "external" {
