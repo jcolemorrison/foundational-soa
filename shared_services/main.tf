@@ -41,6 +41,12 @@ module "network_us_east_1" {
   external_principals = []
 }
 
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_east_1" {
+  vpc_id = module.network_us_east_1.vpc_id
+  subnet_ids = module.network_us_east_1.vpc_public_subnet_ids
+  transit_gateway_id = module.network_us_east_1.transit_gateway_id
+}
+
 # Network and Transit Gateway for us-west-2
 module "network_us_west_2" {
   source = "./region"
@@ -54,6 +60,12 @@ module "network_us_west_2" {
   providers = {
     aws = aws.us_west_2
   }
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_west_2" {
+  vpc_id = module.network_us_west_2.vpc_id
+  subnet_ids = module.network_us_west_2.vpc_public_subnet_ids
+  transit_gateway_id = module.network_us_west_2.transit_gateway_id
 }
 
 # Network and Transit Gateway for eu-west-1
@@ -71,6 +83,12 @@ module "network_eu_west_1" {
   }
 }
 
+resource "aws_ec2_transit_gateway_vpc_attachment" "eu_west_1" {
+  vpc_id = module.network_eu_west_1.vpc_id
+  subnet_ids = module.network_eu_west_1.vpc_public_subnet_ids
+  transit_gateway_id = module.network_eu_west_1.transit_gateway_id
+}
+
 
 
 # Network Peering Connections - us-east-1 to us-west-2
@@ -84,12 +102,6 @@ resource "aws_ec2_transit_gateway_peering_attachment" "us_east_1_to_us_west_2" {
 
 resource "aws_ec2_transit_gateway_peering_attachment_accepter" "us_east_1_to_us_west_2" {
   transit_gateway_attachment_id = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_us_west_2.id
-}
-
-resource "aws_ec2_transit_gateway_vpc_attachment" "us_east_1" {
-  vpc_id = module.network_us_east_1.vpc_id
-  subnet_ids = module.network_us_east_1.vpc_public_subnet_ids
-  transit_gateway_id = module.network_us_east_1.transit_gateway_id
 }
 
 ### TGW Route - us-west-2 routes to us-east-1
