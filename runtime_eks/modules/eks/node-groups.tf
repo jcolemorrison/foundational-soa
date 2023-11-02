@@ -15,7 +15,7 @@ resource "aws_iam_role" "node_group" {
   description           = "EKS managed node group IAM role"
   force_detach_policies = true
   name_prefix           = "${var.name}-eks-node-group-"
-  path                  = "${var.path_prefix}/${var.name}"
+  path                  = local.iam_role_path
 
   tags = local.tags
 }
@@ -41,7 +41,7 @@ resource "aws_iam_role_policy_attachment" "node_group_additional" {
 resource "aws_eks_node_group" "node_group" {
   ami_type               = var.node_group_config.ami_type
   capacity_type          = var.node_group_config.capacity_type
-  cluster_name           = var.name
+  cluster_name           = aws_eks_cluster.cluster.name
   disk_size              = var.node_group_config.disk_size
   instance_types         = var.node_group_config.instance_types
   labels                 = var.node_group_config.labels

@@ -7,6 +7,17 @@ resource "aws_kms_key" "cluster" {
     Statement = [
       {
         Action = [
+          "kms:*"
+        ]
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"
+        }
+        Resource = "*"
+        Sid      = "Default"
+      },
+      {
+        Action = [
           "kms:ReEncrypt*",
           "kms:GenerateDataKey*",
           "kms:Encrypt",
@@ -65,7 +76,6 @@ resource "aws_iam_role_policy_attachment" "cluster_encryption" {
 data "tls_certificate" "cluster" {
   url = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
 }
-
 
 resource "aws_iam_openid_connect_provider" "oidc_provider" {
   client_id_list  = ["sts.${data.aws_partition.current.dns_suffix}"]
