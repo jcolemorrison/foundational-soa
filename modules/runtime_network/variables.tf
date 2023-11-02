@@ -22,3 +22,9 @@ variable "hcp_hvn_cidr_block" {
   type = string
   description = "CIDR block of the HCP HVN."
 }
+
+variable "accessible_cidr_blocks" {
+  type = list(string)
+  description = "List of CIDR blocks to point to the transit gateway in addition to the Shared Services sandbox and HCP HVN"
+  default = []
+}

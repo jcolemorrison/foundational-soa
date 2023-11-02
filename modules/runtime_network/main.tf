@@ -36,3 +36,18 @@ resource "aws_route" "hcp_hvn_private" {
   route_table_id         = module.vpc.private_route_table_id
   transit_gateway_id     = var.transit_gateway_id
 }
+
+## Additional Runtime Routes
+resource "aws_route" "runtime_route_public" {
+  count = length(var.accessible_cidr_blocks) > 0 ? length(var.accessible_cidr_blocks) : 0
+  destination_cidr_block = var.accessible_cidr_blocks[count.index]
+  route_table_id         = module.vpc.public_route_table_id
+  transit_gateway_id = var.transit_gateway_id
+}
+
+resource "aws_route" "runtime_route_private" {
+  count = length(var.accessible_cidr_blocks) > 0 ? length(var.accessible_cidr_blocks) : 0
+  destination_cidr_block = var.accessible_cidr_blocks[count.index]
+  route_table_id         = module.vpc.private_route_table_id
+  transit_gateway_id = var.transit_gateway_id
+}
