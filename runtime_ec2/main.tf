@@ -1,6 +1,7 @@
 locals {
   us_east_1 = "us-east-1"
   us_west_2 = "us-west-2"
+  eu_west_1 = "eu-west-1"
   transit_gateway_ids = data.terraform_remote_state.shared_services.outputs.transit_gateway_ids
   shared_services_cidr_blocks = data.terraform_remote_state.shared_services.outputs.shared_services_cidr_blocks
   hcp_hvn_cidr_blocks = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
@@ -39,5 +40,21 @@ module "us_west_2" {
 
   providers = {
     aws = aws.us_west_2
+  }
+}
+
+module "eu_west_1" {
+  source = "./region"
+  vpc_cidr_block = local.accessible_cidr_blocks.runtime_ec2_eu_west_1
+  region = local.eu_west_1
+  transit_gateway_id = local.transit_gateway_ids[local.eu_west_1]
+  shared_services_cidr_block = local.shared_services_cidr_blocks[local.eu_west_1]
+  hcp_hvn_cidr_block = local.hcp_hvn_cidr_blocks[local.eu_west_1]
+
+  # create routes to TGW for all CIDRs except own VPC
+  accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ec2_eu_west_1]
+
+  providers = {
+    aws = aws.eu_west_1
   }
 }
