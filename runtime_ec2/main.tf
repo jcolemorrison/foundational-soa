@@ -36,4 +36,8 @@ module "us_west_2" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ec2_us_west_2]
+
+  providers = {
+    aws = aws.us_west_2
+  }
 }
