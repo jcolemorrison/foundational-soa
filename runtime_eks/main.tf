@@ -26,7 +26,7 @@ module "us_east_1" {
   shared_services_cidr_block = local.shared_services_cidr_blocks[local.us_east_1]
   hcp_hvn_cidr_block         = local.hcp_hvn_cidr_blocks[local.us_east_1]
 
-  cluster_name = local.cluster_name
+  # cluster_name = local.cluster_name
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_east_1]
