@@ -1,3 +1,4 @@
+# Network Specific Variables
 variable "vpc_cidr_block" {
   type        = string
   description = "Cidr block for the VPC.  Using a /22 Subnet Mask for this project is recommended."
