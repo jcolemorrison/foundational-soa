@@ -2,38 +2,7 @@ resource "aws_kms_key" "cluster" {
   description             = "${var.name} EKS cluster's KMS key for encryption"
   deletion_window_in_days = 7
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "kms:*"
-        ]
-        Effect = "Allow"
-        Principal = {
-          AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"
-        }
-        Resource = "*"
-        Sid      = "Default"
-      },
-      {
-        Action = [
-          "kms:ReEncrypt*",
-          "kms:GenerateDataKey*",
-          "kms:Encrypt",
-          "kms:DescribeKey",
-          "kms:Decrypt",
-        ]
-        Effect = "Allow"
-        Principal = {
-          AWS = "${aws_iam_role.cluster.arn}"
-        }
-        Resource = "*"
-        Sid      = "KeyUsage"
-      },
-    ]
-    Version = "2012-10-17"
-  })
+  policy = data.aws_iam_policy_document.kms.json
 
   tags = local.tags
 }
@@ -41,6 +10,66 @@ resource "aws_kms_key" "cluster" {
 resource "aws_kms_alias" "cluster" {
   name          = "alias/eks/${var.name}"
   target_key_id = aws_kms_key.cluster.key_id
+}
+
+
+
+data "aws_iam_policy_document" "kms" {
+  statement {
+    sid       = "Default"
+    actions   = ["kms:*"]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+
+  statement {
+    sid = "KeyAdministration"
+    actions = [
+      "kms:Create*",
+      "kms:Describe*",
+      "kms:Enable*",
+      "kms:List*",
+      "kms:Put*",
+      "kms:Update*",
+      "kms:Revoke*",
+      "kms:Disable*",
+      "kms:Get*",
+      "kms:Delete*",
+      "kms:TagResource",
+      "kms:UntagResource",
+      "kms:ScheduleKeyDeletion",
+      "kms:CancelKeyDeletion",
+      "kms:ReplicateKey",
+      "kms:ImportKeyMaterial"
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${data.aws_iam_session_context.current.issuer_arn}"]
+    }
+  }
+
+  statement {
+    sid = "KeyUsage"
+    actions = [
+      "kms:Encrypt",
+      "kms:Decrypt",
+      "kms:ReEncrypt*",
+      "kms:GenerateDataKey*",
+      "kms:DescribeKey",
+    ]
+    resources = ["*"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["${aws_iam_role.cluster.arn}"]
+    }
+  }
 }
 
 resource "aws_iam_policy" "cluster_encryption" {
