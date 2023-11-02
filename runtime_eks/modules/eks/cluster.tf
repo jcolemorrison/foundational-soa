@@ -148,3 +148,8 @@ resource "aws_eks_cluster" "cluster" {
     aws_kms_key.cluster
   ]
 }
+
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name = aws_eks_cluster.cluster.name
+  addon_name   = "vpc-cni"
+}
