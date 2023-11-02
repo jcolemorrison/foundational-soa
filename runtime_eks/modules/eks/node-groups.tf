@@ -15,7 +15,6 @@ resource "aws_iam_role" "node_group" {
   description           = "EKS managed node group IAM role"
   force_detach_policies = true
   name_prefix           = "${var.name}-eks-node-group-"
-  path                  = local.iam_role_path
 
   tags = local.tags
 }

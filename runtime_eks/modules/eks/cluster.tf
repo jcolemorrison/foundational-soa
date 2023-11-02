@@ -75,7 +75,6 @@ data "aws_iam_policy_document" "kms" {
 resource "aws_iam_policy" "cluster_encryption" {
   description = "Cluster encryption policy"
   name_prefix = "${var.name}-cluster-encryption-"
-  path        = local.iam_role_path
   policy = jsonencode(
     {
       Statement = [
