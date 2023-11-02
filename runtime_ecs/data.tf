@@ -12,3 +12,14 @@ data "aws_region" "current" {}
 
 # Current AWS Account being deployed into
 data "aws_caller_identity" "current" {}
+
+data "terraform_remote_state" "shared_services" {
+  backend = "remote"
+
+  config = {
+    organization = var.terraform_cloud_organization
+    workspaces = {
+      name = "shared-services"
+    }
+  }
+}
