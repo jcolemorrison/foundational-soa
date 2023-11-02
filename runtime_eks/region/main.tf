@@ -8,14 +8,19 @@ module "eks" {
 
   vpc_id             = module.network.vpc_id
   private_subnet_ids = module.network.vpc_private_subnet_ids
+
+  remote_access = {
+    ec2_ssh_key               = var.keypair
+    source_security_group_ids = [aws_security_group.bastion.id]
+  }
 }
 
 module "eks_v2" {
-  count  = var.cluster_name != null ? 1 : 0
+  count   = var.cluster_name != null ? 1 : 0
   source  = "terraform-aws-modules/eks/aws"
   version = "19.16.0"
 
-  cluster_name    = "${var.cluster_name}-v2"
+  cluster_name = "${var.cluster_name}-v2"
 
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true

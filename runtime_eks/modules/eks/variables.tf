@@ -94,12 +94,12 @@ variable "node_group_config" {
 }
 
 variable "remote_access" {
-  type = list(object({
+  type = object({
     ec2_ssh_key               = string
     source_security_group_ids = list(string)
-  }))
-  description = "Allow SSH access to initial node group"
-  default     = []
+  })
+  description = "Enable remote access to node groups"
+  default     = null
 }
 
 variable "key_owners" {

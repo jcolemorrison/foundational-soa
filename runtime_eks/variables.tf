@@ -16,3 +16,8 @@ variable "terraform_cloud_organization" {
   type        = string
   description = "Terraform Cloud organization that outputs HCP Consul address, token, and datacenter"
 }
+
+variable "keypair_us_east_1" {
+  type        = string
+  description = "Keypair for us-east-1"
+}

@@ -35,3 +35,18 @@ variable "cluster_name" {
   description = "Name of EKS cluster"
   default     = null
 }
+
+variable "keypair" {
+  type        = string
+  description = "Keypair"
+  default     = null
+}
+
+variable "remote_access" {
+  type = list(object({
+    ec2_ssh_key               = string
+    source_security_group_ids = list(string)
+  }))
+  description = "Allow SSH access to initial node group"
+  default     = null
+}

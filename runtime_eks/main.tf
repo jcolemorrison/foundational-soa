@@ -30,6 +30,7 @@ module "us_east_1" {
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_east_1]
 
   cluster_name = local.cluster_name
+  keypair      = var.keypair_us_east_1
 }
 
 module "us_west_2" {

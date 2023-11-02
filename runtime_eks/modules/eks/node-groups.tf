@@ -51,6 +51,14 @@ resource "aws_eks_node_group" "node_group" {
   tags                   = local.tags
   version                = var.cluster_version
 
+  dynamic "remote_access" {
+    for_each = var.remote_access != null ? toset([var.remote_access]) : []
+    content {
+      ec2_ssh_key               = remote_access.value.ec2_ssh_key
+      source_security_group_ids = remote_access.value.source_security_group_ids
+    }
+  }
+
   scaling_config {
     desired_size = var.node_group_config.desired_size
     max_size     = var.node_group_config.max_size
