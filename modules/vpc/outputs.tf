@@ -1,19 +1,19 @@
-output "vpc_id" {
+output "id" {
   value = aws_vpc.main.id
   description = "ID of the VPC"
 }
 
-output "vpc_arn" {
+output "arn" {
   value = aws_vpc.main.arn
   description = "ARN of the VPC"
 }
 
-output "vpc_cidr_block" {
+output "cidr_block" {
   value = aws_vpc.main.cidr_block
   description = "IPv4 CIDR block of the VPC"
 }
 
-output "vpc_ipv6_cidr_block" {
+output "ipv6_cidr_block" {
   value = try(aws_vpc.main.ipv6_cidr_block, null)
   description = "IPv6 CIDR block of the VPC"
 }

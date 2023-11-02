@@ -6,7 +6,7 @@ module "vpc" {
 }
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
-  vpc_id             = module.vpc.vpc_id
+  vpc_id             = module.vpc.id
   subnet_ids         = module.vpc.public_subnet_ids
   transit_gateway_id = var.transit_gateway_id
 }

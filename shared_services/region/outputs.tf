@@ -25,12 +25,12 @@ output "transit_gateway_resource_share_arn" {
 
 output "vpc_id" {
   description = "ID of the VPC"
-  value       = module.vpc.vpc_id
+  value       = module.vpc.id
 }
 
 output "vpc_cidr_block" {
   description = "IPv4 CIDR Block of the VPC."
-  value       = module.vpc.vpc_cidr_block
+  value       = module.vpc.cidr_block
 }
 
 output "vpc_public_subnet_ids" {
