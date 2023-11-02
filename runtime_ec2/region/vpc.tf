@@ -14,25 +14,25 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
 ### VPC Route to Shared Services
 resource "aws_route" "shared_services_public" {
   destination_cidr_block = var.shared_services_cidr_block
-  route_table_id         = module.vpc.vpc_public_route_table_id
+  route_table_id         = module.vpc.public_route_table_id
   transit_gateway_id     = var.transit_gateway_id
 }
 
 resource "aws_route" "shared_services_private" {
   destination_cidr_block = var.shared_services_cidr_block
-  route_table_id         = module.vpc.vpc_private_route_table_id
+  route_table_id         = module.vpc.private_route_table_id
   transit_gateway_id     = var.transit_gateway_id
 }
 
 ### VPC Route to HCP HVN
 resource "aws_route" "hcp_hvn_public" {
   destination_cidr_block = var.hcp_hvn_cidr_block
-  route_table_id         = module.vpc.vpc_public_route_table_id
+  route_table_id         = module.vpc.public_route_table_id
   transit_gateway_id     = var.transit_gateway_id
 }
 
 resource "aws_route" "hcp_hvn_private" {
   destination_cidr_block = var.hcp_hvn_cidr_block
-  route_table_id         = module.vpc.vpc_private_route_table_id
+  route_table_id         = module.vpc.private_route_table_id
   transit_gateway_id     = var.transit_gateway_id
 }
