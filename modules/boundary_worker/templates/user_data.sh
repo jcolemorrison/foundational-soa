@@ -66,5 +66,5 @@ export VAULT_NAMESPACE=${vault_namespace}
 export VAULT_TOKEN=${vault_token}
 
 apt-get update && sudo apt-get install vault -y
-vault kv put -mount=${vault_path} $(hostname) token=$(cat /etc/boundary/worker/auth_request_token)
+vault kv put -mount=${vault_path} ${region}-$(hostname) token=$(cat /etc/boundary/worker/auth_request_token)
 %{ endif }
