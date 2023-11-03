@@ -21,9 +21,6 @@ listener "tcp" {
 
 worker {
   public_addr = "$${PUBLIC_IP}"
-%{ if initial_upstreams != null }
-  initial_upstreams = ${initial_upstreams}
-%{ endif }
   auth_storage_path = "/etc/boundary/worker"
   tags {
     type = ${worker_tags}
