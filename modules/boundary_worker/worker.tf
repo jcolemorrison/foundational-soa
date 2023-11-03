@@ -27,8 +27,7 @@ resource "aws_instance" "worker" {
 
   user_data = templatefile("${path.module}/templates/user_data.sh", {
     boundary_cluster_id = var.boundary_cluster_id
-    initial_upstreams   = jsonencode(var.worker_upstreams)
-    worker_tags         = jsonencode(var.worker_tags)
+    worker_tags         = jsonencode(concat([var.region, var.name, "ingress"], var.worker_tags))
     vault_addr          = var.vault.address
     vault_namespace     = var.vault.namespace
     vault_path          = var.vault.path

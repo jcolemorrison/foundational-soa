@@ -3,6 +3,11 @@ variable "name" {
   description = "Name of keypair for Boundary worker"
 }
 
+variable "region" {
+  type        = string
+  description = "Region for Boundary worker, used for filtering"
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID for Boundary worker and security group"
@@ -49,7 +54,7 @@ variable "worker_upstreams" {
 }
 
 variable "worker_tags" {
-  description = "A list of worker tags for filtering in Boundary"
+  description = "Additional list of worker tags for filtering in Boundary"
   type        = list(string)
   default     = []
 }

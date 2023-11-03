@@ -28,11 +28,23 @@ worker {
 }
 EOF
 
+%{ if vault_addr != null }
+cat << EOF > /etc/boundary/deregister.sh
+#!/bin/bash
+export VAULT_ADDR=${vault_addr}
+export VAULT_NAMESPACE=${vault_namespace}
+export VAULT_TOKEN=${vault_token}
+
+vault kv delete -mount=${vault_path} $(hostname)
+EOF
+%{ endif }
+
 cat << EOF > /etc/systemd/system/boundary.service
 [Unit]
 Description=Boundary Worker
 [Service]
 ExecStart=/usr/bin/boundary server -config="/etc/boundary/config.hcl"
+ExecStop=/etc/boundary/deregister.sh
 User=boundary
 Group=boundary
 [Install]
