@@ -1,11 +1,11 @@
 # Boundary Worker
 module "boundary_worker" {
-  count  = var.create_boundary_workers ? length(module.network.vpc_public_subnet_ids) : 0
+  count  = var.create_boundary_workers ? 1 : 0
   source = "../../modules/boundary_worker"
 
   name             = "${var.name}-boundary"
   vpc_id           = module.network.vpc_id
-  public_subnet_id = module.network.vpc_public_subnet_ids[count.index]
+  public_subnet_id = module.network.vpc_public_subnet_ids.0
 
   vault = {
     address   = var.vault_address
