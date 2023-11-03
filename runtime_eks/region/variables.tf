@@ -30,10 +30,25 @@ variable "accessible_cidr_blocks" {
   default     = []
 }
 
-variable "cluster_name" {
+variable "name" {
   type        = string
-  description = "Name of EKS cluster"
-  default     = null
+  description = "Name of regional resources"
+}
+
+## EKS Cluster
+
+variable "create_eks_cluster" {
+  type        = bool
+  description = "Create EKS cluster"
+  default     = false
+}
+
+## Boundary workers
+
+variable "create_boundary_workers" {
+  type        = bool
+  description = "Create Boundary workers, one per public subnet"
+  default     = false
 }
 
 variable "keypair" {
@@ -48,5 +63,36 @@ variable "remote_access" {
     source_security_group_ids = list(string)
   }))
   description = "Allow SSH access to initial node group"
+  default     = null
+}
+
+variable "vault_address" {
+  type        = string
+  description = "Vault cluster address"
+  default     = null
+}
+
+variable "vault_namespace" {
+  type        = string
+  description = "Vault cluster namespace"
+  default     = null
+}
+
+variable "boundary_worker_vault_path" {
+  type        = string
+  description = "Path in Vault for Boundary worker to store secret"
+  default     = null
+}
+
+variable "boundary_worker_vault_token" {
+  type        = string
+  description = "Token in Vault for Boundary worker to store secret"
+  sensitive   = true
+  default     = null
+}
+
+variable "boundary_cluster_id" {
+  type        = string
+  description = "Boundary cluster ID for workers to register"
   default     = null
 }

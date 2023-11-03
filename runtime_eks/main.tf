@@ -15,7 +15,7 @@ locals {
     runtime_frontend      = "10.4.0.0/16"
   }
 
-  cluster_name = "prod"
+  name = "prod"
 }
 
 module "us_east_1" {
@@ -29,8 +29,17 @@ module "us_east_1" {
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_east_1]
 
-  # create EKS cluster
-  cluster_name = local.cluster_name
+  name = local.name
+
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_token
+  vault_address               = local.vault_us_east_1.address
+  vault_namespace             = local.vault_us_east_1.namespace
+
+  create_eks_cluster = true
 }
 
 module "us_west_2" {
@@ -43,6 +52,15 @@ module "us_west_2" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_west_2]
+
+  name = local.name
+
+  create_boundary_workers     = false
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_token
+  vault_address               = local.vault_us_west_2.address
+  vault_namespace             = local.vault_us_west_2.namespace
 
   providers = {
     aws = aws.us_west_2
@@ -59,6 +77,15 @@ module "eu_west_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_eu_west_1]
+
+  name = local.name
+
+  create_boundary_workers     = false
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_token
+  vault_address               = local.vault_eu_west_1.address
+  vault_namespace             = local.vault_eu_west_1.namespace
 
   providers = {
     aws = aws.eu_west_1
