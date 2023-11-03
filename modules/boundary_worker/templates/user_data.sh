@@ -35,7 +35,7 @@ cat << EOF > /etc/systemd/system/boundary.service
 [Unit]
 Description=Boundary Worker
 [Service]
-ExecStart=/usr/bin/boundary-worker server -config="/etc/boundary/config.hcl"
+ExecStart=/usr/bin/boundary server -config="/etc/boundary/config.hcl"
 User=boundary
 Group=boundary
 [Install]
