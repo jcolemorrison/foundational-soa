@@ -31,7 +31,6 @@ module "us_east_1" {
 
   name = local.name
 
-
   create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
@@ -55,12 +54,14 @@ module "us_west_2" {
 
   name = local.name
 
-  create_boundary_workers     = false
+  create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_token
   vault_address               = local.vault_us_west_2.address
   vault_namespace             = local.vault_us_west_2.namespace
+
+  create_eks_cluster = true
 
   providers = {
     aws = aws.us_west_2
@@ -80,12 +81,14 @@ module "eu_west_1" {
 
   name = local.name
 
-  create_boundary_workers     = false
+  create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_token
   vault_address               = local.vault_eu_west_1.address
   vault_namespace             = local.vault_eu_west_1.namespace
+
+  create_eks_cluster = true
 
   providers = {
     aws = aws.eu_west_1
