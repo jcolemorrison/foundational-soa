@@ -124,7 +124,7 @@ resource "aws_security_group_rule" "cluster" {
 }
 
 resource "aws_security_group" "node" {
-  name        = local.node_sg_name
+  name_prefix = "${local.node_sg_name}-"
   description = "EKS cluster ${var.name} node group ${local.node_sg_name}"
   vpc_id      = var.vpc_id
 

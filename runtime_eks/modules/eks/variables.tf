@@ -123,7 +123,7 @@ variable "tags" {
 locals {
   tags = merge(
     {
-      Module = "foundational-soa//modules/eks",
+      Module = "foundational-soa//runtime_eks/modules/eks",
       Name   = "${var.name}"
     },
   var.tags)

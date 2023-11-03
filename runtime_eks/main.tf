@@ -29,8 +29,8 @@ module "us_east_1" {
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_east_1]
 
+  # create EKS cluster
   cluster_name = local.cluster_name
-  keypair      = var.keypair_us_east_1
 }
 
 module "us_west_2" {
