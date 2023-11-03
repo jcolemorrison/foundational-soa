@@ -1,8 +1,13 @@
+resource "vault_namespace" "boundary" {
+  path = "boundary"
+}
+
 resource "vault_mount" "boundary_worker" {
-  path        = "boundary/worker"
+  namespace   = vault_namespace.boundary.path
+  path        = "worker"
   type        = "kv"
   options     = { version = "2" }
-  description = "Boundary worker tokens"
+  description = "Boundary worker tokens for self-registration to HCP Boundary"
 }
 
 data "vault_policy_document" "boundary_worker" {
@@ -14,11 +19,13 @@ data "vault_policy_document" "boundary_worker" {
 }
 
 resource "vault_policy" "boundary_worker" {
-  name   = "boundary-worker"
-  policy = data.vault_policy_document.boundary_worker.hcl
+  namespace = vault_namespace.boundary.path_fq
+  name      = "boundary-worker"
+  policy    = data.vault_policy_document.boundary_worker.hcl
 }
 
 resource "vault_token_auth_backend_role" "boundary_worker" {
+  namespace              = vault_namespace.boundary.path_fq
   role_name              = "boundary-worker"
   allowed_policies       = [vault_policy.boundary_worker.name]
   disallowed_policies    = ["default"]
@@ -29,6 +36,7 @@ resource "vault_token_auth_backend_role" "boundary_worker" {
 }
 
 resource "vault_token" "boundary_worker" {
+  namespace = vault_namespace.boundary.path_fq
   role_name = vault_token_auth_backend_role.boundary_worker.role_name
   policies  = [vault_policy.boundary_worker.name]
 }

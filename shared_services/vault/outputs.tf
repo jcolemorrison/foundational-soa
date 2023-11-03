@@ -1,3 +1,8 @@
+output "boundary_worker_namespace" {
+  value       = vault_namespace.boundary.path_fq
+  description = "Boundary namespace in Vault"
+}
+
 output "boundary_worker_path" {
   value       = vault_mount.boundary_worker.path
   description = "Boundary worker secrets path in Vault"
