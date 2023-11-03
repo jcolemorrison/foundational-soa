@@ -1,5 +1,5 @@
 output "boundary_worker_namespace" {
-  value       = vault_namespace.boundary.path_fq
+  value       = vault_namespace.boundary.id
   description = "Boundary namespace in Vault"
 }
 
