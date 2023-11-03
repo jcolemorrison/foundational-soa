@@ -1,6 +1,6 @@
 # Boundary Worker
 module "boundary_worker" {
-  count  = length(module.network.vpc_public_subnet_ids)
+  count  = var.create_boundary_workers ? length(module.network.vpc_public_subnet_ids) : 0
   source = "../../modules/boundary_worker"
 
   name             = "${var.name}-boundary"

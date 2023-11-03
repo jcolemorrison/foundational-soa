@@ -37,7 +37,7 @@ module "us_east_1" {
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_token
   vault_address               = local.vault_us_east_1.address
-  vault_namespace             = local.vault_us_east_1.namespace
+  vault_namespace             = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
 }
