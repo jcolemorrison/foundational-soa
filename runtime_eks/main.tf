@@ -1,7 +1,8 @@
 locals {
-  us_east_1                   = "us-east-1"
-  us_west_2                   = "us-west-2"
-  eu_west_1                   = "eu-west-1"
+  us_east_1 = "us-east-1"
+  us_west_2 = "us-west-2"
+  eu_west_1 = "eu-west-1"
+
   transit_gateway_ids         = data.terraform_remote_state.shared_services.outputs.transit_gateway_ids
   shared_services_cidr_blocks = data.terraform_remote_state.shared_services.outputs.shared_services_cidr_blocks
   hcp_hvn_cidr_blocks         = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
@@ -13,6 +14,8 @@ locals {
     runtime_eks_eu_west_1 = "10.3.8.0/22"
     runtime_frontend      = "10.4.0.0/16"
   }
+
+  name = "prod"
 }
 
 module "us_east_1" {
@@ -25,6 +28,17 @@ module "us_east_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_east_1]
+
+  name = local.name
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_token
+  vault_address               = local.vault_us_east_1.address
+  vault_namespace             = local.boundary_worker_vault_namespace
+
+  create_eks_cluster = true
 }
 
 module "us_west_2" {
@@ -37,6 +51,17 @@ module "us_west_2" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_us_west_2]
+
+  name = local.name
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_token
+  vault_address               = local.vault_us_west_2.address
+  vault_namespace             = local.vault_us_west_2.namespace
+
+  create_eks_cluster = true
 
   providers = {
     aws = aws.us_west_2
@@ -53,6 +78,17 @@ module "eu_west_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_eks_eu_west_1]
+
+  name = local.name
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_token
+  vault_address               = local.vault_eu_west_1.address
+  vault_namespace             = local.vault_eu_west_1.namespace
+
+  create_eks_cluster = true
 
   providers = {
     aws = aws.eu_west_1

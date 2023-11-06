@@ -9,23 +9,47 @@ locals {
       type                       = "ingress"
       source_node_security_group = "${aws_security_group.node.id}"
     }
-    egress = {
-      description = "Allow all egress"
-      protocol    = "-1"
-      from_port   = 0
-      to_port     = 0
-      type        = "egress"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
   }
 
-  node_sg_name = "${var.name}-${var.node_group_config.name}-node-group"
+  node_sg_name = "${var.name}-node-group"
   node_security_group_rules = {
     ingress_cluster_443 = {
       description                   = "Cluster API to node groups"
       protocol                      = "tcp"
       from_port                     = 443
       to_port                       = 443
+      type                          = "ingress"
+      source_cluster_security_group = "${aws_security_group.cluster.id}"
+    }
+    ingress_cluster_4443 = {
+      description                   = "Cluster API to node 4443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 4443
+      to_port                       = 4443
+      type                          = "ingress"
+      source_cluster_security_group = "${aws_security_group.cluster.id}"
+    }
+    ingress_cluster_6443 = {
+      description                   = "Cluster API to node 6443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 6443
+      to_port                       = 6443
+      type                          = "ingress"
+      source_cluster_security_group = "${aws_security_group.cluster.id}"
+    }
+    ingress_cluster_8443 = {
+      description                   = "Cluster API to node 8443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 8443
+      to_port                       = 8443
+      type                          = "ingress"
+      source_cluster_security_group = "${aws_security_group.cluster.id}"
+    }
+    ingress_cluster_9443 = {
+      description                   = "Cluster API to node 9443/tcp webhook"
+      protocol                      = "tcp"
+      from_port                     = 9443
+      to_port                       = 9443
       type                          = "ingress"
       source_cluster_security_group = "${aws_security_group.cluster.id}"
     }
@@ -38,10 +62,26 @@ locals {
       source_cluster_security_group = "${aws_security_group.cluster.id}"
     }
     ingress_nodes = {
-      description = "Node to node communication"
-      protocol    = "-1"
-      from_port   = 0
+      description = "Node to node ingress on ephemeral ports"
+      protocol    = "tcp"
+      from_port   = 1025
       to_port     = 65535
+      type        = "ingress"
+      self        = true
+    }
+    ingress_coredns_tcp = {
+      description = "Node to node CoreDNS TCP"
+      protocol    = "tcp"
+      from_port   = 53
+      to_port     = 53
+      type        = "ingress"
+      self        = true
+    }
+    ingress_coredns_udp = {
+      description = "Node to node CoreDNS UDP"
+      protocol    = "udp"
+      from_port   = 53
+      to_port     = 53
       type        = "ingress"
       self        = true
     }
@@ -57,18 +97,13 @@ locals {
 }
 
 resource "aws_security_group" "cluster" {
-  name        = local.cluster_sg_name
-  description = "EKS cluster ${local.cluster_sg_name}"
+  name_prefix = "${local.cluster_sg_name}-"
+  description = "${var.name} EKS cluster security group"
   vpc_id      = var.vpc_id
 
-  tags = merge(
-    var.tags,
-    {
-      "Name"                              = local.cluster_sg_name,
-      "kubernetes.io/cluster/${var.name}" = "owned"
-    },
-    local.tags
-  )
+  tags = merge(local.tags, {
+    Name = "${local.cluster_sg_name}"
+  })
 }
 
 resource "aws_security_group_rule" "cluster" {
@@ -89,12 +124,11 @@ resource "aws_security_group_rule" "cluster" {
 }
 
 resource "aws_security_group" "node" {
-  name        = local.node_sg_name
+  name_prefix = "${local.node_sg_name}-"
   description = "EKS cluster ${var.name} node group ${local.node_sg_name}"
   vpc_id      = var.vpc_id
 
   tags = merge(
-    var.tags,
     {
       "Name"                              = local.node_sg_name
       "kubernetes.io/cluster/${var.name}" = "owned"
