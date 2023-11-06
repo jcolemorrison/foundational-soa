@@ -29,3 +29,15 @@ variable "accessible_cidr_blocks" {
   description = "List of CIDR blocks to point to the transit gateway in addition to the Shared Services sandbox and HCP HVN"
   default = []
 }
+
+# EC2 Variables
+variable "ecs_keypair" {
+  type = string
+  description = "name of ec2 keypair for accessing container instances"
+}
+
+variable "instance_type" {
+  type = string
+  description = "container instance type (i.e. t3.medium)"
+  default = "t3.medium"
+}
