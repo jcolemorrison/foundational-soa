@@ -3,6 +3,11 @@ output "default_region" {
   description = "default region of deployment in AWS"
 }
 
+output "default_tags" {
+  value       = var.aws_default_tags
+  description = "default tags for AWS resources"
+}
+
 output "hcp_us_east_1" {
   value = {
     boundary = module.hcp_us_east_1.hcp_boundary
