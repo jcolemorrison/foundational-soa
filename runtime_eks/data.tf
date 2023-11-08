@@ -35,6 +35,17 @@ data "terraform_remote_state" "shared_services_vault" {
   }
 }
 
+data "terraform_remote_state" "shared_services_boundary" {
+  backend = "remote"
+
+  config = {
+    organization = var.terraform_cloud_organization
+    workspaces = {
+      name = "shared-services-boundary"
+    }
+  }
+}
+
 locals {
   boundary_cluster_id             = split(".", replace(data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.boundary.address, "https://", "", ))[0]
   vault_us_east_1                 = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault
@@ -43,4 +54,5 @@ locals {
   boundary_worker_vault_namespace = data.terraform_remote_state.shared_services_vault.outputs.boundary_worker_namespace
   boundary_worker_vault_path      = data.terraform_remote_state.shared_services_vault.outputs.boundary_worker_path
   boundary_worker_vault_token     = data.terraform_remote_state.shared_services_vault.outputs.boundary_worker_token
+  boundary_org_scope_id           = data.terraform_remote_state.shared_services_boundary.outputs.org_scope_id
 }

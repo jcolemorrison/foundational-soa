@@ -39,6 +39,8 @@ module "us_east_1" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
+
+  boundary_project_scope_id = boundary_scope.runtime_eks.id
 }
 
 module "us_west_2" {
@@ -59,9 +61,11 @@ module "us_west_2" {
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_token
   vault_address               = local.vault_us_west_2.address
-  vault_namespace             = local.vault_us_west_2.namespace
+  vault_namespace             = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
+
+  boundary_project_scope_id = boundary_scope.runtime_eks.id
 
   providers = {
     aws = aws.us_west_2
@@ -86,9 +90,11 @@ module "eu_west_1" {
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_token
   vault_address               = local.vault_eu_west_1.address
-  vault_namespace             = local.vault_eu_west_1.namespace
+  vault_namespace             = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
+
+  boundary_project_scope_id = boundary_scope.runtime_eks.id
 
   providers = {
     aws = aws.eu_west_1

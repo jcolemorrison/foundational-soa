@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/tls"
       version = "~> 4.0"
     }
+    boundary = {
+      source  = "hashicorp/boundary"
+      version = "~> 1.1.10"
+    }
   }
 }
 
@@ -32,4 +36,10 @@ provider "aws" {
   default_tags {
     tags = var.aws_default_tags
   }
+}
+
+provider "boundary" {
+  addr                   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.boundary.address
+  auth_method_login_name = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.boundary.username
+  auth_method_password   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.boundary.password
 }

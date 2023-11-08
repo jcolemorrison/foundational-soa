@@ -96,3 +96,8 @@ variable "boundary_cluster_id" {
   description = "Boundary cluster ID for workers to register"
   default     = null
 }
+
+variable "boundary_project_scope_id" {
+  type = string
+  description = "Boundary project scope ID for EKS runtime"
+}

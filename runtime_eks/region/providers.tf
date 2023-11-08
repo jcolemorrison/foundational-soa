@@ -8,5 +8,9 @@ terraform {
       source  = "hashicorp/tls"
       version = ">= 4.0"
     }
+    boundary = {
+      source  = "hashicorp/boundary"
+      version = ">= 1.1"
+    }
   }
 }

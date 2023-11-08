@@ -34,3 +34,15 @@ module "eks" {
     source_security_group_ids = [module.boundary_worker.0.security_group_id]
   }
 }
+
+# Register EKS hosts to Boundary project scope
+module "boundary_eks_hosts" {
+  source = "../../modules/boundary/hosts"
+
+  name_prefix = "${replace(var.region, "-", "_")}_eks"
+  description = "EKS nodes in ${var.region}"
+  scope_id    = var.boundary_project_scope_id
+  target_ips  = zipmap(data.aws_instances.eks.ids, data.aws_instances.eks.private_ips)
+
+  depends_on = [ module.eks, data.aws_instances.eks ]
+}
