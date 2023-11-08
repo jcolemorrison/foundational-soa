@@ -49,6 +49,10 @@ module "boundary_eks_hosts" {
   scope_id    = var.boundary_project_scope_id
   target_ips  = zipmap(data.aws_instances.eks.ids, data.aws_instances.eks.private_ips)
 
+  ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  default_port          = 22
+
   depends_on = [module.eks, data.aws_instances.eks]
 }
 
