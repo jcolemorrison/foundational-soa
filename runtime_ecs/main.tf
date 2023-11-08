@@ -13,6 +13,8 @@ locals {
     runtime_eks           = "10.3.0.0/16"
     runtime_frontend      = "10.4.0.0/16"
   }
+
+  name = "prod"
 }
 
 module "us_east_1" {
@@ -25,6 +27,17 @@ module "us_east_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_us_east_1]
+
+  name = local.name
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_east_1
+  vault_address               = local.vault_us_east_1.address
+  vault_namespace             = local.boundary_worker_vault_namespace
+
+  boundary_project_scope_id = boundary_scope.runtime_ecs.id
 }
 
 module "us_west_2" {
@@ -37,6 +50,17 @@ module "us_west_2" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_us_west_2]
+
+  name = local.name
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_west_2
+  vault_address               = local.vault_us_west_2.address
+  vault_namespace             = local.boundary_worker_vault_namespace
+
+  boundary_project_scope_id = boundary_scope.runtime_ecs.id
 
   providers = {
     aws = aws.us_west_2
@@ -53,6 +77,17 @@ module "eu_west_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_eu_west_1]
+
+  name = local.name
+
+  create_boundary_workers     = true
+  boundary_cluster_id         = local.boundary_cluster_id
+  boundary_worker_vault_path  = local.boundary_worker_vault_path
+  boundary_worker_vault_token = local.boundary_worker_vault_tokens.eu_west_1
+  vault_address               = local.vault_eu_west_1.address
+  vault_namespace             = local.boundary_worker_vault_namespace
+
+  boundary_project_scope_id = boundary_scope.runtime_ecs.id
 
   providers = {
     aws = aws.eu_west_1
