@@ -34,7 +34,7 @@ module "us_east_1" {
   create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_token
+  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_east_1
   vault_address               = local.vault_us_east_1.address
   vault_namespace             = local.boundary_worker_vault_namespace
 
@@ -59,7 +59,7 @@ module "us_west_2" {
   create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_token
+  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_west_2
   vault_address               = local.vault_us_west_2.address
   vault_namespace             = local.boundary_worker_vault_namespace
 
@@ -88,7 +88,7 @@ module "eu_west_1" {
   create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_token
+  boundary_worker_vault_token = local.boundary_worker_vault_tokens.eu_west_1
   vault_address               = local.vault_eu_west_1.address
   vault_namespace             = local.boundary_worker_vault_namespace
 
