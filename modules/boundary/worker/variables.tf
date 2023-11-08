@@ -27,7 +27,7 @@ variable "tags" {
 locals {
   tags = merge({
     Purpose = "boundary"
-    Module  = "foundational-soa//modules/boundary_worker"
+    Module  = "foundational-soa//modules/boundary/worker"
   }, var.tags)
 }
 
