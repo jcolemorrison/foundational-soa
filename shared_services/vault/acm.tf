@@ -19,8 +19,8 @@ resource "aws_acmpca_certificate" "root" {
   template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/RootCACertificate/V1"
 
   validity {
-    type  = "YEARS"
-    value = 1
+    type  = "DAYS"
+    value = 180
   }
 }
 
@@ -49,10 +49,10 @@ resource "aws_acmpca_certificate" "subordinate" {
   certificate_signing_request = vault_pki_secret_backend_intermediate_cert_request.consul_connect_root.csr
   signing_algorithm           = "SHA512WITHRSA"
 
-  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/SubordinateCACertificate_PathLen0/V1"
+  template_arn = "arn:${data.aws_partition.current.partition}:acm-pca:::template/SubordinateCACertificate_PathLen1/V1"
 
   validity {
-    type  = "YEARS"
-    value = 1
+    type  = "DAYS"
+    value = 60
   }
 }
