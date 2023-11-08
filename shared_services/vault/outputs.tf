@@ -17,3 +17,12 @@ output "boundary_worker_token" {
   sensitive   = true
   description = "Boundary worker tokens for Vault"
 }
+
+output "consul_pki" {
+  value = {
+    namespace    = vault_namespace.consul.path
+    pki_path     = vault_mount.consul_connect_pki.path
+    pki_int_path = vault_mount.consul_connect_pki_int.path
+  }
+  description = "Consul service mesh certificate paths in Vault"
+}
