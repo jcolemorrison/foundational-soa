@@ -12,3 +12,8 @@ output "ssh_keys" {
   description = "SSH Keys for Boundary workers"
   sensitive   = true
 }
+
+output "cluster_name" {
+  value       = local.name
+  description = "Name of EKS cluster name"
+}
