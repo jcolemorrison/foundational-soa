@@ -1,3 +1,7 @@
+locals {
+  runtime = "eks"
+}
+
 # Boundary Worker
 module "boundary_worker" {
   count  = var.create_boundary_workers ? 1 : 0
@@ -17,6 +21,7 @@ module "boundary_worker" {
 
   boundary_cluster_id = var.boundary_cluster_id
   keypair_name        = aws_key_pair.boundary.key_name
+  runtime             = local.runtime
 }
 
 # EKS
@@ -44,5 +49,30 @@ module "boundary_eks_hosts" {
   scope_id    = var.boundary_project_scope_id
   target_ips  = zipmap(data.aws_instances.eks.ids, data.aws_instances.eks.private_ips)
 
-  depends_on = [ module.eks, data.aws_instances.eks ]
+  depends_on = [module.eks, data.aws_instances.eks]
+}
+
+# Register worker into Boundary after its token is stored in Vault
+
+data "aws_instances" "boundary_worker" {
+  filter {
+    name   = "instance-id"
+    values = [module.boundary_worker.0.instance_id]
+  }
+  instance_state_names = ["running"]
+}
+
+data "vault_kv_secret_v2" "boundary_worker_token_eks" {
+  count = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
+  mount = var.boundary_worker_vault_path
+  name  = "${var.region}-${local.runtime}-${split(".", module.boundary_worker.0.private_dns).0}"
+}
+
+resource "boundary_worker" "eks" {
+  count                       = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
+  depends_on                  = [module.boundary_worker, data.vault_kv_secret_v2.boundary_worker_token_eks]
+  scope_id                    = "global"
+  name                        = data.vault_kv_secret_v2.boundary_worker_token_eks.0.name
+  description                 = "Self-managed worker ${data.vault_kv_secret_v2.boundary_worker_token_eks.0.name} for EKS"
+  worker_generated_auth_token = data.vault_kv_secret_v2.boundary_worker_token_eks.0.data.token
 }

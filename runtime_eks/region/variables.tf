@@ -98,6 +98,6 @@ variable "boundary_cluster_id" {
 }
 
 variable "boundary_project_scope_id" {
-  type = string
+  type        = string
   description = "Boundary project scope ID for EKS runtime"
 }

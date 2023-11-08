@@ -63,3 +63,8 @@ variable "keypair_name" {
   description = "Name of AWS keypair for Boundary worker"
   type        = string
 }
+
+variable "runtime" {
+  description = "Runtime associated with Boundary worker"
+  type        = string
+}
