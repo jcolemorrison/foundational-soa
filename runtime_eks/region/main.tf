@@ -1,7 +1,7 @@
 # Boundary Worker
 module "boundary_worker" {
   count  = var.create_boundary_workers ? 1 : 0
-  source = "../../modules/boundary_worker"
+  source = "../../modules/boundary/worker"
 
   name             = "${var.name}-boundary"
   region           = var.region
