@@ -48,16 +48,3 @@ resource "aws_ram_principal_association" "external" {
   principal          = var.external_principals[count.index]
   resource_share_arn = aws_ram_resource_share.main.arn
 }
-
-resource "aws_acmpca_certificate_authority" "cert" {
-  private_certificate_configuration {
-    key_algorithm     = "RSA_4096"
-    signing_algorithm = "SHA512WITHRSA"
-
-    subject {
-      common_name = "hashidemo.com"
-    }
-  }
-
-  permanent_deletion_time_in_days = 7
-}
