@@ -35,8 +35,24 @@ resource "vault_token_auth_backend_role" "boundary_worker" {
   token_explicit_max_ttl = "115200"
 }
 
-resource "vault_token" "boundary_worker" {
+resource "vault_token" "boundary_worker_us_east_1" {
   namespace = vault_namespace.boundary.path_fq
   role_name = vault_token_auth_backend_role.boundary_worker.role_name
   policies  = [vault_policy.boundary_worker.name]
+}
+
+resource "vault_token" "boundary_worker_us_west_2" {
+  namespace = vault_namespace.boundary.path_fq
+  role_name = vault_token_auth_backend_role.boundary_worker.role_name
+  policies  = [vault_policy.boundary_worker.name]
+
+  provider = vault.us_west_2
+}
+
+resource "vault_token" "boundary_worker_eu_west_1" {
+  namespace = vault_namespace.boundary.path_fq
+  role_name = vault_token_auth_backend_role.boundary_worker.role_name
+  policies  = [vault_policy.boundary_worker.name]
+
+  provider = vault.eu_west_1
 }
