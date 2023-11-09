@@ -99,9 +99,4 @@ resource "helm_release" "consul" {
   version    = var.consul_helm_version
 
   values = local.helm_values
-
-  set {
-    name  = "global.image"
-    value = "hashicorp/consul-enterprise:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}-ent"
-  }
 }
