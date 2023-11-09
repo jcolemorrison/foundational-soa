@@ -96,7 +96,14 @@ module "hcp_us_west_2" {
   aws_ram_resource_share_arn = module.network_us_west_2.transit_gateway_resource_share_arn
   transit_gateway_arn        = module.network_us_west_2.transit_gateway_arn
   transit_gateway_id         = module.network_us_west_2.transit_gateway_id
-  vpc_cidr_block             = module.network_us_west_2.vpc_cidr_block
+
+  vpc_cidr_blocks = {
+    shared = module.network_us_west_2.vpc_cidr_block
+    ec2    = local.runtime_ec2
+    ecs    = local.runtime_ecs
+    eks    = local.runtime_eks_us_west_2
+  }
+
 
   hcp_consul_name            = "${local.prefix}-${local.us_west_2}"
   hcp_consul_tier            = "plus"

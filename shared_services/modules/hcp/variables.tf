@@ -17,9 +17,9 @@ variable "hvn_cidr_block" {
 
 # Use transit gateway to connect VPC and HVN
 
-variable "vpc_cidr_block" {
-  type        = string
-  description = "VPC CIDR block to route with HVN"
+variable "vpc_cidr_blocks" {
+  type        = map(string)
+  description = "Name and VPC CIDR blocks to route with HVN"
 }
 
 variable "aws_ram_resource_share_arn" {
