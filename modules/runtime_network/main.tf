@@ -7,7 +7,7 @@ module "vpc" {
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
   vpc_id             = module.vpc.id
-  subnet_ids         = concat(module.vpc.public_subnet_ids, module.vpc.private_subnet_ids)
+  subnet_ids         = var.attach_public_subnets ? module.vpc.public_subnet_ids : module.vpc.private_subnet_ids
   transit_gateway_id = var.transit_gateway_id
 }
 

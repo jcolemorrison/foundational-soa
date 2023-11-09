@@ -28,3 +28,9 @@ variable "accessible_cidr_blocks" {
   description = "List of CIDR blocks to point to the transit gateway in addition to the Shared Services sandbox and HCP HVN"
   default     = []
 }
+
+variable "attach_public_subnets" {
+  type        = bool
+  description = "Attach public subnets instead of private subnets to transit gateway"
+  default     = true
+}
