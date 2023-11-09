@@ -67,8 +67,12 @@ output "hcp_hvn_cidr_blocks" {
 
 output "accessible_cidr_blocks" {
   value = {
-    runtime_ec2           = local.runtime_ec2
-    runtime_ecs           = local.runtime_ecs
+    runtime_ec2_us_east_1 = local.runtime_ec2_us_east_1
+    runtime_ec2_us_west_2 = local.runtime_ec2_us_west_2
+    runtime_ec2_eu_west_1 = local.runtime_ec2_eu_west_1
+    runtime_ecs_us_east_1 = local.runtime_ecs_us_east_1
+    runtime_ecs_us_west_2 = local.runtime_ecs_us_west_2
+    runtime_ecs_eu_west_1 = local.runtime_ecs_eu_west_1
     runtime_eks_us_east_1 = local.runtime_eks_us_east_1
     runtime_eks_us_west_2 = local.runtime_eks_us_west_2
     runtime_eks_eu_west_1 = local.runtime_eks_eu_west_1

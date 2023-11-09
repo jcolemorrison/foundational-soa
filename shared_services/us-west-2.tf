@@ -99,8 +99,8 @@ module "hcp_us_west_2" {
 
   vpc_cidr_blocks = {
     shared = module.network_us_west_2.vpc_cidr_block
-    ec2    = local.runtime_ec2
-    ecs    = local.runtime_ecs
+    ec2    = local.runtime_ec2_us_west_2
+    ecs    = local.runtime_ecs_us_west_2
     eks    = local.runtime_eks_us_west_2
   }
 

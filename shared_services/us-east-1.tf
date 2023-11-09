@@ -76,8 +76,8 @@ module "hcp_us_east_1" {
   transit_gateway_id         = module.network_us_east_1.transit_gateway_id
   vpc_cidr_blocks = {
     shared = module.network_us_east_1.vpc_cidr_block
-    ec2    = local.runtime_ec2
-    ecs    = local.runtime_ecs
+    ec2    = local.runtime_ec2_us_east_1
+    ecs    = local.runtime_ecs_us_east_1
     eks    = local.runtime_eks_us_east_1
   }
 

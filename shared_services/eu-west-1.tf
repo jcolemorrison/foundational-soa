@@ -102,8 +102,8 @@ module "hcp_eu_west_1" {
 
   vpc_cidr_blocks = {
     shared = module.network_eu_west_1.vpc_cidr_block
-    ec2    = local.runtime_ec2
-    ecs    = local.runtime_ecs
+    ec2    = local.runtime_ec2_eu_west_1
+    ecs    = local.runtime_ecs_eu_west_1
     eks    = local.runtime_eks_eu_west_1
   }
 
