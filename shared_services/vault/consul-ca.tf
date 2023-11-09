@@ -29,7 +29,11 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_root
   namespace = vault_namespace.consul.path
   backend   = vault_mount.consul_connect_root.path
 
-  certificate = aws_acmpca_certificate.subordinate_level_1.certificate
+  certificate = format(
+    "%s\n%s",
+    aws_acmpca_certificate.subordinate.certificate,
+    aws_acmpca_certificate.root.certificate
+  )
 }
 
 ## Generate level-2 intermediate CA
@@ -46,15 +50,29 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "consul_connect_pk
   namespace   = vault_namespace.consul.path
   backend     = vault_mount.consul_connect_pki.path
   type        = "internal"
-  common_name = "consul.${var.certificate_common_name} Consul Connect CA2 v1"
+  common_name = "${var.certificate_common_name} Consul Connect CA2 v1"
   key_type    = "rsa"
   key_bits    = "4096"
 }
 
+resource "vault_pki_secret_backend_root_sign_intermediate" "consul_connect_pki" {
+  namespace            = vault_namespace.consul.path
+  backend              = vault_mount.consul_connect_root.path
+  csr                  = vault_pki_secret_backend_intermediate_cert_request.consul_connect_pki.csr
+  common_name          = "${var.certificate_common_name} Consul Connect CA2 v1.1"
+  format               = "pem_bundle"
+  exclude_cn_from_sans = true
+}
+
 resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_pki" {
-  namespace   = vault_namespace.consul.path
-  backend     = vault_mount.consul_connect_pki.path
-  certificate = aws_acmpca_certificate.subordinate_level_2.certificate
+  namespace = vault_namespace.consul.path
+  backend   = vault_mount.consul_connect_pki.path
+  certificate = format(
+    "%s\n%s\n%s",
+    vault_pki_secret_backend_root_sign_intermediate.consul_connect_pki.certificate,
+    aws_acmpca_certificate.subordinate.certificate,
+    aws_acmpca_certificate.root.certificate
+  )
 }
 
 ## Generate level-3 intermediate CA
@@ -76,10 +94,26 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "consul_connect_pk
   key_bits    = "4096"
 }
 
+resource "vault_pki_secret_backend_root_sign_intermediate" "consul_connect_pki_int" {
+  namespace            = vault_namespace.consul.path
+  backend              = vault_mount.consul_connect_pki.path
+  csr                  = vault_pki_secret_backend_intermediate_cert_request.consul_connect_pki_int.csr
+  common_name          = "${var.certificate_common_name} Consul Connect CA3 v1.1"
+  exclude_cn_from_sans = true
+  format               = "pem_bundle"
+  ttl                  = local.seconds_in_90_days
+}
+
 resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_pki_int" {
-  namespace   = vault_namespace.consul.path
-  backend     = vault_mount.consul_connect_pki_int.path
-  certificate = aws_acmpca_certificate.subordinate_level_3.certificate
+  namespace = vault_namespace.consul.path
+  backend   = vault_mount.consul_connect_pki_int.path
+  certificate = format(
+    "%s\n%s\n%s\n%s",
+    vault_pki_secret_backend_root_sign_intermediate.consul_connect_pki_int.certificate,
+    vault_pki_secret_backend_root_sign_intermediate.consul_connect_pki.certificate,
+    aws_acmpca_certificate.subordinate.certificate,
+    aws_acmpca_certificate.root.certificate
+  )
 }
 
 ## Create Vault policy to allow access to root certificate for Consul clusters
