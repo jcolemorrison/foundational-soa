@@ -22,7 +22,6 @@ resource "helm_release" "vault_operator" {
   depends_on       = [helm_release.vault]
   name             = "vault-secrets-operator"
   namespace        = var.vault_namespace
-  create_namespace = true
 
   repository = "https://helm.releases.hashicorp.com"
   chart      = "vault-secrets-operator"
