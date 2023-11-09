@@ -64,3 +64,14 @@ output "hcp_hvn_cidr_blocks" {
   }
   description = "HCP HVN CIDRs for the various regions"
 }
+
+output "accessible_cidr_blocks" {
+  value = {
+    runtime_ec2           = local.runtime_ec2
+    runtime_ecs           = local.runtime_ecs
+    runtime_eks_us_east_1 = local.runtime_eks_us_east_1
+    runtime_eks_us_west_2 = local.runtime_eks_us_west_2
+    runtime_eks_eu_west_1 = local.runtime_eks_eu_west_1
+    runtime_frontend      = local.runtime_frontend
+  }
+}
