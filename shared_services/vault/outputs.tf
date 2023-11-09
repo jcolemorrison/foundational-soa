@@ -18,11 +18,21 @@ output "boundary_worker_token" {
   description = "Boundary worker tokens for Vault"
 }
 
-output "consul_pki" {
+output "consul_ca" {
   value = {
-    namespace    = vault_namespace.consul.path
+    namespace    = vault_namespace.consul.id
     pki_path     = vault_mount.consul_connect_pki.path
     pki_int_path = vault_mount.consul_connect_pki_int.path
   }
   description = "Consul service mesh certificate paths in Vault"
+}
+
+output "consul_ca_token" {
+  value = {
+    "us_east_1" = vault_token.consul_ca_us_east_1.client_token
+    "us_west_2" = vault_token.consul_ca_us_west_2.client_token
+    "eu_west_1" = vault_token.consul_ca_eu_west_1.client_token
+  }
+  sensitive   = true
+  description = "Consul service mesh CA worker tokens for Vault"
 }

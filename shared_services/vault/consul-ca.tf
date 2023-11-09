@@ -74,7 +74,7 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_pki"
 ## Generate level-3 intermediate CA
 resource "vault_mount" "consul_connect_pki_int" {
   namespace                 = vault_namespace.consul.path
-  path                      = "consul/connect/pki_int"
+  path                      = "connect/pki_int"
   type                      = "pki"
   description               = "PKI engine hosting intermediate Connect CA3 v1 for Consul"
   default_lease_ttl_seconds = local.seconds_in_90_days
@@ -110,4 +110,76 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_pki_
     vault_pki_secret_backend_root_sign_intermediate.consul_connect_pki.certificate,
     aws_acmpca_certificate.subordinate.certificate
   )
+}
+
+## Create Vault policy to allow access to root certificate for Consul clusters
+resource "vault_policy" "consul_ca" {
+  name = "consul-ca"
+
+  policy = <<EOT
+path "${vault_mount.consul_connect_pki.path}/root/sign-self-issued" {
+  capabilities = [ "sudo", "update" ]
+}
+
+path "auth/token/renew-self" {
+  capabilities = [ "update" ]
+}
+
+path "auth/token/lookup-self" {
+  capabilities = [ "read" ]
+}
+
+path "/sys/mounts" {
+  capabilities = [ "read" ]
+}
+
+path "/sys/mounts/${vault_mount.consul_connect_pki.path}" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+
+path "/sys/mounts/${vault_mount.consul_connect_pki_int.path}" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+
+path "/sys/mounts/${vault_mount.consul_connect_pki_int.path}/tune" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+
+path "/${vault_mount.consul_connect_pki.path}/*" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+
+path "/${vault_mount.consul_connect_pki_int.path}/*" {
+  capabilities = [ "create", "read", "update", "delete", "list" ]
+}
+EOT
+}
+
+resource "vault_token_auth_backend_role" "consul_ca" {
+  role_name           = "consul-ca"
+  allowed_policies    = [vault_policy.consul_ca.name]
+  disallowed_policies = ["default"]
+  orphan              = true
+  token_period        = local.seconds_in_90_days * 2
+  renewable           = true
+  token_num_uses      = 0
+}
+
+resource "vault_token" "consul_ca_us_east_1" {
+  role_name = vault_token_auth_backend_role.consul_ca.role_name
+  policies  = [vault_policy.consul_ca.name]
+}
+
+resource "vault_token" "consul_ca_us_west_2" {
+  role_name = vault_token_auth_backend_role.consul_ca.role_name
+  policies  = [vault_policy.consul_ca.name]
+
+  provider = vault.us_west_2
+}
+
+resource "vault_token" "consul_ca_eu_west_1" {
+  role_name = vault_token_auth_backend_role.consul_ca.role_name
+  policies  = [vault_policy.consul_ca.name]
+
+  provider = vault.eu_west_1
 }
