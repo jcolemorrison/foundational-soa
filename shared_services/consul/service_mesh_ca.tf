@@ -14,6 +14,8 @@ resource "consul_certificate_authority" "connect_us_east_1" {
     PrivateKeyType           = "rsa"
     PrivateKeyBits           = 4096
   })
+
+  provider = consul.us_east_1
 }
 
 resource "consul_certificate_authority" "connect_us_west_2" {
