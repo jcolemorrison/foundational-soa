@@ -31,8 +31,9 @@ module "eks" {
 
   name = var.name
 
-  vpc_id             = module.network.vpc_id
-  private_subnet_ids = module.network.vpc_private_subnet_ids
+  vpc_id                 = module.network.vpc_id
+  private_subnet_ids     = module.network.vpc_private_subnet_ids
+  hcp_network_cidr_block = var.hcp_hvn_cidr_block
 
   remote_access = {
     ec2_ssh_key               = aws_key_pair.boundary.key_name

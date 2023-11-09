@@ -13,6 +13,11 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs, at least in two different availability zones"
 }
 
+variable "hcp_network_cidr_block" {
+  type        = string
+  description = "HCP network CIDR block for connection to HCP Consul"
+}
+
 variable "enable_default_eks_policy" {
   type        = bool
   description = "Enable default EKS policy"

@@ -9,22 +9,22 @@ variable "region" {
 }
 
 variable "transit_gateway_id" {
-  type = string
+  type        = string
   description = "transit gateway ID to point traffic to for shared services, hcp, etc."
 }
 
 variable "shared_services_cidr_block" {
-  type = string
+  type        = string
   description = "CIDR block of the shared services sandbox."
 }
 
 variable "hcp_hvn_cidr_block" {
-  type = string
+  type        = string
   description = "CIDR block of the HCP HVN."
 }
 
 variable "accessible_cidr_blocks" {
-  type = list(string)
+  type        = list(string)
   description = "List of CIDR blocks to point to the transit gateway in addition to the Shared Services sandbox and HCP HVN"
-  default = []
+  default     = []
 }

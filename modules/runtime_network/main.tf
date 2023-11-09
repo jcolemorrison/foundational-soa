@@ -7,7 +7,7 @@ module "vpc" {
 
 resource "aws_ec2_transit_gateway_vpc_attachment" "main" {
   vpc_id             = module.vpc.id
-  subnet_ids         = module.vpc.public_subnet_ids
+  subnet_ids         = concat(module.vpc.public_subnet_ids, module.vpc.private_subnet_ids)
   transit_gateway_id = var.transit_gateway_id
 }
 
@@ -39,15 +39,15 @@ resource "aws_route" "hcp_hvn_private" {
 
 ## Additional Runtime Routes
 resource "aws_route" "runtime_route_public" {
-  count = length(var.accessible_cidr_blocks) > 0 ? length(var.accessible_cidr_blocks) : 0
+  count                  = length(var.accessible_cidr_blocks) > 0 ? length(var.accessible_cidr_blocks) : 0
   destination_cidr_block = var.accessible_cidr_blocks[count.index]
   route_table_id         = module.vpc.public_route_table_id
-  transit_gateway_id = var.transit_gateway_id
+  transit_gateway_id     = var.transit_gateway_id
 }
 
 resource "aws_route" "runtime_route_private" {
-  count = length(var.accessible_cidr_blocks) > 0 ? length(var.accessible_cidr_blocks) : 0
+  count                  = length(var.accessible_cidr_blocks) > 0 ? length(var.accessible_cidr_blocks) : 0
   destination_cidr_block = var.accessible_cidr_blocks[count.index]
   route_table_id         = module.vpc.private_route_table_id
-  transit_gateway_id = var.transit_gateway_id
+  transit_gateway_id     = var.transit_gateway_id
 }

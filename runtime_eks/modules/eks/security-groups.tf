@@ -8,7 +8,7 @@ locals {
       to_port                    = 443
       type                       = "ingress"
       source_node_security_group = "${aws_security_group.node.id}"
-    }
+    },
   }
 
   node_sg_name = "${var.name}-node-group"
@@ -157,4 +157,22 @@ resource "aws_security_group_rule" "node" {
   prefix_list_ids          = lookup(each.value, "prefix_list_ids", [])
   self                     = lookup(each.value, "self", null)
   source_security_group_id = lookup(each.value, "source_cluster_security_group", null)
+}
+
+resource "aws_security_group_rule" "consul_tcp" {
+  security_group_id = aws_eks_cluster.cluster.vpc_config.0.cluster_security_group_id
+  protocol          = "tcp"
+  from_port         = 8301
+  to_port           = 8301
+  type              = "ingress"
+  cidr_blocks       = [var.hcp_network_cidr_block]
+}
+
+resource "aws_security_group_rule" "consul_udp" {
+  security_group_id = aws_eks_cluster.cluster.vpc_config.0.cluster_security_group_id
+  protocol          = "udp"
+  from_port         = 8301
+  to_port           = 8301
+  type              = "ingress"
+  cidr_blocks       = [var.hcp_network_cidr_block]
 }

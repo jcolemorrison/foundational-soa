@@ -12,8 +12,6 @@ resource "aws_kms_alias" "cluster" {
   target_key_id = aws_kms_key.cluster.key_id
 }
 
-
-
 data "aws_iam_policy_document" "kms" {
   statement {
     sid       = "Default"
