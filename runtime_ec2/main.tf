@@ -5,14 +5,7 @@ locals {
   transit_gateway_ids         = data.terraform_remote_state.shared_services.outputs.transit_gateway_ids
   shared_services_cidr_blocks = data.terraform_remote_state.shared_services.outputs.shared_services_cidr_blocks
   hcp_hvn_cidr_blocks         = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
-  accessible_cidr_blocks = {
-    runtime_ec2_us_east_1 = "10.1.0.0/22"
-    runtime_ec2_us_west_2 = "10.1.4.0/22"
-    runtime_ec2_eu_west_1 = "10.1.8.0/22"
-    runtime_ecs           = "10.2.0.0/16"
-    runtime_eks           = "10.3.0.0/16"
-    runtime_frontend      = "10.4.0.0/16"
-  }
+  accessible_cidr_blocks      = data.terraform_remote_state.shared_services.outputs.accessible_cidr_blocks
 
   name = "prod"
 }
