@@ -114,7 +114,8 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "consul_connect_pki_
 
 ## Create Vault policy to allow access to root certificate for Consul clusters
 resource "vault_policy" "consul_ca" {
-  name = "consul-ca"
+  namespace = vault_namespace.consul.path
+  name      = "consul-ca"
 
   policy = <<EOT
 path "${vault_mount.consul_connect_pki.path}/root/sign-self-issued" {
@@ -156,6 +157,7 @@ EOT
 }
 
 resource "vault_token_auth_backend_role" "consul_ca" {
+  namespace           = vault_namespace.consul.path
   role_name           = "consul-ca"
   allowed_policies    = [vault_policy.consul_ca.name]
   disallowed_policies = ["default"]
@@ -166,11 +168,13 @@ resource "vault_token_auth_backend_role" "consul_ca" {
 }
 
 resource "vault_token" "consul_ca_us_east_1" {
+  namespace = vault_namespace.consul.path
   role_name = vault_token_auth_backend_role.consul_ca.role_name
   policies  = [vault_policy.consul_ca.name]
 }
 
 resource "vault_token" "consul_ca_us_west_2" {
+  namespace = vault_namespace.consul.path
   role_name = vault_token_auth_backend_role.consul_ca.role_name
   policies  = [vault_policy.consul_ca.name]
 
@@ -178,6 +182,7 @@ resource "vault_token" "consul_ca_us_west_2" {
 }
 
 resource "vault_token" "consul_ca_eu_west_1" {
+  namespace = vault_namespace.consul.path
   role_name = vault_token_auth_backend_role.consul_ca.role_name
   policies  = [vault_policy.consul_ca.name]
 
