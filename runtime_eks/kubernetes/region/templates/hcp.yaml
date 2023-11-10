@@ -13,6 +13,10 @@ terminatingGateways:
   defaults:
     replicas: 1
 
+meshGateway:
+  enabled: true
+  replicas: 1
+
 connectInject:
   replicas: 1
   enabled: true
