@@ -1,0 +1,28 @@
+global:
+  enabled: false
+  name: consul
+  metrics:
+    enabled: true
+    enableAgentMetrics: true
+
+controller:
+  enabled: true
+
+terminatingGateways:
+  enabled: true
+  defaults:
+    replicas: 1
+
+meshGateway:
+  enabled: true
+  replicas: 1
+
+connectInject:
+  replicas: 1
+  enabled: true
+  metrics:
+    defaultEnabled: true
+  apiGateway:
+    manageExternalCRDs: true
+    managedGatewayClass:
+      serviceType: LoadBalancer

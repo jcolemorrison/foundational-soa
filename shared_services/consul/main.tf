@@ -7,17 +7,6 @@ terraform {
   }
 }
 
-data "terraform_remote_state" "shared_services" {
-  backend = "remote"
-
-  config = {
-    organization = var.terraform_cloud_organization
-    workspaces = {
-      name = "shared-services"
-    }
-  }
-}
-
 provider "consul" {
   alias      = "us_east_1"
   address    = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul.address

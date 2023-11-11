@@ -11,12 +11,10 @@ data "aws_iam_policy_document" "assume_role_policy_node_group" {
 }
 
 resource "aws_iam_role" "node_group" {
-  name        = "${var.name}-NodeGroup"
-  path        = local.iam_role_path
-  description = "${var.name} EKS cluster node group role"
-
   assume_role_policy    = data.aws_iam_policy_document.assume_role_policy_node_group.json
+  description           = "EKS managed node group IAM role"
   force_detach_policies = true
+  name_prefix           = "${var.name}-eks-node-group-"
 
   tags = local.tags
 }
@@ -39,48 +37,34 @@ resource "aws_iam_role_policy_attachment" "node_group_additional" {
   role       = aws_iam_role.node_group.name
 }
 
-data "aws_ssm_parameter" "eks_ami_release_version" {
-  name = "/aws/service/eks/optimized-ami/${aws_eks_cluster.cluster.version}/amazon-linux-2/recommended/release_version"
+resource "aws_eks_node_group" "node_group" {
+  ami_type               = var.node_group_config.ami_type
+  capacity_type          = var.node_group_config.capacity_type
+  cluster_name           = aws_eks_cluster.cluster.name
+  disk_size              = var.node_group_config.disk_size
+  instance_types         = var.node_group_config.instance_types
+  labels                 = var.node_group_config.labels
+  node_group_name_prefix = "${var.name}-"
+  node_role_arn          = aws_iam_role.node_group.arn
+  subnet_ids             = var.private_subnet_ids
+  tags                   = local.tags
+  version                = var.cluster_version
+
+  dynamic "remote_access" {
+    for_each = var.remote_access != null ? toset([var.remote_access]) : []
+    content {
+      ec2_ssh_key               = remote_access.value.ec2_ssh_key
+      source_security_group_ids = remote_access.value.source_security_group_ids
+    }
+  }
+
+  scaling_config {
+    desired_size = var.node_group_config.desired_size
+    max_size     = var.node_group_config.max_size
+    min_size     = var.node_group_config.min_size
+  }
+
+  update_config {
+    max_unavailable = var.node_group_config.max_unavailable
+  }
 }
-
-# resource "aws_eks_node_group" "node_group" {
-#   depends_on = [
-#     aws_iam_role_policy_attachment.node_group
-#   ]
-#   cluster_name  = var.name
-#   node_role_arn = aws_iam_role.node_group.arn
-#   subnet_ids    = var.private_subnet_ids
-
-#   capacity_type  = var.node_group_config.capacity_type
-#   ami_type       = var.node_group_config.ami_type
-#   instance_types = var.node_group_config.instance_types
-
-#   scaling_config {
-#     min_size     = var.node_group_config.min_size
-#     max_size     = var.node_group_config.max_size
-#     desired_size = var.node_group_config.desired_size
-#   }
-
-#   update_config {
-#     max_unavailable = var.node_group_config.max_unavailable
-#   }
-
-#   node_group_name = var.node_group_config.name
-
-#   release_version = nonsensitive(data.aws_ssm_parameter.eks_ami_release_version.value)
-#   version         = var.cluster_version
-
-
-#   labels = var.node_group_config.labels
-
-#   dynamic "remote_access" {
-#     for_each = length(var.remote_access) > 0 ? [var.remote_access] : []
-
-#     content {
-#       ec2_ssh_key               = try(remote_access.value.ec2_ssh_key, null)
-#       source_security_group_ids = try(remote_access.value.source_security_group_ids, [])
-#     }
-#   }
-
-#   tags = local.tags
-# }

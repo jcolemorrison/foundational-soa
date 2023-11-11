@@ -13,9 +13,9 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs, at least in two different availability zones"
 }
 
-variable "public_subnet_ids" {
-  type        = list(string)
-  description = "List of public subnet IDs, at least in two different availability zones"
+variable "hcp_network_cidr_block" {
+  type        = string
+  description = "HCP network CIDR block for connection to HCP Consul"
 }
 
 variable "enable_default_eks_policy" {
@@ -56,8 +56,8 @@ variable "endpoint_public_access" {
 
 variable "path_prefix" {
   type        = string
-  description = "Path prefix for EKS cluster IAM role and CloudWatch log group"
-  default     = "/eks"
+  description = "Path prefix for EKS cluster CloudWatch log group"
+  default     = "/aws/eks"
 }
 
 variable "eks_cluster_iam_role_additional_policies" {
@@ -74,7 +74,6 @@ variable "node_group_iam_role_additional_policies" {
 
 variable "node_group_config" {
   type = object({
-    name            = string
     min_size        = number
     max_size        = number
     desired_size    = number
@@ -83,10 +82,10 @@ variable "node_group_config" {
     max_unavailable = number
     capacity_type   = string
     ami_type        = string
+    disk_size       = string
   })
   description = "Node group configuration"
   default = {
-    name            = "main"
     min_size        = 1
     max_size        = 5
     desired_size    = 3
@@ -95,16 +94,17 @@ variable "node_group_config" {
     max_unavailable = 1
     capacity_type   = "ON_DEMAND"
     ami_type        = "AL2_x86_64"
+    disk_size       = 30
   }
 }
 
 variable "remote_access" {
-  type = list(object({
+  type = object({
     ec2_ssh_key               = string
     source_security_group_ids = list(string)
-  }))
-  description = "Allow SSH access to initial node group"
-  default     = []
+  })
+  description = "Enable remote access to node groups"
+  default     = null
 }
 
 variable "key_owners" {
@@ -128,7 +128,7 @@ variable "tags" {
 locals {
   tags = merge(
     {
-      Module = "foundational-soa//modules/eks",
+      Module = "foundational-soa//runtime_eks/modules/eks",
       Name   = "${var.name}"
     },
   var.tags)
