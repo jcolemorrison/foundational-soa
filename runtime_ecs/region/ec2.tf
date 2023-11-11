@@ -15,3 +15,7 @@ resource "aws_launch_template" "container_instance" {
   }))
   # vpc_security_group_ids = [ "" ]
 }
+
+resource "aws_security_group" "container_instance" {
+  name_prefix = "${var.region}-ecs-instance-"
+}
