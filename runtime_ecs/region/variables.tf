@@ -47,6 +47,30 @@ variable "name" {
   description = "Name of regional resources"
 }
 
+variable "max_container_instances" {
+  type = number
+  description = "Maximum number of EC2 instances for the ECS Cluster."
+  default = 6
+}
+
+variable "min_container_instances" {
+  type = number
+  description = "Minimum number of EC2 instances for the ECS Cluster."
+  default = 3
+}
+
+## Route53
+
+variable "public_domain_name" {
+  type = string
+  description = "Domain name for overall architecture.  Should have a hosted zone created in AWS Route53.  Registering domain in Route53 results in a zone being created by default. i.e. 'hashidemo.com'"
+}
+
+variable "public_subdomain_name" {
+  type = string
+  description = "Sub domain name for this runtime.  i.e. 'ecs' which would result in a subdomain of 'ecs.hashidemo.com'"
+}
+
 ## Boundary workers
 
 variable "create_boundary_workers" {
