@@ -57,6 +57,35 @@ module "boundary_eks_hosts" {
   depends_on = [module.eks, data.aws_instances.eks]
 }
 
+data "aws_lbs" "consul_api_gateway" {
+  tags = {
+    "elbv2.k8s.aws/cluster" = var.name
+    "service.k8s.aws/stack" = "consul/api-gateway"
+  }
+}
+
+data "aws_lb" "consul_api_gateway" {
+  for_each = toset(data.aws_lbs.consul_api_gateway.arns)
+  arn      = each.value
+}
+
+# Register EKS hosts to Boundary project scope
+module "boundary_eks_gateway" {
+  source = "../../modules/boundary/hosts"
+  count  = length(data.aws_lb.consul_api_gateway) > 0 ? 1 : 0
+
+  name_prefix = "${replace(var.region, "-", "_")}_eks_api_gateway"
+  description = "Consul API Gateway on EKS cluster in ${var.region}"
+  scope_id    = var.boundary_project_scope_id
+  target_ips  = { for k, v in data.aws_lb.consul_api_gateway : v.name => v.dns_name }
+
+  ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  default_port          = 80
+
+  depends_on = [module.eks, data.aws_lb.consul_api_gateway]
+}
+
 # Register worker into Boundary after its token is stored in Vault
 
 data "aws_instances" "boundary_worker" {
