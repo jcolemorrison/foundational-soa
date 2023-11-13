@@ -55,4 +55,7 @@ locals {
   boundary_worker_vault_path      = data.terraform_remote_state.shared_services_vault.outputs.boundary_worker_path
   boundary_worker_vault_tokens    = data.terraform_remote_state.shared_services_vault.outputs.boundary_worker_token
   boundary_org_scope_id           = data.terraform_remote_state.shared_services_boundary.outputs.org_scope_id
+  consul_us_east_1                 = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul
+  consul_us_west_2                 = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul
+  consul_eu_west_1                 = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul
 }

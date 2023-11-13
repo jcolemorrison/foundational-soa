@@ -37,6 +37,11 @@ variable "ecs_keypair" {
   default = null
 }
 
+variable "container_instance_profile" {
+  type = string
+  description = "ARN of IAM instance profile for container instances"
+}
+
 variable "instance_type" {
   type = string
   description = "container instance type (i.e. t3.medium)"
@@ -78,6 +83,31 @@ variable "scaling_target_capacity_size" {
   default = 3
 }
 
+## ECS
+
+variable "execute_command_policy" {
+  type = string
+  description = "ARN of policy document to execute commands for consul submodules"
+}
+
+variable "api_desired_count" {
+  type = number
+  description = "Desired number of api tasks deployed to cluster"
+  default = 3
+}
+
+variable "api_deployment_minimum_healthy_percent" {
+  type = number
+  description = "Minimum percent relative to api_desired_count number of tasks for service to be considered healthy"
+  default = 100
+}
+
+variable "api_deployment_maximum_percent" {
+  type = number
+  description = "Maximum percent relative to api_desired_count number of tasks for service to be considered healthy"
+  default = 300
+}
+
 ## Route53
 
 variable "public_domain_name" {
@@ -93,6 +123,35 @@ variable "public_subdomain_name" {
 variable "subdomain_zone_id" {
   type = string
   description = "Route53 Hosted Zone ID for the subdomain"
+}
+
+## Consul
+
+variable "consul_bootstrap_token" {
+  type = string
+  description = "HCP Consul bootstrap token"
+}
+
+variable "consul_ecs_image" {
+  type = string
+  description = "Consul ECS Docker Image"
+  default = "hashicorp/consul-ecs:0.7.0"
+}
+
+variable "consul_dataplane_image" {
+  type = string
+  description = "Consul ECS Dataplane Docker Image"
+  default = "hashicorp/consul-dataplane:1.3.0"
+}
+
+variable "consul_server_hosts" {
+  type = string
+  description = "Private URL to consul server hosts"
+}
+
+variable "consul_admin_partition" {
+  type = string
+  description = "Name of regional consul admin partition"
 }
 
 ## Boundary workers

@@ -24,6 +24,10 @@ module "us_east_1" {
   public_subdomain_name = var.public_subdomain_name
   subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
+  container_instance_profile = aws_iam_instance_profile.container_instance_profile.arn
+  execute_command_policy = aws_iam_policy.execute_command.arn
+  ecs_service_role = aws_iam_role.ecs_service.arn
+
   name = local.name
 
   create_boundary_workers     = true
@@ -34,6 +38,10 @@ module "us_east_1" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
+
+  consul_bootstrap_token = local.consul_us_east_1.token
+  consul_server_hosts = local.consul_us_east_1.private_address
+  consul_admin_partition = "ecs-us-east-1"
 }
 
 module "us_west_2" {
@@ -50,6 +58,10 @@ module "us_west_2" {
   public_subdomain_name = var.public_subdomain_name
   subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
+  container_instance_profile = aws_iam_instance_profile.container_instance_profile.arn
+  execute_command_policy = aws_iam_policy.execute_command.arn
+  ecs_service_role = aws_iam_role.ecs_service.arn
+
   name = local.name
 
   create_boundary_workers     = true
@@ -60,6 +72,10 @@ module "us_west_2" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
+
+  consul_bootstrap_token = local.consul_us_west_2.token
+  consul_server_hosts = local.consul_us_west_2.private_address
+  consul_admin_partition = "ecs-us-west-2"
 
   providers = {
     aws = aws.us_west_2
@@ -80,6 +96,10 @@ module "eu_west_1" {
   public_subdomain_name = var.public_subdomain_name
   subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
+  container_instance_profile = aws_iam_instance_profile.container_instance_profile.arn
+  execute_command_policy = aws_iam_policy.execute_command.arn
+  ecs_service_role = aws_iam_role.ecs_service.arn
+
   name = local.name
 
   create_boundary_workers     = true
@@ -90,6 +110,10 @@ module "eu_west_1" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
+
+  consul_bootstrap_token = local.consul_eu_west_1.token
+  consul_server_hosts = local.consul_eu_west_1.private_address
+  consul_admin_partition = "ecs-eu-west-1"
 
   providers = {
     aws = aws.eu_west_1
