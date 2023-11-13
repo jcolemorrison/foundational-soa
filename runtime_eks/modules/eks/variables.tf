@@ -30,6 +30,12 @@ variable "hcp_network_cidr_block" {
   description = "HCP network CIDR block for connection to HCP Consul"
 }
 
+variable "accessible_cidr_blocks" {
+  type        = list(string)
+  description = "List of routable CIDR blocks to allow Consul proxies to connect"
+  default     = []
+}
+
 variable "enable_default_eks_policy" {
   type        = bool
   description = "Enable default EKS policy"
