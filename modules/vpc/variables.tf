@@ -1,5 +1,5 @@
 variable "name" {
-  type = string
+  type        = string
   description = "Name use across all resources related to this VPC"
 }
 
@@ -15,9 +15,9 @@ variable "instance_tenancy" {
 }
 
 variable "ipv6_enabled" {
-  type = bool
+  type        = bool
   description = "Whether or not to enable IPv6 support in the VPC."
-  default = true
+  default     = true
 }
 
 variable "public_subnet_count" {
