@@ -7,8 +7,10 @@ resource "consul_config_entry" "telemetry_us_east_1" {
       {
         Action     = "allow"
         Name       = "*"
-        Precedence = 9
+        Precedence = 8
         Type       = "consul"
+        Namespace  = "default"
+        Partition  = "default"
       }
     ]
   })
@@ -25,8 +27,10 @@ resource "consul_config_entry" "telemetry_us_west_2" {
       {
         Action     = "allow"
         Name       = "*"
-        Precedence = 9
+        Precedence = 8
         Type       = "consul"
+        Namespace  = "default"
+        Partition  = "default"
       }
     ]
   })
@@ -43,8 +47,10 @@ resource "consul_config_entry" "telemetry_eu_west_1" {
       {
         Action     = "allow"
         Name       = "*"
-        Precedence = 9
+        Precedence = 8
         Type       = "consul"
+        Namespace  = "default"
+        Partition  = "default"
       }
     ]
   })
