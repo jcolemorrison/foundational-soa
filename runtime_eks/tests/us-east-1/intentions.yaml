@@ -1,0 +1,22 @@
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: api
+spec:
+  destination:
+    name: "api"
+  sources:
+  - name: "web"
+    action: allow
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: database
+spec:
+  destination:
+    name: "database"
+  sources:
+  - name: "application"
+    action: allow

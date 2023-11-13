@@ -1,9 +1,9 @@
 resource "helm_release" "lbc" {
-  name            = "aws-load-balancer-controller"
-  chart           = "aws-load-balancer-controller"
-  version         = var.aws_lb_controller_helm_version
-  repository      = "https://aws.github.io/eks-charts"
-  namespace       = var.aws_lb_controller_namespace
+  name       = "aws-load-balancer-controller"
+  chart      = "aws-load-balancer-controller"
+  version    = var.aws_lb_controller_helm_version
+  repository = "https://aws.github.io/eks-charts"
+  namespace  = var.aws_lb_controller_namespace
 
   dynamic "set" {
     for_each = {

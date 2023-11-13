@@ -29,6 +29,12 @@ variable "consul_namespace" {
   default     = "consul"
 }
 
+variable "consul_token" {
+  type        = string
+  description = "Consul bootstrap token for cluster components to start"
+  sensitive   = true
+}
+
 variable "consul_helm_version" {
   type        = string
   description = "Consul Helm chart version"

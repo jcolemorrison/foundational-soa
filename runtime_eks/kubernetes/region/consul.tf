@@ -11,13 +11,8 @@ data "hcp_consul_cluster" "cluster" {
   cluster_id = var.hcp_consul_cluster_id
 }
 
-resource "hcp_consul_cluster_root_token" "token" {
-  cluster_id = var.hcp_consul_cluster_id
-}
-
 locals {
-  consul_secrets    = yamldecode(data.hcp_consul_agent_kubernetes_secret.cluster.secret)
-  consul_root_token = yamldecode(hcp_consul_cluster_root_token.token.kubernetes_secret)
+  consul_secrets = yamldecode(data.hcp_consul_agent_kubernetes_secret.cluster.secret)
 }
 
 resource "kubernetes_namespace" "consul" {
@@ -67,17 +62,17 @@ resource "kubernetes_secret" "hcp_consul_secret" {
 
 resource "kubernetes_secret" "hcp_consul_token" {
   metadata {
-    name        = local.consul_root_token.metadata.name
+    name        = "${var.hcp_consul_cluster_id}-bootstrap-token"
     namespace   = kubernetes_namespace.consul.metadata.0.name
     annotations = {}
     labels      = {}
   }
 
   data = {
-    token = hcp_consul_cluster_root_token.token.secret_id
+    token = var.consul_token
   }
 
-  type = local.consul_root_token.type
+  type = "Opaque"
 }
 
 locals {
