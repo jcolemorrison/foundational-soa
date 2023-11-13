@@ -49,6 +49,7 @@ resource "vault_mount" "consul_connect_pki_int" {
   description               = "PKI engine hosting certificate for Consul service mesh (level 3 intermediate)"
   default_lease_ttl_seconds = local.validity_in_seconds
   max_lease_ttl_seconds     = local.validity_in_seconds
+  local                     = true
 }
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "consul_connect_pki_int" {
