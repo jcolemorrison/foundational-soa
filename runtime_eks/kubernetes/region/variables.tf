@@ -55,3 +55,32 @@ variable "kubernetes_endpoint" {
   type        = string
   description = "Kubernetes cluster endpoint"
 }
+
+## AWS Load Balancer Controller
+variable "aws_lb_controller_helm_version" {
+  type        = string
+  description = "AWS Load Balancer Controller Helm chart version"
+  default     = "1.6.2"
+}
+
+variable "aws_lb_controller_namespace" {
+  type        = string
+  description = "AWS Load Balancer Controller namespace"
+  default     = "kube-system"
+}
+
+variable "aws_lb_controller_service_account" {
+  type        = string
+  description = "AWS Load Balancer Controller service account"
+  default     = "aws-load-balancer-controller"
+}
+
+variable "aws_lb_controller_irsa_role_arn" {
+  type        = string
+  description = "AWS Load Balancer Controller IRSA role ARN"
+}
+
+variable "cluster_name" {
+  type        = string
+  description = "Name of EKS cluster"
+}

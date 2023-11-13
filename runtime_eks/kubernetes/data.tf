@@ -26,6 +26,8 @@ locals {
   us_east_1          = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1
   us_west_2          = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2
   eu_west_1          = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1
+
+  aws_irsa = data.terraform_remote_state.runtime_eks.outputs.irsa
 }
 
 data "aws_eks_cluster" "us_east_1" {
