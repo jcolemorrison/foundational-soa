@@ -8,3 +8,8 @@ output "ssh_private_key" {
   description = "Boundary worker SSH key"
   sensitive   = true
 }
+
+output "irsa" {
+  value       = var.create_eks_cluster ? module.eks.0.irsa : null
+  description = "EKS IRSA attributes for AWS LB controller"
+}

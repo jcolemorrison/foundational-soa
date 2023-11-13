@@ -3,6 +3,18 @@ variable "name" {
   description = "Name of EKS cluster"
 }
 
+variable "namespace" {
+  type        = string
+  description = "Namespace of valid service account for IAM roles to authenticate to EKS"
+  default     = "kube-system"
+}
+
+variable "service_account" {
+  type        = string
+  description = "Name of valid service account for IAM roles to authenticate to EKS"
+  default     = "aws-load-balancer-controller"
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID of EKS cluster"
