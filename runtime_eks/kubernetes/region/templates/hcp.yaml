@@ -4,6 +4,8 @@ global:
   metrics:
     enabled: true
     enableAgentMetrics: true
+  peering:
+    enabled: true
 
 controller:
   enabled: true
@@ -20,6 +22,8 @@ meshGateway:
 connectInject:
   replicas: 1
   enabled: true
+  consulNamespaces:
+    mirroringK8S: true
   metrics:
     defaultEnabled: true
   apiGateway:
