@@ -185,12 +185,3 @@ resource "aws_security_group_rule" "consul_mesh_gateway" {
   type              = "ingress"
   cidr_blocks       = [var.hcp_network_cidr_block]
 }
-
-resource "aws_security_group_rule" "consul_mesh_gateway_envoy" {
-  security_group_id = aws_eks_cluster.cluster.vpc_config.0.cluster_security_group_id
-  protocol          = "tcp"
-  from_port         = 20000
-  to_port           = 22000
-  type              = "ingress"
-  cidr_blocks       = var.accessible_cidr_blocks
-}
