@@ -108,6 +108,23 @@ variable "api_deployment_maximum_percent" {
   default = 300
 }
 
+variable "ecs_service_role" {
+  type = string
+  description = "ARN of service role"
+}
+
+variable "api_task_max_count" {
+  type = number
+  description = "maximum number of tasks allowed in the ECS api service"
+  default = 15
+}
+
+variable "api_task_min_count" {
+  type = number
+  description = "minimum number of tasks allowed in the ECS api service"
+  default = 3
+}
+
 ## Route53
 
 variable "public_domain_name" {
