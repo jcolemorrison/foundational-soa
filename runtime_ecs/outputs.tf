@@ -12,3 +12,8 @@ output "ssh_keys" {
   description = "SSH Keys for Boundary workers"
   sensitive   = true
 }
+
+output "subdomain_name_servers" {
+  value = aws_route53_zone.subdomain.name_servers
+  description = "list of name servers for the subdomain"
+}

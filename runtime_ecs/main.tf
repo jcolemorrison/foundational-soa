@@ -20,6 +20,9 @@ module "us_east_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_us_east_1]
+  public_domain_name = var.public_domain_name
+  public_subdomain_name = var.public_subdomain_name
+  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
   name = local.name
 
@@ -43,6 +46,9 @@ module "us_west_2" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_us_west_2]
+  public_domain_name = var.public_domain_name
+  public_subdomain_name = var.public_subdomain_name
+  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
   name = local.name
 
@@ -70,6 +76,9 @@ module "eu_west_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_eu_west_1]
+  public_domain_name = var.public_domain_name
+  public_subdomain_name = var.public_subdomain_name
+  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
   name = local.name
 

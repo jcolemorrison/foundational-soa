@@ -34,6 +34,7 @@ variable "accessible_cidr_blocks" {
 variable "ecs_keypair" {
   type = string
   description = "name of ec2 keypair for accessing container instances"
+  default = null
 }
 
 variable "instance_type" {
@@ -59,6 +60,24 @@ variable "min_container_instances" {
   default = 3
 }
 
+variable "min_scaling_step_size" {
+  type = number
+  description = "Minimum number of instances to autoscale by"
+  default = 1
+}
+
+variable "max_scaling_step_size" {
+  type = number
+  description = "Maximum number of instances to autoscale by"
+  default = 1
+}
+
+variable "scaling_target_capacity_size" {
+  type = number
+  description = "The target number of instances to autoscale towards"
+  default = 3
+}
+
 ## Route53
 
 variable "public_domain_name" {
@@ -69,6 +88,11 @@ variable "public_domain_name" {
 variable "public_subdomain_name" {
   type = string
   description = "Sub domain name for this runtime.  i.e. 'ecs' which would result in a subdomain of 'ecs.hashidemo.com'"
+}
+
+variable "subdomain_zone_id" {
+  type = string
+  description = "Route53 Hosted Zone ID for the subdomain"
 }
 
 ## Boundary workers

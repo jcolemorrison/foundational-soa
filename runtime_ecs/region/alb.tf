@@ -37,6 +37,24 @@ resource "aws_lb_listener" "public_alb_http_80" {
   protocol          = "HTTP"
 
   default_action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+resource "aws_lb_listener" "public_alb_https_443" {
+  load_balancer_arn = aws_lb.front_end.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.subdomain.arn
+
+  default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.public_alb_targets.arn
   }
@@ -58,6 +76,17 @@ resource "aws_security_group_rule" "public_alb_allow_80" {
   cidr_blocks       = ["0.0.0.0/0"]
   ipv6_cidr_blocks  = ["::/0"]
   description       = "Allow HTTP traffic."
+}
+
+resource "aws_security_group_rule" "public_alb_allow_443" {
+  security_group_id = aws_security_group.public_alb.id
+  type              = "ingress"
+  protocol          = "tcp"
+  from_port         = 443
+  to_port           = 443
+  cidr_blocks       = ["0.0.0.0/0"]
+  ipv6_cidr_blocks  = ["::/0"]
+  description       = "Allow HTTPS traffic."
 }
 
 resource "aws_security_group_rule" "public_alb_allow_outbound" {
