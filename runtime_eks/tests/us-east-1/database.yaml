@@ -38,7 +38,7 @@ spec:
       serviceAccountName: database
       containers:
       - name: database
-        image: nicholasjackson/fake-service:v0.25.1
+        image: nicholasjackson/fake-service:v0.26.0
         ports:
         - containerPort: 9090
         env:

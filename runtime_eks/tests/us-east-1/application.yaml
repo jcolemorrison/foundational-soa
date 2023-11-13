@@ -7,10 +7,10 @@ spec:
   selector:
     app: application
   ports:
-  - name: http
-    protocol: TCP
-    port: 9090
-    targetPort: 9090
+    - name: http
+      protocol: TCP
+      port: 9090
+      targetPort: 9090
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -37,15 +37,16 @@ spec:
     spec:
       serviceAccountName: application
       containers:
-      - name: application
-        image: nicholasjackson/fake-service:v0.25.1
-        ports:
-        - containerPort: 9090
-        env:
-        - name: "LISTEN_ADDR"
-          value: "0.0.0.0:9090"
-        - name: "UPSTREAM_URIS"
-          value: "http://database.virtual.consul"
-        - name: "NAME"
-          value: "application-us-east-1"
-        - name: "MESSAGE"
+        - name: application
+          image: nicholasjackson/fake-service:v0.26.0
+          ports:
+            - containerPort: 9090
+          env:
+            - name: "LISTEN_ADDR"
+              value: "0.0.0.0:9090"
+            - name: "UPSTREAM_URIS"
+              value: "http://database.virtual.consul"
+            - name: "NAME"
+              value: "application-us-east-1"
+            - name: "MESSAGE"
+              value: "Response from application in us-east-1"

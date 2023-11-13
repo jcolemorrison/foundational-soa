@@ -37,7 +37,7 @@ spec:
       serviceAccountName: web
       containers:
         - name: web
-          image: nicholasjackson/fake-service:v0.25.1
+          image: nicholasjackson/fake-service:v0.26.0
           ports:
             - containerPort: 9090
           env:
@@ -49,18 +49,3 @@ spec:
               value: "web-us-east-1"
             - name: "MESSAGE"
               value: "Response from web in us-east-1"
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceResolver
-metadata:
-  name: application
-spec:
-  redirect:
-    service: application
-  connectTimeout: 15s
-  failover:
-    "*":
-      targets:
-        - peer: prod-us-west-2-default
-          namespace: default
-          service: application

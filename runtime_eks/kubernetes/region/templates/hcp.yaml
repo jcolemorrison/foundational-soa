@@ -22,7 +22,8 @@ meshGateway:
     enabled: true
     type: LoadBalancer
     annotations: |
-      service.beta.kubernetes.io/aws-load-balancer-type: "nlb-ip"
+      service.beta.kubernetes.io/aws-load-balancer-type: external
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
 
 connectInject:
   replicas: 1
@@ -35,3 +36,8 @@ connectInject:
     manageExternalCRDs: true
     managedGatewayClass:
       serviceType: LoadBalancer
+      copyAnnotations:
+        service:
+          annotations: |
+            - service.beta.kubernetes.io/aws-load-balancer-type
+            - service.beta.kubernetes.io/aws-load-balancer-nlb-target-type
