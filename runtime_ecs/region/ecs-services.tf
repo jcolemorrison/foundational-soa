@@ -15,6 +15,11 @@ resource "aws_ecs_service" "ecs_api" {
     container_port = 9090
   }
 
+  network_configuration {
+    subnets = module.network.vpc_private_subnet_ids
+    security_groups = [ aws_security_group.consul_client.id, aws_security_group.ecs_api.id ]
+  }
+
   ordered_placement_strategy {
     type  = "spread"
     field = "attribute:ecs.availability-zone"
@@ -37,6 +42,7 @@ module "ecs_controller" {
   ecs_cluster_arn = aws_ecs_cluster.main.arn
   launch_type = "EC2"
   region = var.region
+  security_groups = [ aws_security_group.consul_client.id ]
   subnets = module.vpc.private_subnets
 
   log_configuration = {
@@ -108,6 +114,7 @@ module "mesh_gateway" {
   ecs_cluster_arn = aws_ecs_cluster.main.arn
   family = "mesh-gateway"
   kind = "mesh-gateway"
+  security_groups = [ aws_security_group.consul_client.id ]
   subnets = module.network.vpc_private_subnet_ids
 
   acls = true

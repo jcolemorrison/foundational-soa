@@ -67,26 +67,3 @@ resource "aws_autoscaling_group" "container_instance" {
     propagate_at_launch = true
   }
 }
-
-resource "aws_security_group" "container_instance" {
-  name_prefix = "${var.region}-ecs-instance-"
-  description = "security group for ECS container instances"
-  vpc_id = module.network.vpc_id
-}
-
-resource "aws_security_group_rule" "container_instance_allow_ephemeral" {
-  type = "ingress"
-  from_port = 49153
-  to_port = 65535
-  protocol = "tcp"
-  security_group_id = aws_security_group.container_instance.id
-}
-
-resource "aws_security_group_rule" "container_instance_allow_egress" {
-  type = "egress"
-  from_port = 0
-  to_port = 0
-  protocol = "-1"
-  cidr_blocks = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.container_instance.id
-}

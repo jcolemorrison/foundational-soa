@@ -1,19 +1,3 @@
-locals {
-  subdomain = "${var.public_subdomain_name}.${var.public_domain_name}"
-}
-
-resource "aws_route53_zone" "subdomain" {
-  name = local.subdomain
-}
-
-resource "aws_route53_record" "subdomain" {
-  zone_id = aws_route53_zone.main.zone_id
-  name    = local.subdomain
-  type    = "NS"
-  ttl     = "30"
-  records = aws_route53_zone.subdomain.name_servers
-}
-
 # Validation for subdomain certificate
 resource "aws_route53_record" "subdomain_validation" {
   for_each = {
@@ -29,5 +13,5 @@ resource "aws_route53_record" "subdomain_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.main.zone_id
+  zone_id         = var.subdomain_zone_id
 }
