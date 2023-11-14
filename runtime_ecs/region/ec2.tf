@@ -63,7 +63,7 @@ resource "aws_autoscaling_group" "container_instance" {
 
   tag {
     key = "Name"
-    value = "${var_region}-ecs-instance"
+    value = "${var.region}-ecs-instance"
     propagate_at_launch = true
   }
 }
