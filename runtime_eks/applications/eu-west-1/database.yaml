@@ -1,4 +1,11 @@
 ---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: database
+spec:
+  protocol: http
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -70,4 +77,3 @@ spec:
    - name: application
      action: allow
      peer: prod-us-west-2
-

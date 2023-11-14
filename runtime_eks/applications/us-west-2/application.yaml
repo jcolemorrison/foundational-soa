@@ -1,16 +1,10 @@
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceResolver
+kind: ServiceDefaults
 metadata:
   name: application
 spec:
-  connectTimeout: 0s
-  failover:
-    '*':
-      targets:
-        - peer: prod-eu-west-1
-          namespace: default
-          service: database
+  protocol: http
 ---
 apiVersion: v1
 kind: Service
@@ -58,33 +52,33 @@ spec:
         - name: "LISTEN_ADDR"
           value: "0.0.0.0:9090"
         - name: "UPSTREAM_URIS"
-          value: "http://database.virtual.consul"
+          value: "http://database.virtual.prod-eu-west-1.consul"
         - name: "NAME"
           value: "application-us-west-2"
         - name: "MESSAGE"
           value: "Response from application in us-west-2"
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ExportedServices
-metadata:
-  name: default
-spec:
-  services:
-    - name: application
-      consumers:
-      - peer: prod-us-east-1
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceIntentions
-metadata:
-  name: application
-spec:
-  destination:
-    name: application
-  sources:
-   - name: web
-     action: allow
-     peer: prod-us-east-1
+# ---
+# apiVersion: consul.hashicorp.com/v1alpha1
+# kind: ExportedServices
+# metadata:
+#   name: default
+# spec:
+#   services:
+#     - name: application
+#       consumers:
+#       - peer: prod-us-east-1
+# ---
+# apiVersion: consul.hashicorp.com/v1alpha1
+# kind: ServiceIntentions
+# metadata:
+#   name: application
+# spec:
+#   destination:
+#     name: application
+#   sources:
+#    - name: web
+#      action: allow
+#      peer: prod-us-east-1
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
