@@ -2,6 +2,17 @@
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
+  name: web
+spec:
+  destination:
+    name: "web"
+  sources:
+  - name: "api-gateway"
+    action: allow
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
   name: application
 spec:
   destination:

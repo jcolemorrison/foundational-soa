@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -49,3 +50,10 @@ spec:
               value: "web-us-east-1"
             - name: "MESSAGE"
               value: "Response from web in us-east-1"
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceDefaults
+metadata:
+  name: web
+spec:
+  protocol: http

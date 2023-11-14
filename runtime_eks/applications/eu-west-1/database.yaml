@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: application
+  name: database
 spec:
   selector:
-    app: application
+    app: database
   ports:
   - name: http
     protocol: TCP
@@ -15,41 +15,39 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: application
+  name: database
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: application
+  name: database
   labels:
-    app: application
+    app: database
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: application
+      app: database
   template:
     metadata:
       labels:
-        app: application
+        app: database
       annotations:
         "consul.hashicorp.com/connect-inject": "true"
     spec:
-      serviceAccountName: application
+      serviceAccountName: database
       containers:
-      - name: application
-        image: nicholasjackson/fake-service:v0.25.1
+      - name: database
+        image: nicholasjackson/fake-service:v0.26.0
         ports:
         - containerPort: 9090
         env:
         - name: "LISTEN_ADDR"
           value: "0.0.0.0:9090"
-        - name: "UPSTREAM_URIS"
-          value: "http://database.virtual.prod-eu-west-1-default.consul"
         - name: "NAME"
-          value: "application"
+          value: "database-eu-west-1"
         - name: "MESSAGE"
-          value: "Response from application"
+          value: "Response from database in eu-west-1"
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ExportedServices
@@ -57,34 +55,18 @@ metadata:
   name: default
 spec:
   services:
-    - name: application
+    - name: database
       consumers:
-      - peer: prod-us-east-1-default
+      - peer: prod-us-west-2
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
 metadata:
-  name: application-deny
+  name: database
 spec:
   destination:
-    name: application
+    name: database
   sources:
-   - name: web
+   - name: application
      action: allow
-     peer: prod-us-east-1-default
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ProxyDefaults
-metadata:
-  name: global
-spec:
-  meshGateway:
-    mode: 'local'
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: Mesh
-metadata:
-  name: mesh
-spec:
-  peering:
-    peerThroughMeshGateways: true
+     peer: prod-us-west-2

@@ -2,52 +2,55 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: database
+  name: application
 spec:
   selector:
-    app: database
+    app: application
   ports:
   - name: http
     protocol: TCP
-    port: 80
+    port: 9090
     targetPort: 9090
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: database
+  name: application
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database
+  name: application
   labels:
-    app: database
+    app: application
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: database
+      app: application
   template:
     metadata:
       labels:
-        app: database
+        app: application
       annotations:
         "consul.hashicorp.com/connect-inject": "true"
+        "consul.hashicorp.com/connect-service-upstreams": 'database.svc.prod-eu-west-1.peer:9091'
     spec:
-      serviceAccountName: database
+      serviceAccountName: application
       containers:
-      - name: database
-        image: nicholasjackson/fake-service:v0.25.1
+      - name: application
+        image: nicholasjackson/fake-service:v0.26.0
         ports:
         - containerPort: 9090
         env:
         - name: "LISTEN_ADDR"
           value: "0.0.0.0:9090"
+        - name: "UPSTREAM_URIS"
+          value: "http://localhost:9091"
         - name: "NAME"
-          value: "database"
+          value: "application-us-west-2"
         - name: "MESSAGE"
-          value: "Response from database"
+          value: "Response from application in us-west-2"
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ExportedServices
@@ -55,9 +58,21 @@ metadata:
   name: default
 spec:
   services:
-    - name: database
+    - name: application
       consumers:
-      - peer: prod-us-west-2-default
+      - peer: prod-us-east-1
+---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceIntentions
+metadata:
+  name: application
+spec:
+  destination:
+    name: application
+  sources:
+   - name: web
+     action: allow
+     peer: prod-us-east-1
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
@@ -65,24 +80,16 @@ metadata:
   name: database
 spec:
   destination:
-    name: database
+    name: "database"
   sources:
-   - name: application
-     action: allow
-     peer: prod-us-west-2-default
+  - name: "application"
+    action: allow
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
-kind: ProxyDefaults
+kind: ServiceResolver
 metadata:
-  name: global
+ name: database
 spec:
-  meshGateway:
-    mode: 'local'
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: Mesh
-metadata:
-  name: mesh
-spec:
-  peering:
-    peerThroughMeshGateways: true
+ redirect:
+   service: database
+   peer: prod-eu-west-1

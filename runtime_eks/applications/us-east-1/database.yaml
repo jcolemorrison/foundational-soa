@@ -50,9 +50,8 @@ spec:
           value: "Response from database in us-east-1"
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceResolver
+kind: ServiceDefaults
 metadata:
   name: database
 spec:
-  redirect:
-    service: database
+  protocol: http
