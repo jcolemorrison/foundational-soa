@@ -36,7 +36,7 @@ resource "aws_ecs_service" "ecs_api" {
 }
 
 module "ecs_controller" {
-  source = "hashicorp/consul-ecs/aws//modules/acl-controller"
+  source = "hashicorp/consul-ecs/aws//modules/controller"
   version = "0.7.0"
 
   ecs_cluster_arn = aws_ecs_cluster.main.arn
