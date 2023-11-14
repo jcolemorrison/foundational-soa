@@ -7,7 +7,7 @@ resource "aws_ecs_service" "ecs_api" {
   deployment_minimum_healthy_percent = var.api_deployment_minimum_healthy_percent
   deployment_maximum_percent = var.api_deployment_maximum_percent
   iam_role = var.ecs_service_role
-  task_definition = module.ecs_api.task_definition.arn
+  task_definition = module.ecs_api.task_definition_arn
 
   load_balancer {
     target_group_arn = aws_lb_target_group.public_alb_targets.arn

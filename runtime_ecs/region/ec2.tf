@@ -27,7 +27,7 @@ resource "aws_autoscaling_group" "container_instance" {
   health_check_type = "EC2"
   max_size = var.max_container_instances
   min_size = var.min_container_instances
-  name_prefix = "${var_region}-ecs-instance-"
+  name_prefix = "${var.region}-ecs-instance-"
   protect_from_scale_in = true
   target_group_arns = []
   vpc_zone_identifier = [ module.network.vpc_private_subnet_ids ]
