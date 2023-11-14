@@ -48,7 +48,7 @@ resource "aws_lb_listener" "public_alb_http_80" {
 }
 
 resource "aws_lb_listener" "public_alb_https_443" {
-  load_balancer_arn = aws_lb.front_end.arn
+  load_balancer_arn = aws_lb.public_alb.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"

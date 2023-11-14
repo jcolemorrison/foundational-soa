@@ -26,7 +26,7 @@ module "ecs_api" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = aws_cloudwatch_log_group.api_task_definition.name
+          awslogs-group         = aws_cloudwatch_log_group.ecs_api.name
           awslogs-region        = var.region
           awslogs-stream-prefix = "container-"
         }
@@ -48,7 +48,7 @@ module "ecs_api" {
   log_configuration = {
     logDriver = "awslogs"
     options = {
-      awslogs-group         = aws_cloudwatch_log_group.api_task_definition.name
+      awslogs-group         = aws_cloudwatch_log_group.ecs_api.name
       awslogs-region        = var.region
       awslogs-stream-prefix = "task-"
     }
@@ -60,7 +60,7 @@ module "ecs_api" {
   tls = true
   consul_ecs_image = var.consul_ecs_image
   consul_dataplane_image = var.consul_dataplane_image
-  consul_namespace = "default"
+  consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
   consul_server_hosts = var.consul_server_hosts
 }

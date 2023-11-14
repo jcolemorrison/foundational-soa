@@ -10,7 +10,7 @@ resource "aws_ecs_service" "ecs_api" {
   task_definition = module.ecs_api.task_definition.arn
 
   load_balancer {
-    target_group_arn = aws_alb_target_group.public_alb_targets.arn
+    target_group_arn = aws_lb_target_group.public_alb_targets.arn
     container_name = "api"
     container_port = 9090
   }
@@ -44,7 +44,7 @@ module "ecs_controller" {
   name_prefix = "${var.region}-ecs-controller"
   region = var.region
   security_groups = [ aws_security_group.consul_client.id ]
-  subnets = module.vpc.private_subnets
+  subnets = module.network.vpc_private_subnet_ids
 
   log_configuration = {
     logDriver = "awslogs"

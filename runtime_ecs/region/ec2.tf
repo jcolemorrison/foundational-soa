@@ -7,11 +7,11 @@ resource "aws_launch_template" "container_instance" {
   image_id = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type = var.instance_type
   key_name = var.ecs_keypair
-  name_prefix = "${var_region}-ecs-instance-"
+  name_prefix = "${var.region}-ecs-instance-"
   vpc_security_group_ids = [aws_security_group.container_instance.id]
 
   iam_instance_profile {
-    arn = aws_iam_instance_profile.container_instance_profile.arn
+    arn = var.container_instance_profile
   }
 
   monitoring {

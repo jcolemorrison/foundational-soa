@@ -80,12 +80,13 @@ resource "aws_security_group" "container_instance" {
   vpc_id = module.network.vpc_id
 }
 
-resource "aws_security_group_rule" "container_instance_allow_ephemeral" {
+resource "aws_security_group_rule" "container_instance_allow_alb_to_ephemeral" {
   type = "ingress"
   from_port = 49153
   to_port = 65535
   protocol = "tcp"
   security_group_id = aws_security_group.container_instance.id
+  source_security_group_id = aws_security_group.public_alb.id
 }
 
 resource "aws_security_group_rule" "container_instance_allow_egress" {
