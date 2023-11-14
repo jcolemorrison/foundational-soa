@@ -183,5 +183,5 @@ resource "aws_security_group_rule" "consul_mesh_gateway" {
   from_port         = 8443
   to_port           = 8443
   type              = "ingress"
-  cidr_blocks       = [var.hcp_network_cidr_block]
+  cidr_blocks       = concat([var.hcp_network_cidr_block], var.accessible_cidr_blocks)
 }
