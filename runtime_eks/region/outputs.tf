@@ -13,13 +13,3 @@ output "irsa" {
   value       = var.create_eks_cluster ? module.eks.0.irsa : null
   description = "EKS IRSA attributes for AWS LB controller"
 }
-
-output "vpc_id" {
-  value       = module.network.vpc_id
-  description = "VPC ID for runtime"
-}
-
-output "private_subnets_ids" {
-  value       = module.vpc.private_subnet_ids
-  description = "Private subnets for runtime"
-}
