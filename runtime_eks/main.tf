@@ -36,6 +36,18 @@ module "us_east_1" {
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 }
 
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_east_1_to_us_west_2" {
+  vpc_id             = module.us_west_2.vpc_id
+  subnet_ids         = module.us_west_2.private_subnets_ids
+  transit_gateway_id = local.transit_gateway_ids[local.us_east_1]
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_east_1_to_eu_west_1" {
+  vpc_id             = module.eu_west_1.vpc_id
+  subnet_ids         = module.eu_west_1.private_subnets_ids
+  transit_gateway_id = local.transit_gateway_ids[local.us_east_1]
+}
+
 module "us_west_2" {
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_us_west_2
@@ -65,6 +77,18 @@ module "us_west_2" {
   }
 }
 
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_west_2_to_us_east_1" {
+  vpc_id             = module.us_east_1.vpc_id
+  subnet_ids         = module.us_east_1.private_subnets_ids
+  transit_gateway_id = local.transit_gateway_ids[local.us_west_2]
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "us_west_2_to_eu_west_1" {
+  vpc_id             = module.eu_west_1.vpc_id
+  subnet_ids         = module.eu_west_1.private_subnets_ids
+  transit_gateway_id = local.transit_gateway_ids[local.us_west_2]
+}
+
 module "eu_west_1" {
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_eu_west_1
@@ -92,4 +116,16 @@ module "eu_west_1" {
   providers = {
     aws = aws.eu_west_1
   }
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "eu_west_1_to_us_west_2" {
+  vpc_id             = module.us_west_2.vpc_id
+  subnet_ids         = module.us_west_2.private_subnets_ids
+  transit_gateway_id = local.transit_gateway_ids[local.eu_west_1]
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "eu_west_1_to_us_east_1" {
+  vpc_id             = module.us_east_1.vpc_id
+  subnet_ids         = module.us_east_1.private_subnets_ids
+  transit_gateway_id = local.transit_gateway_ids[local.eu_west_1]
 }
