@@ -6,5 +6,5 @@ variable "terraform_cloud_organization" {
 variable "runtimes" {
   type        = set(string)
   description = "Set of runtimes for Consul cluster peering"
-  default     = ["eks", "ecs", "ec2", "frontend"]
+  default     = ["default", "eks", "ecs", "ec2", "frontend"]
 }

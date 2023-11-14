@@ -3,7 +3,7 @@ resource "consul_peering_token" "us_east_1_to_us_west_2" {
   for_each = var.runtimes
 
   peer_name = "${data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul.id}-${each.value}"
-  partition = module.partition_us_east_1[each.value].partition_name
+  partition = each.value
 
   provider = consul.us_east_1
 }
@@ -13,7 +13,7 @@ resource "consul_peering" "us_east_1_to_us_west_2" {
 
   peer_name     = "${data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul.id}-${each.value}"
   peering_token = consul_peering_token.us_east_1_to_us_west_2[each.value].peering_token
-  partition     = module.partition_us_west_2[each.value].partition_name
+  partition     = each.value
 
   provider = consul.us_west_2
 }
@@ -23,7 +23,7 @@ resource "consul_peering_token" "us_east_1_to_eu_west_1" {
   for_each = var.runtimes
 
   peer_name = "${data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.id}-${each.value}"
-  partition = module.partition_us_east_1[each.value].partition_name
+  partition = each.value
 
   provider = consul.us_east_1
 }
@@ -33,7 +33,7 @@ resource "consul_peering" "us_east_1_to_eu_west_1" {
 
   peer_name     = "${data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul.id}-${each.value}"
   peering_token = consul_peering_token.us_east_1_to_eu_west_1[each.value].peering_token
-  partition     = module.partition_eu_west_1[each.value].partition_name
+  partition     = each.value
 
   provider = consul.eu_west_1
 }
@@ -43,7 +43,7 @@ resource "consul_peering_token" "eu_west_1_to_us_west_2" {
   for_each = var.runtimes
 
   peer_name = "${data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul.id}-${each.value}"
-  partition = module.partition_eu_west_1[each.value].partition_name
+  partition = each.value
 
   provider = consul.eu_west_1
 }
@@ -53,7 +53,7 @@ resource "consul_peering" "eu_west_1_to_us_west_2" {
 
   peer_name     = "${data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.id}-${each.value}"
   peering_token = consul_peering_token.eu_west_1_to_us_west_2[each.value].peering_token
-  partition     = module.partition_us_west_2[each.value].partition_name
+  partition     = each.value
 
   provider = consul.us_west_2
 }
