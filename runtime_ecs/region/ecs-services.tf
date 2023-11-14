@@ -41,6 +41,7 @@ module "ecs_controller" {
 
   ecs_cluster_arn = aws_ecs_cluster.main.arn
   launch_type = "EC2"
+  name_prefix = "${var.region}-ecs-controller"
   region = var.region
   security_groups = [ aws_security_group.consul_client.id ]
   subnets = module.vpc.private_subnets
