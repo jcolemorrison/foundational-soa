@@ -57,6 +57,7 @@ module "ecs_api" {
   additional_task_role_policies = [var.execute_command_policy]
 
   acls = true
+  port = "9090"
   tls = true
   consul_ecs_image = var.consul_ecs_image
   consul_dataplane_image = var.consul_dataplane_image
