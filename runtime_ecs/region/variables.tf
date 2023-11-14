@@ -171,6 +171,11 @@ variable "consul_admin_partition" {
   description = "Name of regional consul admin partition"
 }
 
+variable "consul_cluster_id" {
+  type = string
+  description = "Consul Cluster ID"
+}
+
 ## Boundary workers
 
 variable "create_boundary_workers" {

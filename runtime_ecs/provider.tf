@@ -16,8 +16,14 @@ terraform {
       source  = "hashicorp/vault"
       version = "~> 3.22"
     }
+    hcp = {
+      source  = "hashicorp/hcp"
+      version = "~> 0.76"
+    }
   }
 }
+
+provider "hcp" {}
 
 provider "aws" {
   region = var.aws_default_region

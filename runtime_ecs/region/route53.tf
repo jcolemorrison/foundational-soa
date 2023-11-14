@@ -2,10 +2,6 @@ locals {
   subdomain = "${var.public_subdomain_name}.${var.public_domain_name}"
 }
 
-data "aws_route53_zone" "main" {
-  name = var.public_domain_name
-}
-
 resource "aws_route53_zone" "subdomain" {
   name = local.subdomain
 }
