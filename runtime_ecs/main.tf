@@ -41,7 +41,7 @@ module "us_east_1" {
 
   consul_bootstrap_token = local.consul_us_east_1.token
   consul_server_hosts = local.consul_us_east_1.private_address
-  consul_admin_partition = "ecs-us-east-1"
+  # consul_admin_partition = "ecs-us-east-1"
   consul_cluster_id = local.consul_us_east_1.id
 }
 
@@ -76,7 +76,7 @@ module "us_west_2" {
 
   consul_bootstrap_token = local.consul_us_west_2.token
   consul_server_hosts = local.consul_us_west_2.private_address
-  consul_admin_partition = "ecs-us-west-2"
+  # consul_admin_partition = "ecs-us-west-2"
   consul_cluster_id = local.consul_us_west_2.id
 
   providers = {
@@ -115,7 +115,7 @@ module "eu_west_1" {
 
   consul_bootstrap_token = local.consul_eu_west_1.token
   consul_server_hosts = local.consul_eu_west_1.private_address
-  consul_admin_partition = "ecs-eu-west-1"
+  # consul_admin_partition = "ecs-eu-west-1"
   consul_cluster_id = local.consul_eu_west_1.id
 
   providers = {

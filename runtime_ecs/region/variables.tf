@@ -169,6 +169,13 @@ variable "consul_server_hosts" {
 variable "consul_admin_partition" {
   type = string
   description = "Name of regional consul admin partition"
+  default = "default"
+}
+
+variable "consul_namespace" {
+  type = string
+  description = "Namespace within the consul admin partition"
+  default = "default"
 }
 
 variable "consul_cluster_id" {
