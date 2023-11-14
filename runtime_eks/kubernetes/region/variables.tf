@@ -38,7 +38,7 @@ variable "consul_token" {
 variable "consul_helm_version" {
   type        = string
   description = "Consul Helm chart version"
-  default     = "1.2.3"
+  default     = "1.3.0"
 }
 
 variable "hcp_consul_cluster_id" {
