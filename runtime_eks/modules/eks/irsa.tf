@@ -11,8 +11,8 @@ resource "aws_iam_openid_connect_provider" "oidc_provider" {
 
 locals {
   oidc = {
-    arn = aws_iam_openid_connect_provider.oidc_provider.arn
-    url = replace(aws_iam_openid_connect_provider.oidc_provider.url, "https://", "")
+    arn                       = aws_iam_openid_connect_provider.oidc_provider.arn
+    url                       = replace(aws_iam_openid_connect_provider.oidc_provider.url, "https://", "")
     fully_qualified_audiences = "sts.amazonaws.com"
     fully_qualified_subjects  = join(":", ["system:serviceaccount", var.namespace, var.service_account])
   }

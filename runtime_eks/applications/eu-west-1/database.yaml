@@ -70,3 +70,4 @@ spec:
    - name: application
      action: allow
      peer: prod-us-west-2
+

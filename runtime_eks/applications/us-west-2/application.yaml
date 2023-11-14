@@ -1,4 +1,17 @@
 ---
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: ServiceResolver
+metadata:
+  name: application
+spec:
+  connectTimeout: 0s
+  failover:
+    '*':
+      targets:
+        - peer: prod-eu-west-1
+          namespace: default
+          service: database
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -34,7 +47,6 @@ spec:
         app: application
       annotations:
         "consul.hashicorp.com/connect-inject": "true"
-        "consul.hashicorp.com/connect-service-upstreams": 'database.svc.prod-eu-west-1.peer:9091'
     spec:
       serviceAccountName: application
       containers:
@@ -46,7 +58,7 @@ spec:
         - name: "LISTEN_ADDR"
           value: "0.0.0.0:9090"
         - name: "UPSTREAM_URIS"
-          value: "http://localhost:9091"
+          value: "http://database.virtual.consul"
         - name: "NAME"
           value: "application-us-west-2"
         - name: "MESSAGE"
@@ -84,12 +96,3 @@ spec:
   sources:
   - name: "application"
     action: allow
----
-apiVersion: consul.hashicorp.com/v1alpha1
-kind: ServiceResolver
-metadata:
- name: database
-spec:
- redirect:
-   service: database
-   peer: prod-eu-west-1
