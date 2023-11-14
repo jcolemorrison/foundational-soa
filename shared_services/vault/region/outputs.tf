@@ -5,6 +5,6 @@ output "vault_token" {
 }
 
 output "pki_int_path" {
-  value       = vault_mount.consul_connect_pki_int.path
+  value       = local.consul_int_pki_path
   description = "Vault PKI intermediate path"
 }

@@ -1,38 +1,29 @@
-variable "validity_in_seconds" {
-    type = string
-    description = "Certificate validity in seconds"
+variable "consul_root_pki_path" {
+  type        = string
+  description = "Root PKI path for Consul service mesh CA"
 }
 
-variable "consul_connect_pki_path" {
-    type = string
-    description = "Root PKI path for Consul CA"
-}
-
-variable "pki_int_path" {
-    type = string
-    description = "PKI intermediate path prefix"
+variable "consul_int_pki_path" {
+  type        = string
+  description = "Intermediate PKI path prefix for Consul service mesh CA"
 }
 
 variable "namespace" {
-    type = string
-    description = "Vault namespace for Consul CA"
+  type        = string
+  description = "Vault namespace for Consul CA"
 }
 
 variable "region" {
-    type = string
-    description = "Region for intermediate certificates"
-}
-
-variable "certificate_chain" {
-    type = string
-    description = "Root and other intermediate level certificates"
+  type        = string
+  description = "Region for intermediate certificates"
 }
 
 variable "vault_policy_consul_ca" {
-    type = string
-    description = "Vault policy for root Consul CA"
+  type        = string
+  description = "Vault policy for root Consul service mesh CA"
 }
 
 locals {
-    region_suffix = replace(var.region, "-", "_")
+  region_suffix       = replace(var.region, "-", "_")
+  consul_int_pki_path = format("%s/%s", var.consul_int_pki_path, local.region_suffix)
 }

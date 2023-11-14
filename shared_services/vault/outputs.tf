@@ -22,19 +22,19 @@ output "consul_ca" {
   value = {
     "us_east_1" = {
       namespace    = vault_namespace.consul.id
-      pki_path     = vault_mount.consul_connect_pki.path
+      pki_path     = local.consul_service_mesh_root_ca_path
       pki_int_path = module.consul_ca_int_us_east_1.pki_int_path
       token        = module.consul_ca_int_us_east_1.vault_token
     }
     "us_west_2" = {
       namespace    = vault_namespace.consul.id
-      pki_path     = vault_mount.consul_connect_pki.path
+      pki_path     = local.consul_service_mesh_root_ca_path
       pki_int_path = module.consul_ca_int_us_west_2.pki_int_path
       token        = module.consul_ca_int_us_west_2.vault_token
     }
     "eu_west_1" = {
       namespace    = vault_namespace.consul.id
-      pki_path     = vault_mount.consul_connect_pki.path
+      pki_path     = local.consul_service_mesh_root_ca_path
       pki_int_path = module.consul_ca_int_eu_west_1.pki_int_path
       token        = module.consul_ca_int_eu_west_1.vault_token
     }
