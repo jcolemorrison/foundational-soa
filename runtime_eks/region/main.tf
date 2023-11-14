@@ -49,7 +49,6 @@ module "boundary_eks_hosts" {
   description = "EKS nodes in ${var.region}"
   scope_id    = var.boundary_project_scope_id
   target_ips  = zipmap(data.aws_instances.eks.ids, data.aws_instances.eks.private_ips)
-  target_type = "ssh"
 
   ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
   egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
