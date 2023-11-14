@@ -6,6 +6,10 @@ global:
     enableAgentMetrics: true
   peering:
     enabled: true
+  adminPartitions:
+    enabled: true
+    name: "eks"
+  enableConsulNamespaces: true
 
 controller:
   enabled: true
