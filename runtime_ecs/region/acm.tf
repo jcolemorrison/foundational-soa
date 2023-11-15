@@ -3,7 +3,7 @@ locals {
 }
 
 resource "aws_acm_certificate" "subdomain" {
-  domain_name = var.public_domain_name
+  domain_name = local.certificate_subdomain
   validation_method = "DNS"
   subject_alternative_names = [local.certificate_subdomain]
 }
