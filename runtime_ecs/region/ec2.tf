@@ -8,7 +8,7 @@ resource "aws_launch_template" "container_instance" {
   instance_type = var.instance_type
   key_name = var.ecs_keypair
   name_prefix = "${var.region}-ecs-instance-"
-  vpc_security_group_ids = [aws_security_group.container_instance.id]
+  vpc_security_group_ids = [aws_security_group.container_instance.id, aws_security_group.consul_client.id]
 
   iam_instance_profile {
     arn = var.container_instance_profile
