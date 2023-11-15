@@ -100,34 +100,3 @@ resource "helm_release" "consul_client" {
     value = "hashicorp/consul:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}"
   }
 }
-
-resource "helm_release" "consul_partition" {
-  depends_on       = [kubernetes_secret.hcp_consul_secret, kubernetes_secret.hcp_consul_token]
-  name             = "consul-eks"
-  namespace        = kubernetes_namespace.consul.metadata.0.name
-  create_namespace = false
-
-  repository = "https://helm.releases.hashicorp.com"
-  chart      = "consul"
-  version    = var.consul_helm_version
-
-  values = [
-    data.hcp_consul_agent_helm_config.cluster.config,
-    file("${path.module}/templates/partition.yaml"),
-  ]
-
-  set {
-    name  = "global.image"
-    value = "hashicorp/consul:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}"
-  }
-
-  set {
-    name  = "client.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "controller.enabled"
-    value = "false"
-  }
-}
