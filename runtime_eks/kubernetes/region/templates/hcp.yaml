@@ -6,9 +6,6 @@ global:
     enableAgentMetrics: true
   peering:
     enabled: true
-  adminPartitions:
-    enabled: true
-  enableConsulNamespaces: true
 
 controller:
   enabled: true
