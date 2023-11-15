@@ -1,0 +1,22 @@
+global:
+  enabled: false
+  name: consul-eks
+  metrics:
+    enabled: true
+    enableAgentMetrics: true
+  peering:
+    enabled: true
+  adminPartitions:
+    enabled: true
+    name: eks
+  enableConsulNamespaces: true
+
+meshGateway:
+  enabled: true
+  replicas: 1
+  service:
+    enabled: true
+    type: LoadBalancer
+    annotations: |
+      service.beta.kubernetes.io/aws-load-balancer-type: external
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
