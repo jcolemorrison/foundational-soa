@@ -40,7 +40,7 @@ module "us_east_1" {
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
 
   consul_bootstrap_token = local.consul_us_east_1.token
-  consul_server_hosts = local.consul_us_east_1.private_address
+  consul_server_hosts = local.consul_us_east_1.retry_join
   consul_admin_partition = "ecs"
   consul_cluster_id = local.consul_us_east_1.id
 }
@@ -75,7 +75,7 @@ module "us_west_2" {
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
 
   consul_bootstrap_token = local.consul_us_west_2.token
-  consul_server_hosts = local.consul_us_west_2.private_address
+  consul_server_hosts = local.consul_us_west_2.retry_join
   consul_admin_partition = "ecs"
   consul_cluster_id = local.consul_us_west_2.id
 
@@ -114,7 +114,7 @@ module "eu_west_1" {
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
 
   consul_bootstrap_token = local.consul_eu_west_1.token
-  consul_server_hosts = local.consul_eu_west_1.private_address
+  consul_server_hosts = local.consul_eu_west_1.retry_join
   consul_admin_partition = "ecs"
   consul_cluster_id = local.consul_eu_west_1.id
 
