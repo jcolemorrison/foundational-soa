@@ -290,11 +290,9 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
     sid = "CloudMapResourceDiscovery"
     effect  = "Allow"
     actions = [
-      "ssm:StartSession"
-    ]
-    resources = [
       "servicediscovery:DiscoverInstances",
-      "servicediscovery:DiscoverInstancesRevision"
+			"servicediscovery:DiscoverInstancesRevision"
     ]
+    resources = ["*"]
   }
 }

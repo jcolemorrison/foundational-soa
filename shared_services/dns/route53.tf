@@ -3,7 +3,7 @@ data "aws_route53_zone" "main" {
 }
 
 resource "aws_route53_record" "subdomain_ecs" {
-  zone_id = aws_route53_zone.subdomain.zone_id
+  zone_id = aws_route53_zone.main.zone_id
   name    = "ecs.${var.domain_name}"
   type    = "NS"
   ttl     = "30"

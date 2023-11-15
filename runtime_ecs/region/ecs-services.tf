@@ -6,7 +6,7 @@ resource "aws_ecs_service" "ecs_api" {
   desired_count = var.api_desired_count
   deployment_minimum_healthy_percent = var.api_deployment_minimum_healthy_percent
   deployment_maximum_percent = var.api_deployment_maximum_percent
-  iam_role = var.ecs_service_role
+  # iam_role = var.ecs_service_role # service linked role exists
   task_definition = module.ecs_api.task_definition_arn
 
   load_balancer {
