@@ -7,6 +7,9 @@ resource "aws_ecs_service" "ecs_api" {
   deployment_minimum_healthy_percent = var.api_deployment_minimum_healthy_percent
   deployment_maximum_percent = var.api_deployment_maximum_percent
   # iam_role = var.ecs_service_role # service linked role exists
+  enable_execute_command = true
+  launch_type = "EC2"
+  propagate_tags = "TASK_DEFINITION"
   task_definition = module.ecs_api.task_definition_arn
 
   load_balancer {
