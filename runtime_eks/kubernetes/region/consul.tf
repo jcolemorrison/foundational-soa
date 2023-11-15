@@ -83,20 +83,20 @@ locals {
   ]
 }
 
-resource "helm_release" "consul_client" {
-  depends_on       = [kubernetes_secret.hcp_consul_secret, kubernetes_secret.hcp_consul_token]
-  name             = "consul"
-  namespace        = kubernetes_namespace.consul.metadata.0.name
-  create_namespace = false
+# resource "helm_release" "consul_client" {
+#   depends_on       = [kubernetes_secret.hcp_consul_secret, kubernetes_secret.hcp_consul_token]
+#   name             = "consul"
+#   namespace        = kubernetes_namespace.consul.metadata.0.name
+#   create_namespace = false
 
-  repository = "https://helm.releases.hashicorp.com"
-  chart      = "consul"
-  version    = var.consul_helm_version
+#   repository = "https://helm.releases.hashicorp.com"
+#   chart      = "consul"
+#   version    = var.consul_helm_version
 
-  values = local.helm_values
+#   values = local.helm_values
 
-  set {
-    name  = "global.image"
-    value = "hashicorp/consul:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}"
-  }
-}
+#   set {
+#     name  = "global.image"
+#     value = "hashicorp/consul:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}"
+#   }
+# }
