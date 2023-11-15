@@ -17,3 +17,12 @@ output "cluster_name" {
   value       = local.name
   description = "Name of EKS cluster name"
 }
+
+output "irsa" {
+  value = {
+    us_east_1 = module.us_east_1.irsa
+    us_west_2 = module.us_west_2.irsa
+    eu_west_1 = module.eu_west_1.irsa
+  }
+  description = "IAM Role service account attributes for AWS LB controller"
+}

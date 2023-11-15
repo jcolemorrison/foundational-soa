@@ -76,7 +76,7 @@ variable "hcp_consul_tier" {
 variable "hcp_consul_version" {
   type        = string
   description = "Minimum Consul version. Defaults to HCP recommendation."
-  default     = null
+  default     = "1.17.0"
 }
 
 variable "hcp_consul_public_endpoint" {

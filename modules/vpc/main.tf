@@ -17,7 +17,7 @@ resource "aws_internet_gateway" "igw" {
 
 ## Egress Only Gateway (IPv6)
 resource "aws_egress_only_internet_gateway" "eigw" {
-  count = var.ipv6_enabled ? 1 : 0
+  count  = var.ipv6_enabled ? 1 : 0
   vpc_id = aws_vpc.main.id
 }
 
@@ -73,7 +73,7 @@ resource "aws_route" "private_internet_access" {
 }
 
 resource "aws_route" "private_internet_access_ipv6" {
-  count = var.ipv6_enabled ? 1 : 0
+  count                       = var.ipv6_enabled ? 1 : 0
   route_table_id              = aws_route_table.private.id
   destination_ipv6_cidr_block = "::/0"
   egress_only_gateway_id      = aws_egress_only_internet_gateway.eigw[0].id
@@ -81,8 +81,8 @@ resource "aws_route" "private_internet_access_ipv6" {
 
 ## Public Subnets
 resource "aws_subnet" "public" {
-  count = var.public_subnet_count
-  vpc_id = aws_vpc.main.id
+  count                   = var.public_subnet_count
+  vpc_id                  = aws_vpc.main.id
   cidr_block              = local.public_cidr_blocks[count.index]
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
@@ -91,17 +91,25 @@ resource "aws_subnet" "public" {
   ipv6_cidr_block                 = var.ipv6_enabled ? cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, count.index) : null
   assign_ipv6_address_on_creation = var.ipv6_enabled ? true : false
 
-  tags = merge({ "Name" = "${var.name}-public-${data.aws_availability_zones.available.names[count.index]}" }, local.tags)
+  tags = merge(
+    { "Name" = "${var.name}-public-${data.aws_availability_zones.available.names[count.index]}" },
+    local.tags,
+    { "kubernetes.io/role/elb" = 1 }
+  )
 }
 
 ## Private Subnets
 resource "aws_subnet" "private" {
-  count = var.private_subnet_count
-  vpc_id = aws_vpc.main.id
-  cidr_block = local.private_cidr_blocks[count.index]
+  count             = var.private_subnet_count
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = local.private_cidr_blocks[count.index]
   availability_zone = data.aws_availability_zones.available.names[count.index]
 
-  tags = merge({ "Name" = "${var.name}-private-${data.aws_availability_zones.available.names[count.index]}" }, local.tags)
+  tags = merge(
+    { "Name" = "${var.name}-private-${data.aws_availability_zones.available.names[count.index]}" },
+    local.tags,
+    { "kubernetes.io/role/internal-elb" = 1 }
+  )
 }
 
 ## Public Subnet Route Associations

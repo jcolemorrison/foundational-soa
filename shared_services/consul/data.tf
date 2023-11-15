@@ -21,7 +21,6 @@ data "terraform_remote_state" "shared_services_vault" {
 }
 
 locals {
-  consul_ca_token = data.terraform_remote_state.shared_services_vault.outputs.consul_ca_token
   vault = {
     "us_east_1" = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault
     "us_west_2" = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.vault

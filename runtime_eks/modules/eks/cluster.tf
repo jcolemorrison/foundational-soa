@@ -103,17 +103,6 @@ data "tls_certificate" "cluster" {
   url = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
 }
 
-resource "aws_iam_openid_connect_provider" "oidc_provider" {
-  client_id_list  = ["sts.${data.aws_partition.current.dns_suffix}"]
-  thumbprint_list = [data.tls_certificate.cluster.certificates.0.sha1_fingerprint]
-  url             = aws_eks_cluster.cluster.identity.0.oidc.0.issuer
-
-  tags = merge(
-    { Name = "${var.name}-eks-irsa" },
-    local.tags
-  )
-}
-
 resource "aws_eks_cluster" "cluster" {
   name     = var.name
   role_arn = aws_iam_role.cluster.arn

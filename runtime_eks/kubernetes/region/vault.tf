@@ -19,9 +19,9 @@ resource "helm_release" "vault" {
 }
 
 resource "helm_release" "vault_operator" {
-  depends_on       = [helm_release.vault]
-  name             = "vault-secrets-operator"
-  namespace        = var.vault_namespace
+  depends_on = [helm_release.vault]
+  name       = "vault-secrets-operator"
+  namespace  = var.vault_namespace
 
   repository = "https://helm.releases.hashicorp.com"
   chart      = "vault-secrets-operator"
