@@ -9,7 +9,7 @@ output "hvn_cidr_block" {
 }
 
 output "hvn_self_link" {
-  value = hcp_hvn.hvn.self_link
+  value       = hcp_hvn.hvn.self_link
   description = "Self link of HashiCorp Virtual Network for peering."
 }
 
@@ -22,7 +22,7 @@ output "hcp_consul" {
     datacenter      = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.datacenter : ""
     address         = var.hcp_consul_name != null && var.hcp_consul_public_endpoint ? hcp_consul_cluster.consul.0.consul_public_endpoint_url : ""
     private_address = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.consul_private_endpoint_url : ""
-    token           = var.hcp_vault_name != null ? hcp_consul_cluster_root_token.consul.0.secret_id : ""
+    token           = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.consul_root_token_secret_id : ""
   }
   description = "HCP Consul cluster details"
   sensitive   = true

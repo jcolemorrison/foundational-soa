@@ -58,8 +58,3 @@ resource "hcp_consul_cluster" "consul" {
   auto_hvn_to_hvn_peering = var.hcp_consul_peering
   primary_link            = var.hcp_consul_primary_link
 }
-
-resource "hcp_consul_cluster_root_token" "consul" {
-  count      = var.hcp_consul_name != null ? 1 : 0
-  cluster_id = hcp_consul_cluster.consul.0.cluster_id
-}

@@ -3,8 +3,10 @@ resource "consul_config_entry" "proxy_defaults_us_east_1" {
   name = "global"
 
   config_json = jsonencode({
-    AccessLogs = {}
-    Expose     = {}
+    AccessLogs = {
+      Enabled = true
+    }
+    Expose = {}
     MeshGateway = {
       Mode = "local"
     }
@@ -19,8 +21,10 @@ resource "consul_config_entry" "proxy_defaults_us_west_2" {
   name = "global"
 
   config_json = jsonencode({
-    AccessLogs = {}
-    Expose     = {}
+    AccessLogs = {
+      Enabled = true
+    }
+    Expose = {}
     MeshGateway = {
       Mode = "local"
     }
@@ -35,8 +39,10 @@ resource "consul_config_entry" "proxy_defaults_eu_west_1" {
   name = "global"
 
   config_json = jsonencode({
-    AccessLogs = {}
-    Expose     = {}
+    AccessLogs = {
+      Enabled = true
+    }
+    Expose = {}
     MeshGateway = {
       Mode = "local"
     }

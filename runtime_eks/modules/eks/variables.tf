@@ -3,6 +3,18 @@ variable "name" {
   description = "Name of EKS cluster"
 }
 
+variable "namespace" {
+  type        = string
+  description = "Namespace of valid service account for IAM roles to authenticate to EKS"
+  default     = "kube-system"
+}
+
+variable "service_account" {
+  type        = string
+  description = "Name of valid service account for IAM roles to authenticate to EKS"
+  default     = "aws-load-balancer-controller"
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID of EKS cluster"
@@ -16,6 +28,12 @@ variable "private_subnet_ids" {
 variable "hcp_network_cidr_block" {
   type        = string
   description = "HCP network CIDR block for connection to HCP Consul"
+}
+
+variable "accessible_cidr_blocks" {
+  type        = list(string)
+  description = "List of routable CIDR blocks to allow Consul proxies to connect"
+  default     = []
 }
 
 variable "enable_default_eks_policy" {

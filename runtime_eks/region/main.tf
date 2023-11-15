@@ -34,6 +34,7 @@ module "eks" {
   vpc_id                 = module.network.vpc_id
   private_subnet_ids     = module.network.vpc_private_subnet_ids
   hcp_network_cidr_block = var.hcp_hvn_cidr_block
+  accessible_cidr_blocks = var.accessible_cidr_blocks
 
   remote_access = {
     ec2_ssh_key               = aws_key_pair.boundary.key_name
@@ -55,6 +56,35 @@ module "boundary_eks_hosts" {
   default_port          = 22
 
   depends_on = [module.eks, data.aws_instances.eks]
+}
+
+data "aws_lbs" "consul_api_gateway" {
+  tags = {
+    "elbv2.k8s.aws/cluster" = var.name
+    "service.k8s.aws/stack" = "consul/api-gateway"
+  }
+}
+
+data "aws_lb" "consul_api_gateway" {
+  for_each = toset(data.aws_lbs.consul_api_gateway.arns)
+  arn      = each.value
+}
+
+# Register EKS hosts to Boundary project scope
+module "boundary_eks_gateway" {
+  source = "../../modules/boundary/hosts"
+  count  = length(data.aws_lb.consul_api_gateway) > 0 ? 1 : 0
+
+  name_prefix = "${replace(var.region, "-", "_")}_eks_api_gateway"
+  description = "Consul API Gateway on EKS cluster in ${var.region}"
+  scope_id    = var.boundary_project_scope_id
+  target_ips  = { for k, v in data.aws_lb.consul_api_gateway : v.name => v.dns_name }
+
+  ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  default_port          = 80
+
+  depends_on = [module.eks, data.aws_lb.consul_api_gateway]
 }
 
 # Register worker into Boundary after its token is stored in Vault

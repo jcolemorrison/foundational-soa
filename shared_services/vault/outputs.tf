@@ -20,18 +20,24 @@ output "boundary_worker_token" {
 
 output "consul_ca" {
   value = {
-    namespace    = vault_namespace.consul.id
-    pki_path     = vault_mount.consul_connect_pki.path
-    pki_int_path = vault_mount.consul_connect_pki_int.path
-  }
-  description = "Consul service mesh certificate paths in Vault"
-}
-
-output "consul_ca_token" {
-  value = {
-    "us_east_1" = vault_token.consul_ca_us_east_1.client_token
-    "us_west_2" = vault_token.consul_ca_us_west_2.client_token
-    "eu_west_1" = vault_token.consul_ca_eu_west_1.client_token
+    "us_east_1" = {
+      namespace    = vault_namespace.consul.id
+      pki_path     = local.consul_service_mesh_root_ca_path
+      pki_int_path = module.consul_ca_int_us_east_1.pki_int_path
+      token        = module.consul_ca_int_us_east_1.vault_token
+    }
+    "us_west_2" = {
+      namespace    = vault_namespace.consul.id
+      pki_path     = local.consul_service_mesh_root_ca_path
+      pki_int_path = module.consul_ca_int_us_west_2.pki_int_path
+      token        = module.consul_ca_int_us_west_2.vault_token
+    }
+    "eu_west_1" = {
+      namespace    = vault_namespace.consul.id
+      pki_path     = local.consul_service_mesh_root_ca_path
+      pki_int_path = module.consul_ca_int_eu_west_1.pki_int_path
+      token        = module.consul_ca_int_eu_west_1.vault_token
+    }
   }
   sensitive   = true
   description = "Consul service mesh CA worker tokens for Vault"
