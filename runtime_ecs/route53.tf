@@ -12,4 +12,5 @@ resource "aws_route53_record" "subdomain" {
   type    = "NS"
   ttl     = "30"
   records = aws_route53_zone.subdomain.name_servers
+  allow_overwrite = true
 }
