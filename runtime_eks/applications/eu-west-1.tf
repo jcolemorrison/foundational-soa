@@ -120,7 +120,7 @@ resource "kubernetes_manifest" "deployment_database" {
   provider = kubernetes.eu_west_1
 }
 
-resource "kubernetes_manifest" "exportedservices_default" {
+resource "kubernetes_manifest" "exportedservices_default_eu_west_1" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ExportedServices"

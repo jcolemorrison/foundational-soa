@@ -146,3 +146,54 @@ resource "kubernetes_manifest" "serviceintentions_database" {
 
   provider = kubernetes.us_west_2
 }
+
+resource "kubernetes_manifest" "exportedservices_default_us_west_2" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ExportedServices"
+    "metadata" = {
+      "name"      = "default"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "services" = [
+        {
+          "consumers" = [
+            {
+              "peer" = "prod-us-east-1-default"
+            },
+          ]
+          "name" = "application"
+        },
+      ]
+    }
+  }
+
+
+  provider = kubernetes.us_west_2
+}
+
+resource "kubernetes_manifest" "serviceintentions_application_peered" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceIntentions"
+    "metadata" = {
+      "name"      = "application"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "destination" = {
+        "name" = "application"
+      }
+      "sources" = [
+        {
+          "action" = "allow"
+          "name"   = "web"
+          "peer"   = "prod-us-east-1-default"
+        },
+      ]
+    }
+  }
+
+  provider = kubernetes.us_west_2
+}
