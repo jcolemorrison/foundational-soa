@@ -52,7 +52,7 @@ spec:
         - name: "LISTEN_ADDR"
           value: "0.0.0.0:9090"
         - name: "UPSTREAM_URIS"
-          value: "http://database.virtual.prod-eu-west-1.consul"
+          value: "http://database.virtual.prod-eu-west-1-default.consul"
         - name: "NAME"
           value: "application-us-west-2"
         - name: "MESSAGE"

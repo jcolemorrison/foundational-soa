@@ -64,7 +64,7 @@ spec:
   services:
     - name: database
       consumers:
-      - peer: prod-us-west-2
+      - peer: prod-us-west-2-default
 ---
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: ServiceIntentions
@@ -76,4 +76,4 @@ spec:
   sources:
    - name: application
      action: allow
-     peer: prod-us-west-2
+     peer: prod-us-west-2-default
