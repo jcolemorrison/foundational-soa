@@ -64,4 +64,11 @@ module "ecs_api" {
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
   consul_server_hosts = var.consul_server_hosts
+
+  http_config = {
+    port = 443
+  }
+  grpc_config = {
+    port = 8502
+  }
 }
