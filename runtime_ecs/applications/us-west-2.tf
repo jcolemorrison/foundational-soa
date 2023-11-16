@@ -28,7 +28,7 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
     # Name = "default"
     Services = [
       {
-        Name = "${local.us_west_2}-ecs-upstream"
+        Name = "ecs-upstream"
         Consumers = [
           {
             SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
@@ -45,34 +45,34 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
 
 resource "consul_config_entry" "us_west_2_api_to_upstreams" {
   kind = "service-intentions"
-  name = "${local.us_west_2}-ecs-upstream"
+  name = "ecs-upstream"
   namespace = "default"
   partition = "ecs"
   config_json = jsonencode({
     Sources = [
+      # {
+      #   Name = "${local.us_east_1}-ecs-api"
+      #   Action = "allow"
+      #   Peer = "${local.dc_us_east_1}-ecs"
+      #   Namespace = "default"
+      #   # Partition = "ecs"
+      #   # SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
+      # },
       {
-        Name = "${local.us_east_1}-ecs-api"
-        Action = "allow"
-        Peer = "${local.dc_us_east_1}-ecs"
-        Namespace = "default"
-        # Partition = "ecs"
-        # SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
-      },
-      {
-        Name = "${local.us_west_2}-ecs-api"
+        Name = "ecs-api"
         Action = "allow"
         # Peer = "prod-${local.us_west_2}-ecs"
         Namespace = "default"
         # Partition = "ecs"
         SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
-      },
-      {
-        Name = "${local.eu_west_1}-ecs-api"
-        Action = "allow"
-        Peer = "${local.dc_eu_west_1}-ecs"
-        Namespace = "default"
-        # Partition = "ecs"
       }
+      # {
+      #   Name = "${local.eu_west_1}-ecs-api"
+      #   Action = "allow"
+      #   Peer = "${local.dc_eu_west_1}-ecs"
+      #   Namespace = "default"
+      #   # Partition = "ecs"
+      # }
     ]
   })
 
