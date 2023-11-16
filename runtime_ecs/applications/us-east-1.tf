@@ -54,23 +54,23 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
   provider = consul.us_east_1
 }
 
-resource "consul_config_entry" "us_east_1_api_to_us_west_2_upstreams" {
-  kind = "service-intentions"
-  name = "${local.us_west_2}-ecs-upstream"
-  namespace = "default"
-  partition = "ecs"
-  config_json = jsonencode({
-    Sources = [
-      {
-        Name = "${local.us_east_1}-ecs-api"
-        Action = "allow"
-        # Peer = "prod-${local.us_east_1}-ecs"
-        Namespace = "default"
-        # Partition = "ecs"
-        SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
-      }
-    ]
-  })
+# resource "consul_config_entry" "us_east_1_api_to_us_west_2_upstreams" {
+#   kind = "service-intentions"
+#   name = "${local.us_west_2}-ecs-upstream"
+#   namespace = "default"
+#   partition = "ecs"
+#   config_json = jsonencode({
+#     Sources = [
+#       {
+#         Name = "${local.us_east_1}-ecs-api"
+#         Action = "allow"
+#         # Peer = "prod-${local.us_east_1}-ecs"
+#         Namespace = "default"
+#         # Partition = "ecs"
+#         SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
+#       }
+#     ]
+#   })
 
-  provider = consul.us_east_1
-}
+#   provider = consul.us_east_1
+# }
