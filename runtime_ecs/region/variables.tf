@@ -56,7 +56,7 @@ variable "name" {
 variable "max_container_instances" {
   type = number
   description = "Maximum number of EC2 instances for the ECS Cluster."
-  default = 6
+  default = 3
 }
 
 variable "min_container_instances" {
@@ -116,7 +116,7 @@ variable "api_deployment_maximum_percent" {
 variable "api_task_max_count" {
   type = number
   description = "maximum number of tasks allowed in the ECS api service"
-  default = 15
+  default = 6
 }
 
 variable "api_task_min_count" {
@@ -146,7 +146,7 @@ variable "upstream_deployment_maximum_percent" {
 variable "upstream_task_max_count" {
   type = number
   description = "maximum number of tasks allowed in the ECS upstream service"
-  default = 15
+  default = 6
 }
 
 variable "upstream_task_min_count" {
