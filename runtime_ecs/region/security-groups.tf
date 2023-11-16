@@ -50,6 +50,27 @@ resource "aws_security_group_rule" "consul_client_allow_inbound_HCP_8301_udp" {
   description       = "Allow UDP traffic from HCP with this security group."
 }
 
+// Allow Gossip from other Clients in different runtimes
+resource "aws_security_group_rule" "consul_client_allow_inbound_runtimes_8301_tcp" {
+  security_group_id = aws_security_group.consul_client.id
+  type              = "ingress"
+  protocol          = "tcp"
+  cidr_blocks       = var.accessible_cidr_blocks
+  from_port         = 8301
+  to_port           = 8301
+  description       = "Allow TCP traffic from resources in accessible cidr blocks."
+}
+
+resource "aws_security_group_rule" "consul_client_allow_inbound_runtimes_8301_udp" {
+  security_group_id = aws_security_group.consul_client.id
+  type              = "ingress"
+  protocol          = "udp"
+  cidr_blocks       = var.accessible_cidr_blocks
+  from_port         = 8301
+  to_port           = 8301
+  description       = "Allow UDP traffic from resources in accessible cidr blocks."
+}
+
 // Required to allow the proxies to contact each other
 resource "aws_security_group_rule" "consul_client_allow_inbound_self_20000" {
   security_group_id = aws_security_group.consul_client.id
