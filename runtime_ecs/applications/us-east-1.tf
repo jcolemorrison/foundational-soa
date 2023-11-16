@@ -9,8 +9,8 @@ resource "consul_config_entry" "us_east_1_ecs_sameness_group" {
     DefaultForFailover = true
     IncludeLocal       = true
     Members = [
-      { Peer = "${local.us_west_2}-ecs" },
-      { Peer = "${local.eu_west_1}-ecs" }
+      { Peer = "${local.dc_us_west_2}-ecs" },
+      { Peer = "${local.dc_eu_west_1}-ecs" }
     ]
   })
 
@@ -36,14 +36,14 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
       {
         Name = "${local.us_west_2}-ecs-api"
         Action = "allow"
-        Peer = "prod-${local.us_west_2}-ecs" # Format = "{peer}-{partition}" i.e. "prod-us-west-2-ecs" where "prod-us-west-2" = peer and "ecs" = partition
+        Peer = "${local.dc_us_west_2}-ecs" # Format = "{peer}-{partition}" i.e. "prod-us-west-2-ecs" where "prod-us-west-2" = peer and "ecs" = partition
         Namespace = "default"
         # Partition = "ecs"
       },
       {
         Name = "${local.eu_west_1}-ecs-api"
         Action = "allow"
-        Peer = "prod-${local.eu_west_1}-ecs"
+        Peer = "${local.dc_eu_west_1}-ecs"
         Namespace = "default"
         # Partition = "ecs"
       }
