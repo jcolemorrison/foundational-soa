@@ -262,3 +262,23 @@ variable "boundary_project_scope_id" {
   type        = string
   description = "Boundary project scope ID for EKS runtime"
 }
+
+## Test Bastion
+
+variable "test_bastion_enabled" {
+  type = bool
+  description = "whether or not to deploy a test bastion"
+  default = false
+}
+
+variable "test_bastion_keypair" {
+  type = string
+  description = "test bastion keypair"
+  default = null
+}
+
+variable "test_bastion_cidr_blocks" {
+  type = list(string)
+  description = "test bastion cidr blocks"
+  default = []
+}
