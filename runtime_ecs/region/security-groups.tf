@@ -87,8 +87,8 @@ resource "aws_security_group_rule" "consul_client_allow_inbound_runtimes_20000" 
   type              = "ingress"
   protocol          = "tcp"
   cidr_blocks       = var.accessible_cidr_blocks
-  from_port         = 20000
-  to_port           = 20000
+  from_port         = 0
+  to_port           = 65535
   description       = "Allow Proxy traffic from resources in accessible cidr blocks."
 }
 
