@@ -85,6 +85,11 @@ variable "scaling_target_capacity_size" {
 
 ## ECS
 
+variable "ecs_service_role" {
+  type = string
+  description = "ARN of service role"
+}
+
 variable "execute_command_policy" {
   type = string
   description = "ARN of policy document to execute commands for consul submodules"
@@ -108,11 +113,6 @@ variable "api_deployment_maximum_percent" {
   default = 300
 }
 
-variable "ecs_service_role" {
-  type = string
-  description = "ARN of service role"
-}
-
 variable "api_task_max_count" {
   type = number
   description = "maximum number of tasks allowed in the ECS api service"
@@ -122,6 +122,36 @@ variable "api_task_max_count" {
 variable "api_task_min_count" {
   type = number
   description = "minimum number of tasks allowed in the ECS api service"
+  default = 3
+}
+
+variable "upstream_desired_count" {
+  type = number
+  description = "Desired number of upstream tasks deployed to cluster"
+  default = 3
+}
+
+variable "upstream_deployment_minimum_healthy_percent" {
+  type = number
+  description = "Minimum percent relative to upstream_desired_count number of tasks for service to be considered healthy"
+  default = 100
+}
+
+variable "upstream_deployment_maximum_percent" {
+  type = number
+  description = "Maximum percent relative to upstream_desired_count number of tasks for service to be considered healthy"
+  default = 300
+}
+
+variable "upstream_task_max_count" {
+  type = number
+  description = "maximum number of tasks allowed in the ECS upstream service"
+  default = 15
+}
+
+variable "upstream_task_min_count" {
+  type = number
+  description = "minimum number of tasks allowed in the ECS upstream service"
   default = 3
 }
 

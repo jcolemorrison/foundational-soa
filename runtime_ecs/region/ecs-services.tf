@@ -38,6 +38,41 @@ resource "aws_ecs_service" "ecs_api" {
   }
 }
 
+## ECS Upstream Service
+
+resource "aws_ecs_service" "ecs_upstream" {
+  name = "ecs-upstream"
+  cluster = aws_ecs_cluster.main.arn
+  desired_count = var.upstream_desired_count
+  deployment_minimum_healthy_percent = var.upstream_deployment_minimum_healthy_percent
+  deployment_maximum_percent = var.upstream_deployment_maximum_percent
+  # iam_role = var.ecs_service_role # service linked role exists
+  enable_execute_command = true
+  launch_type = "EC2"
+  propagate_tags = "TASK_DEFINITION"
+  task_definition = module.ecs_upstream.task_definition_arn
+
+  network_configuration {
+    subnets = module.network.vpc_private_subnet_ids
+    security_groups = [ aws_security_group.consul_client.id ]
+  }
+
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "attribute:ecs.availability-zone"
+  }
+  
+  ordered_placement_strategy {
+    type  = "binpack"
+    field = "memory"
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
+
+
 module "ecs_controller" {
   source = "hashicorp/consul-ecs/aws//modules/controller"
   version = "0.7.0"
