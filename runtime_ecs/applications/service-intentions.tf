@@ -28,4 +28,6 @@ resource "consul_config_entry" "name" {
       }
     ]
   })
+
+  provider = consul.us_east_1
 }
