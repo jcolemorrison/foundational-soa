@@ -99,7 +99,7 @@ module "ecs_upstream" {
       name = "upstream"
       image = "ghcr.io/nicholasjackson/fake-service:v0.26.0"
       cpu = 0 # take up proportional cpu
-      essential = false
+      essential = true
 
       portMappings = [
         {
