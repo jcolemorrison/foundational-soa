@@ -8,23 +8,23 @@ resource "consul_config_entry" "name" {
       {
         Name = "${local.us_east_1}-ecs-upstream"
         Action = "allow"
-        Peer = "prod-${local.us_east_1}"
+        Peer = "prod-${local.us_east_1}-ecs"
         Namespace = "default"
-        Partition = "ecs"
+        # Partition = "ecs"
       },
       {
         Name = "${local.us_west_2}-ecs-upstream"
         Action = "allow"
-        Peer = "prod-${local.us_west_2}"
+        Peer = "prod-${local.us_west_2}-ecs"
         Namespace = "default"
-        Partition = "ecs"
+        # Partition = "ecs"
       },
       {
         Name = "${local.eu_west_1}-ecs-upstream"
         Action = "allow"
-        Peer = "prod-${local.eu_west_1}"
+        Peer = "prod-${local.eu_west_1}-ecs"
         Namespace = "default"
-        Partition = "ecs"
+        # Partition = "ecs"
       }
     ]
   })
