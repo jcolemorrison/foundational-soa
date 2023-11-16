@@ -51,7 +51,7 @@ module "ecs_api" {
 
   upstreams = [
     {
-      destinationName = "${var.region}-ecs-upstream" #family name
+      destinationName = "ecs-upstream" #consul service name
       localBindPort = 1234
     }
   ]
