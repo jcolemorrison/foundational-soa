@@ -75,6 +75,7 @@ module "ecs_api" {
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
   consul_server_hosts = var.consul_server_hosts
+  consul_service_name = "ecs-api"
 
   http_config = {
     port = 443
@@ -154,6 +155,7 @@ module "ecs_upstream" {
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
   consul_server_hosts = var.consul_server_hosts
+  consul_service_name = "ecs-upstream"
 
   http_config = {
     port = 443

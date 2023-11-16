@@ -6,7 +6,7 @@ resource "consul_config_entry" "us_east_1_ecs_sameness_group" {
   partition = "ecs"
 
   config_json = jsonencode({
-    DefaultForFailover = true
+    DefaultForFailover = false
     IncludeLocal       = true
     Members = [
       { Peer = "${local.dc_us_west_2}-ecs" },
@@ -30,7 +30,7 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
         Name = "${local.us_east_1}-ecs-api"
         Action = "allow"
         # Peer = "prod-${local.us_east_1}-ecs"
-        # Namespace = "default"
+        Namespace = "default"
         # Partition = "ecs"
         SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
       },
@@ -55,23 +55,15 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
   provider = consul.us_east_1
 }
 
-# resource "consul_config_entry" "us_east_1_api_to_us_west_2_upstreams" {
-#   kind = "service-intentions"
-#   name = "${local.us_west_2}-ecs-upstream"
-#   namespace = "default"
-#   partition = "ecs"
-#   config_json = jsonencode({
-#     Sources = [
-#       {
-#         Name = "${local.us_east_1}-ecs-api"
-#         Action = "allow"
-#         # Peer = "prod-${local.us_east_1}-ecs"
-#         Namespace = "default"
-#         # Partition = "ecs"
-#         SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
-#       }
-#     ]
-#   })
+## Service Resolvers
 
-#   provider = consul.us_east_1
-# }
+resource "consul_config_entry_service_resolver" "us_east_1_upstreams_failover" {
+  kind = "service-resolver"
+  name = "${local.us_east_1}-ecs-upstream" # name of service this applies to, despite inaccurate docs
+  namespace = "default"
+  partition = "ecs"
+  failover {
+    subset_name = "*"
+    
+  }
+}
