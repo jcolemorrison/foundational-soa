@@ -30,8 +30,9 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
         Name = "${local.us_east_1}-ecs-api"
         Action = "allow"
         # Peer = "prod-${local.us_east_1}-ecs"
-        Namespace = "default"
-        Partition = "ecs"
+        # Namespace = "default"
+        # Partition = "ecs"
+        SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
       },
       {
         Name = "${local.us_west_2}-ecs-api"
