@@ -54,7 +54,11 @@ locals {
     {
       "name"  = "MESSAGE"
       "value" = module.static.message
-    }
+    },
+    {
+      "name"  = "ERROR_RATE"
+      "value" = var.error_rate
+    },
   ]
   env_vars = var.upstream_uris != "" ? concat(local.base_env_vars, [{
     "name"  = "UPSTREAM_URIS"

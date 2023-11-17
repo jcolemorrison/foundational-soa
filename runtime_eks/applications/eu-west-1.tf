@@ -4,6 +4,8 @@ module "fake_service_eu_west_1" {
   region    = "eu-west-1"
   namespace = var.namespace
 
+  peer_for_database_failover = local.peers.us_west_2
+
   providers = {
     kubernetes = kubernetes.eu_west_1
   }
@@ -31,31 +33,6 @@ resource "kubernetes_manifest" "exported_services_default_eu_west_1" {
     }
   }
 
-
-  provider = kubernetes.eu_west_1
-}
-
-resource "kubernetes_manifest" "service_intentions_database_peered" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceIntentions"
-    "metadata" = {
-      "name"      = "database"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "destination" = {
-        "name" = "database"
-      }
-      "sources" = [
-        {
-          "action" = "allow"
-          "name"   = "application"
-          "peer"   = local.peers.us_west_2
-        },
-      ]
-    }
-  }
 
   provider = kubernetes.eu_west_1
 }

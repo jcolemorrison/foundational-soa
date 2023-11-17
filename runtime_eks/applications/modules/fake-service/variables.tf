@@ -29,3 +29,9 @@ variable "upstream_uris" {
   type        = string
   description = "Comma-delimited set of upstreams URIs for service to connect"
 }
+
+variable "error_rate" {
+  type        = number
+  description = "Error rate as a percentage to pass onto the application"
+  default     = 0.0
+}

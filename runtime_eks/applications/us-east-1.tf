@@ -1,8 +1,9 @@
 module "fake_service_us_east_1" {
   source = "./region"
 
-  region    = "us-east-1"
-  namespace = var.namespace
+  region                    = "us-east-1"
+  namespace                 = var.namespace
+  test_failover_application = true
 
   providers = {
     kubernetes = kubernetes.us_east_1

@@ -1,8 +1,11 @@
 module "fake_service_us_west_2" {
   source = "./region"
 
-  region    = "us-west-2"
-  namespace = var.namespace
+  region                 = "us-west-2"
+  namespace              = var.namespace
+  test_failover_database = false
+
+  peer_for_application_failover = local.peers.us_east_1
 
   providers = {
     kubernetes = kubernetes.us_west_2
@@ -26,31 +29,6 @@ resource "kubernetes_manifest" "exported_services_default_us_west_2" {
             },
           ]
           "name" = "application"
-        },
-      ]
-    }
-  }
-
-  provider = kubernetes.us_west_2
-}
-
-resource "kubernetes_manifest" "service_intentions_application_peered" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceIntentions"
-    "metadata" = {
-      "name"      = "application"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "destination" = {
-        "name" = "application"
-      }
-      "sources" = [
-        {
-          "action" = "allow"
-          "name"   = "web"
-          "peer"   = local.peers.us_east_1
         },
       ]
     }
