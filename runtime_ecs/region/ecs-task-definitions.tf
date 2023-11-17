@@ -81,9 +81,9 @@ module "ecs_api" {
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-api"
 
-  # http_config = {
-  #   port = 443
-  # }
+  http_config = {
+    port = 443
+  }
   grpc_config = {
     port = 8502
   }
@@ -162,9 +162,9 @@ module "ecs_upstream" {
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-upstream"
 
-  # http_config = {
-  #   port = 443
-  # }
+  http_config = {
+    port = 443
+  }
   grpc_config = {
     port = 8502
   }

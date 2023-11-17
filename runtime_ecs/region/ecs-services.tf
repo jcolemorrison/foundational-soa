@@ -101,12 +101,12 @@ module "ecs_controller" {
   consul_server_hosts = var.consul_server_hosts
   tls = true
 
-  # http_config = {
-  #   port = 443
-  # }
-  # grpc_config = {
-  #   port = 8502
-  # }
+  http_config = {
+    port = 443
+  }
+  grpc_config = {
+    port = 8502
+  }
 }
 
 ## AutoScaling for Tasks
