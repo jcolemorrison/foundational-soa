@@ -36,6 +36,22 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
         Namespace = "default"
         # Partition = "ecs"
         # SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
+      },
+      {
+        Name = "ecs-api"
+        Action = "allow"
+        # Peer = "${local.dc_us_west_2}-ecs"
+        Namespace = "default"
+        Partition = "ecs"
+        # SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
+      },
+      {
+        Name = "ecs-api"
+        Action = "allow"
+        Peer = "${local.dc_eu_west_1}-ecs"
+        Namespace = "default"
+        # Partition = "ecs"
+        # SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
       }
     ]
   })
