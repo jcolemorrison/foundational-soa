@@ -180,9 +180,9 @@ module "mesh_gateway" {
   # http_config = {
   #   port = 443
   # }
-  grpc_config = {
-    port = 8502
-  }
+  # grpc_config = {
+  #   port = 8502
+  # }
 
   # lb_enabled = true
   # lb_subnets = module.network.vpc_public_subnet_ids
