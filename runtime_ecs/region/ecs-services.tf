@@ -173,4 +173,13 @@ module "mesh_gateway" {
   launch_type = "EC2"
   lb_create_security_group = false
   tls = true
+
+  log_configuration = {
+    logDriver = "awslogs"
+    options = {
+      awslogs-group         = aws_cloudwatch_log_group.mesh_gateway.name
+      awslogs-region        = var.region
+      awslogs-stream-prefix = "mesh-gatway-"
+    }
+  }
 }
