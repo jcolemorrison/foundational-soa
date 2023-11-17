@@ -158,7 +158,7 @@ module "mesh_gateway" {
 
   consul_server_hosts = var.consul_server_hosts
   ecs_cluster_arn = aws_ecs_cluster.main.arn
-  family = "mesh-gateway"
+  family = "${var.region}-mesh-gateway"
   kind = "mesh-gateway"
   security_groups = [ aws_security_group.consul_client.id ]
   subnets = module.network.vpc_private_subnet_ids
