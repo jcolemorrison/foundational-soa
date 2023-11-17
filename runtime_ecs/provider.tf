@@ -66,3 +66,4 @@ provider "vault" {
 #   namespace = local.consul_ca_us_east_1.namespace # admin/consul/ for all regions
 #   token     = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.token
 # }
+
