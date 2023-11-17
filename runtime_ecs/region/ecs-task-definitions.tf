@@ -39,7 +39,7 @@ module "ecs_api" {
         },
         {
           name = "MESSAGE"
-          value = "Hello from the ecs api in ${var.region}"
+          value = "Hello from the ecs api in ${var.region} change"
         },
         {
           name = "UPSTREAM_URIS"
