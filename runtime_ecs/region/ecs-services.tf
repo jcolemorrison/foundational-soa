@@ -173,7 +173,7 @@ module "mesh_gateway" {
   consul_partition       = var.consul_admin_partition
   launch_type            = "EC2"
 
-  # lb_create_security_group = false
+  lb_create_security_group = false
 
   # tls = true
 
