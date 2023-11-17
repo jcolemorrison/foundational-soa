@@ -171,15 +171,19 @@ module "mesh_gateway" {
   consul_image = "public.ecr.aws/hashicorp/consul-enterprise:1.17-ent"
   consul_partition = var.consul_admin_partition
   launch_type = "EC2"
-  lb_create_security_group = false
+  # lb_create_security_group = false
   tls = true
 
-  http_config = {
-    port = 443
-  }
-  grpc_config = {
-    port = 8502
-  }
+  # http_config = {
+  #   port = 443
+  # }
+  # grpc_config = {
+  #   port = 8502
+  # }
+
+  lb_enabled = true
+  lb_subnets = module.network.vpc_public_subnet_ids
+  lb_vpc_id  = module.network.vpc_id
 
   log_configuration = {
     logDriver = "awslogs"
