@@ -58,4 +58,7 @@ locals {
   consul_us_east_1                 = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul
   consul_us_west_2                 = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul
   consul_eu_west_1                 = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul
+  consul_ca_us_east_1 = data.terraform_remote_state.shared_services_vault.outputs.consul_ca.us_east_1
+  consul_ca_us_west_2 = data.terraform_remote_state.shared_services_vault.outputs.consul_ca.us_west_2
+  consul_ca_eu_west_1 = data.terraform_remote_state.shared_services_vault.outputs.consul_ca.eu_west_1
 }
