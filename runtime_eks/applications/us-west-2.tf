@@ -46,7 +46,7 @@ resource "kubernetes_manifest" "service_resolver_application_to_database" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "connectTimeout" = "5s"
+      "connectTimeout" = "30s"
       "failover" = {
         "*" = {
           "targets" = [

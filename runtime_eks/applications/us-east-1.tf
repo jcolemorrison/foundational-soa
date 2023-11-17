@@ -3,7 +3,7 @@ module "fake_service_us_east_1" {
 
   region                    = "us-east-1"
   namespace                 = var.namespace
-  test_failover_application = true
+  test_failover_application = false
 
   providers = {
     kubernetes = kubernetes.us_east_1
@@ -19,7 +19,7 @@ resource "kubernetes_manifest" "service_resolver_web_to_application" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "connectTimeout" = "5s"
+      "connectTimeout" = "30s"
       "failover" = {
         "*" = {
           "targets" = [
