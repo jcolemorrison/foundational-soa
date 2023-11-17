@@ -1,10 +1,8 @@
-module "database_eu_west_1" {
-  source = "./modules/fake-service"
+module "fake_service_eu_west_1" {
+  source = "./region"
 
-  region        = "eu-west-1"
-  name          = "database"
-  port          = local.service_ports.database
-  upstream_uris = ""
+  region    = "eu-west-1"
+  namespace = var.namespace
 
   providers = {
     kubernetes = kubernetes.eu_west_1

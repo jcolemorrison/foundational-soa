@@ -22,8 +22,6 @@ resource "kubernetes_manifest" "reference_grant" {
       ]
     }
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "http_route" {
@@ -63,21 +61,15 @@ resource "kubernetes_manifest" "http_route" {
       ]
     }
   }
-
-  provider = kubernetes.us_east_1
 }
 
-module "web_us_east_1" {
-  source = "./modules/fake-service"
+module "web" {
+  source = "../modules/fake-service"
 
-  region        = "us-east-1"
+  region        = var.region
   name          = "web"
   port          = local.service_ports.web
   upstream_uris = "http://application.virtual.consul"
-
-  providers = {
-    kubernetes = kubernetes.us_east_1
-  }
 }
 
 resource "kubernetes_manifest" "service_intentions_web" {
@@ -100,31 +92,4 @@ resource "kubernetes_manifest" "service_intentions_web" {
       ]
     }
   }
-
-  provider = kubernetes.us_east_1
-}
-
-resource "kubernetes_manifest" "service_resolver_application" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceResolver"
-    "metadata" = {
-      "name"      = "application"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "connectTimeout" = "5s"
-      "failover" = {
-        "*" = {
-          "targets" = [
-            {
-              "peer" = local.peers.us_west_2
-            },
-          ]
-        }
-      }
-    }
-  }
-
-  provider = kubernetes.us_east_1
 }

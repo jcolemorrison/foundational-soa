@@ -1,10 +1,8 @@
-module "application_us_west_2" {
-  source = "./modules/fake-service"
+module "fake_service_us_west_2" {
+  source = "./region"
 
-  region        = "us-west-2"
-  name          = "application"
-  port          = local.service_ports.application
-  upstream_uris = "http://database.virtual.consul"
+  region    = "us-west-2"
+  namespace = var.namespace
 
   providers = {
     kubernetes = kubernetes.us_west_2
@@ -61,7 +59,7 @@ resource "kubernetes_manifest" "service_intentions_application_peered" {
   provider = kubernetes.us_west_2
 }
 
-resource "kubernetes_manifest" "service_resolver_database" {
+resource "kubernetes_manifest" "service_resolver_application_to_database" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceResolver"
