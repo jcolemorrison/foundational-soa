@@ -154,8 +154,8 @@ resource "aws_appautoscaling_policy" "ecs_api_memory" {
 ## Consul Mesh Gateway
 
 module "mesh_gateway" {
-  source  = "github.com/jcolemorrison/terraform-aws-consul-ecs/tree/fix-cert-iam-execution-policy//modules/gateway-task"
-  version = "0.7.0"
+  source  = "github.com/jcolemorrison/terraform-aws-consul-ecs//modules/gateway-task?ref=fix-cert-iam-execution-policy"
+  # version = "0.7.0"
 
   consul_server_hosts = var.consul_server_hosts
   ecs_cluster_arn     = aws_ecs_cluster.main.arn
