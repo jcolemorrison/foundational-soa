@@ -1,7 +1,7 @@
 ## Role and Policies for Container (EC2) Instances
 
 resource "aws_iam_role" "container_instance" {
-  name_prefix        = "ecs-instance-"
+  name_prefix = "ecs-instance-"
   assume_role_policy = data.aws_iam_policy_document.container_instance_trust_policy.json
 }
 
@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "container_instance_trust_policy" {
 
 data "aws_iam_policy_document" "container_instance_permissions_policy" {
   statement {
-    sid    = "ContainerInstanceECS"
+    sid = "ContainerInstanceECS"
     effect = "Allow"
     actions = [
       "ec2:DescribeTags",
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "container_instance_permissions_policy" {
     resources = ["*"]
   }
   statement {
-    sid    = "ContainerInstanceLogging"
+    sid = "ContainerInstanceLogging"
     effect = "Allow"
     actions = [
       "logs:CreateLogGroup",
@@ -69,12 +69,12 @@ resource "aws_iam_instance_profile" "container_instance_profile" {
 
 resource "aws_iam_policy" "execute_command" {
   name_prefix = "ecs-execute-command"
-  policy      = data.aws_iam_policy_document.execute_command_permissions_policy.json
+  policy = data.aws_iam_policy_document.execute_command_permissions_policy.json
 }
 
 data "aws_iam_policy_document" "execute_command_permissions_policy" {
   statement {
-    sid    = "ExecuteCommandConsulModule"
+    sid = "ExecuteCommandConsulModule"
     effect = "Allow"
     actions = [
       "ssmmessages:CreateControlChannel",
@@ -89,7 +89,7 @@ data "aws_iam_policy_document" "execute_command_permissions_policy" {
 ## Role for ECS Services
 
 resource "aws_iam_role" "ecs_service" {
-  name_prefix        = "ecs-service-"
+  name_prefix = "ecs-service-"
   assume_role_policy = data.aws_iam_policy_document.container_instance_trust_policy.json
 }
 
@@ -99,8 +99,8 @@ data "aws_iam_policy_document" "ecs_service_policy" {
     effect  = "Allow"
 
     principals {
-      type        = "Service"
-      identifiers = ["ecs.amazonaws.com", ]
+      type = "Service"
+      identifiers = ["ecs.amazonaws.com",]
     }
   }
 }
@@ -113,8 +113,8 @@ resource "aws_iam_role_policy" "ecs_service_role_policy" {
 
 data "aws_iam_policy_document" "ecs_service_role_policy" {
   statement {
-    sid    = "ECSTaskManagement"
-    effect = "Allow"
+    sid = "ECSTaskManagement"
+    effect  = "Allow"
     actions = [
       "ec2:AttachNetworkInterface",
       "ec2:CreateNetworkInterface",
@@ -144,8 +144,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "AutoScaling"
-    effect = "Allow"
+    sid = "AutoScaling"
+    effect  = "Allow"
     actions = [
       "autoscaling:Describe*"
     ]
@@ -153,8 +153,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "AutoScalingManagement"
-    effect = "Allow"
+    sid = "AutoScalingManagement"
+    effect  = "Allow"
     actions = [
       "autoscaling:DeletePolicy",
       "autoscaling:PutScalingPolicy",
@@ -163,15 +163,15 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
     ]
     resources = ["*"]
     condition {
-      test     = "Null"
+      test = "Null"
       variable = "autoscaling:ResourceTag/AmazonECSManaged"
-      values   = ["false"]
+      values = ["false"]
     }
   }
 
   statement {
-    sid    = "AutoScalingPlanManagement"
-    effect = "Allow"
+    sid = "AutoScalingPlanManagement"
+    effect  = "Allow"
     actions = [
       "autoscaling-plans:CreateScalingPlan",
       "autoscaling-plans:DeleteScalingPlan",
@@ -181,8 +181,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "CWAlarmManagement"
-    effect = "Allow"
+    sid = "CWAlarmManagement"
+    effect  = "Allow"
     actions = [
       "cloudwatch:DeleteAlarms",
       "cloudwatch:DescribeAlarms",
@@ -192,8 +192,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "ECSTagging"
-    effect = "Allow"
+    sid = "ECSTagging"
+    effect  = "Allow"
     actions = [
       "ec2:CreateTags"
     ]
@@ -201,8 +201,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "CWLogGroupManagement"
-    effect = "Allow"
+    sid = "CWLogGroupManagement"
+    effect  = "Allow"
     actions = [
       "logs:CreateLogGroup",
       "logs:DescribeLogGroups",
@@ -212,8 +212,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "CWLogStreamManagement"
-    effect = "Allow"
+    sid = "CWLogStreamManagement"
+    effect  = "Allow"
     actions = [
       "logs:CreateLogStream",
       "logs:DescribeLogStreams",
@@ -223,8 +223,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "ExecuteCommandSessionManagement"
-    effect = "Allow"
+    sid = "ExecuteCommandSessionManagement"
+    effect  = "Allow"
     actions = [
       "ssm:DescribeSessions"
     ]
@@ -232,8 +232,8 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "ExecuteCommand"
-    effect = "Allow"
+    sid = "ExecuteCommand"
+    effect  = "Allow"
     actions = [
       "ssm:StartSession"
     ]
@@ -244,54 +244,54 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
   }
 
   statement {
-    sid    = "CloudMapResourceCreation"
-    effect = "Allow"
+    sid = "CloudMapResourceCreation"
+    effect  = "Allow"
     actions = [
       "servicediscovery:CreateHttpNamespace",
       "servicediscovery:CreateService"
     ]
     resources = ["*"]
     condition {
-      test     = "ForAllValues:StringEquals"
+      test = "ForAllValues:StringEquals"
       variable = "aws:TagKeys"
-      values   = ["AmazonECSManaged"]
+      values = ["AmazonECSManaged"]
     }
   }
 
   statement {
-    sid    = "CloudMapResourceTagging"
-    effect = "Allow"
+    sid = "CloudMapResourceTagging"
+    effect  = "Allow"
     actions = [
       "servicediscovery:TagResource"
     ]
     resources = ["*"]
     condition {
-      test     = "StringLike"
+      test = "StringLike"
       variable = "aws:RequestTag/AmazonECSManaged"
-      values   = ["*"]
+      values = ["*"]
     }
   }
 
   statement {
-    sid    = "CloudMapResourceDeletion"
-    effect = "Allow"
+    sid = "CloudMapResourceDeletion"
+    effect  = "Allow"
     actions = [
       "servicediscovery:DeleteService"
     ]
     resources = ["*"]
     condition {
-      test     = "Null"
+      test = "Null"
       variable = "aws:ResourceTag/AmazonECSManaged"
-      values   = ["*"]
+      values = ["*"]
     }
   }
 
   statement {
-    sid    = "CloudMapResourceDiscovery"
-    effect = "Allow"
+    sid = "CloudMapResourceDiscovery"
+    effect  = "Allow"
     actions = [
       "servicediscovery:DiscoverInstances",
-      "servicediscovery:DiscoverInstancesRevision"
+			"servicediscovery:DiscoverInstancesRevision"
     ]
     resources = ["*"]
   }

@@ -7,10 +7,10 @@ resource "aws_route53_zone" "subdomain" {
 }
 
 resource "aws_route53_record" "subdomain" {
-  zone_id         = aws_route53_zone.subdomain.zone_id
-  name            = local.subdomain
-  type            = "NS"
-  ttl             = "30"
-  records         = aws_route53_zone.subdomain.name_servers
+  zone_id = aws_route53_zone.subdomain.zone_id
+  name    = local.subdomain
+  type    = "NS"
+  ttl     = "30"
+  records = aws_route53_zone.subdomain.name_servers
   allow_overwrite = true
 }
