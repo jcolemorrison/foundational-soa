@@ -53,9 +53,9 @@ module "ecs_api" {
     {
       destinationName = "ecs-upstream" #consul service name
       localBindPort = 1234
-      meshGateway = {
-        mode = "local"
-      }
+      # meshGateway = {
+      #   mode = "local"
+      # }
     }
   ]
 
@@ -77,15 +77,16 @@ module "ecs_api" {
   consul_dataplane_image = var.consul_dataplane_image
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
+  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-api"
 
-  http_config = {
-    port = 443
-  }
-  grpc_config = {
-    port = 8502
-  }
+  # http_config = {
+  #   port = 443
+  # }
+  # grpc_config = {
+  #   port = 8502
+  # }
 }
 
 module "ecs_upstream" {
@@ -130,11 +131,11 @@ module "ecs_upstream" {
         {
           name = "MESSAGE"
           value = "Hello from the ecs upstream in ${var.region}"
-        },
-        {
-          name = "ERROR_RATE"
-          value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
         }
+        # {
+        #   name = "ERROR_RATE"
+        #   value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
+        # }
       ]
     }
   ]
@@ -157,13 +158,14 @@ module "ecs_upstream" {
   consul_dataplane_image = var.consul_dataplane_image
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
+  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-upstream"
 
-  http_config = {
-    port = 443
-  }
-  grpc_config = {
-    port = 8502
-  }
+  # http_config = {
+  #   port = 443
+  # }
+  # grpc_config = {
+  #   port = 8502
+  # }
 }

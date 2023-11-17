@@ -97,15 +97,16 @@ module "ecs_controller" {
   consul_bootstrap_token_secret_arn = aws_secretsmanager_secret.bootstrap_token.arn
   consul_partitions_enabled = true
   consul_partition = var.consul_admin_partition
+  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
   consul_server_hosts = var.consul_server_hosts
   tls = true
 
-  http_config = {
-    port = 443
-  }
-  grpc_config = {
-    port = 8502
-  }
+  # http_config = {
+  #   port = 443
+  # }
+  # grpc_config = {
+  #   port = 8502
+  # }
 }
 
 ## AutoScaling for Tasks
@@ -152,45 +153,45 @@ resource "aws_appautoscaling_policy" "ecs_api_memory" {
 
 ## Consul Mesh Gateway
 
-module "mesh_gateway" {
-  source = "hashicorp/consul-ecs/aws//modules/gateway-task"
-  version = "0.7.0"
+# module "mesh_gateway" {
+#   source = "hashicorp/consul-ecs/aws//modules/gateway-task"
+#   version = "0.7.0"
 
-  consul_server_hosts = var.consul_server_hosts
-  ecs_cluster_arn = aws_ecs_cluster.main.arn
-  family = "${var.region}-mesh-gateway"
-  kind = "mesh-gateway"
-  security_groups = [ aws_security_group.consul_client.id ]
-  subnets = module.network.vpc_private_subnet_ids
+#   consul_server_hosts = var.consul_server_hosts
+#   ecs_cluster_arn = aws_ecs_cluster.main.arn
+#   family = "${var.region}-mesh-gateway"
+#   kind = "mesh-gateway"
+#   security_groups = [ aws_security_group.consul_client.id ]
+#   subnets = module.network.vpc_private_subnet_ids
 
-  acls = true
-  additional_task_role_policies = [var.execute_command_policy]
-  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
-  consul_dataplane_image = var.consul_dataplane_image
-  consul_ecs_image = var.consul_ecs_image
-  consul_image = "public.ecr.aws/hashicorp/consul-enterprise:1.17-ent"
-  consul_partition = var.consul_admin_partition
-  launch_type = "EC2"
-  # lb_create_security_group = false
-  tls = true
+#   acls = true
+#   additional_task_role_policies = [var.execute_command_policy]
+#   consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
+#   consul_dataplane_image = var.consul_dataplane_image
+#   consul_ecs_image = var.consul_ecs_image
+#   consul_image = "public.ecr.aws/hashicorp/consul-enterprise:1.17-ent"
+#   consul_partition = var.consul_admin_partition
+#   launch_type = "EC2"
+#   # lb_create_security_group = false
+#   tls = true
 
-  http_config = {
-    port = 443
-  }
-  grpc_config = {
-    port = 8502
-  }
+#   http_config = {
+#     port = 443
+#   }
+#   grpc_config = {
+#     port = 8502
+#   }
 
-  lb_enabled = true
-  lb_subnets = module.network.vpc_public_subnet_ids
-  lb_vpc_id  = module.network.vpc_id
+#   lb_enabled = true
+#   lb_subnets = module.network.vpc_public_subnet_ids
+#   lb_vpc_id  = module.network.vpc_id
 
-  log_configuration = {
-    logDriver = "awslogs"
-    options = {
-      awslogs-group         = aws_cloudwatch_log_group.mesh_gateway.name
-      awslogs-region        = var.region
-      awslogs-stream-prefix = "mesh-gatway-"
-    }
-  }
-}
+#   log_configuration = {
+#     logDriver = "awslogs"
+#     options = {
+#       awslogs-group         = aws_cloudwatch_log_group.mesh_gateway.name
+#       awslogs-region        = var.region
+#       awslogs-stream-prefix = "mesh-gatway-"
+#     }
+#   }
+# }
