@@ -154,7 +154,7 @@ resource "aws_appautoscaling_policy" "ecs_api_memory" {
 ## Consul Mesh Gateway
 
 module "mesh_gateway" {
-  source  = "hashicorp/consul-ecs/aws//modules/gateway-task"
+  source  = "github.com/jcolemorrison/terraform-aws-consul-ecs//modules/gateway-task?ref=fix-cert-iam-execution-policy"
   version = "0.7.0"
 
   consul_server_hosts = var.consul_server_hosts
@@ -173,9 +173,9 @@ module "mesh_gateway" {
   consul_partition       = var.consul_admin_partition
   launch_type            = "EC2"
 
-  # lb_create_security_group = false
+  lb_create_security_group = false
 
-  # tls = true
+  tls = true
 
   # http_config = {
   #   port = 443
@@ -184,9 +184,9 @@ module "mesh_gateway" {
   #   port = 8502
   # }
 
-  lb_enabled = true
-  lb_subnets = module.network.vpc_public_subnet_ids
-  lb_vpc_id  = module.network.vpc_id
+  # lb_enabled = true
+  # lb_subnets = module.network.vpc_public_subnet_ids
+  # lb_vpc_id  = module.network.vpc_id
 
   log_configuration = {
     logDriver = "awslogs"
