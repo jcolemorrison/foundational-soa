@@ -57,18 +57,16 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
 
 ## Service Resolvers
 
-resource "consul_config_entry" "us_east_1_upstream_test" {
-  kind = "service-resolver"
+resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
   name = "ecs-upstream" # name of service this applies to, despite inaccurate docs
-  config_json = jsondecode({
-    namespace = "default"
-    partition = "ecs"
+  namespace = "default"
+  partition = "ecs"
 
-    redirect = {
-      service = "ecs-upstream"
-      peer = "${local.dc_us_west_2}-ecs"
-    }
-  })
+  redirect {
+    service = "ecs-upstream"
+    peer = "${local.dc_us_west_2}-ecs"
+    namespace = "default"
+  }
 
   provider = consul.us_east_1
 }
