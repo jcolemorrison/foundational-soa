@@ -5,7 +5,7 @@ data "aws_ssm_parameter" "amzn2" {
 }
 
 resource "aws_instance" "bastion" {
-  count = var.test_bastion_enabled ? 1 : 0
+  count                  = var.test_bastion_enabled ? 1 : 0
   ami                    = data.aws_ssm_parameter.amzn2.value
   instance_type          = "t3.micro"
   key_name               = var.test_bastion_keypair
