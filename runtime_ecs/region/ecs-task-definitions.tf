@@ -84,9 +84,9 @@ module "ecs_api" {
   # http_config = {
   #   port = 443
   # }
-  # grpc_config = {
-  #   port = 8502
-  # }
+  grpc_config = {
+    port = 8502
+  }
 }
 
 module "ecs_upstream" {
@@ -165,7 +165,7 @@ module "ecs_upstream" {
   # http_config = {
   #   port = 443
   # }
-  # grpc_config = {
-  #   port = 8502
-  # }
+  grpc_config = {
+    port = 8502
+  }
 }
