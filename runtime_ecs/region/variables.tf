@@ -174,6 +174,11 @@ variable "subdomain_zone_id" {
 
 ## Consul
 
+variable "consul_public_address" {
+  type = string
+  description = "HCP Consul public address"
+}
+
 variable "consul_bootstrap_token" {
   type = string
   description = "HCP Consul bootstrap token"
