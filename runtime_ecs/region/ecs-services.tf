@@ -171,5 +171,6 @@ module "mesh_gateway" {
   consul_image = "public.ecr.aws/hashicorp/consul-enterprise:1.17-ent"
   consul_partition = var.consul_admin_partition
   launch_type = "EC2"
+  lb_create_security_group = false
   tls = true
 }
