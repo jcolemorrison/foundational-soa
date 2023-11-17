@@ -177,9 +177,9 @@ module "mesh_gateway" {
 
   # tls = true
 
-  http_config = {
-    port = 443
-  }
+  # http_config = {
+  #   port = 443
+  # }
   grpc_config = {
     port = 8502
   }
