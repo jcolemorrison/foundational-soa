@@ -175,7 +175,7 @@ module "mesh_gateway" {
 
   # lb_create_security_group = false
 
-  tls = true
+  # tls = true
 
   http_config = {
     port = 443
@@ -184,9 +184,9 @@ module "mesh_gateway" {
     port = 8502
   }
 
-  lb_enabled = true
-  lb_subnets = module.network.vpc_public_subnet_ids
-  lb_vpc_id  = module.network.vpc_id
+  # lb_enabled = true
+  # lb_subnets = module.network.vpc_public_subnet_ids
+  # lb_vpc_id  = module.network.vpc_id
 
   log_configuration = {
     logDriver = "awslogs"
