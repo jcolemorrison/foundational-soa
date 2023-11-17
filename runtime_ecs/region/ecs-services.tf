@@ -97,7 +97,7 @@ module "ecs_controller" {
   consul_bootstrap_token_secret_arn = aws_secretsmanager_secret.bootstrap_token.arn
   consul_partitions_enabled = true
   consul_partition = var.consul_admin_partition
-  # consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
+  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
   consul_server_hosts = var.consul_server_hosts
   tls = true
 
