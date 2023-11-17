@@ -77,7 +77,7 @@ module "ecs_api" {
   consul_dataplane_image = var.consul_dataplane_image
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
-  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
+  # consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-api"
 
@@ -158,7 +158,7 @@ module "ecs_upstream" {
   consul_dataplane_image = var.consul_dataplane_image
   consul_namespace = var.consul_namespace
   consul_partition = var.consul_admin_partition
-  consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
+  # consul_ca_cert_arn = aws_secretsmanager_secret.consul_ca_cert.arn
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-upstream"
 
