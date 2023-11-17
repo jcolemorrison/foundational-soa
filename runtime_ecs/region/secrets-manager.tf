@@ -8,7 +8,7 @@ resource "aws_secretsmanager_secret_version" "bootstrap_token" {
 }
 
 resource "aws_secretsmanager_secret" "consul_ca_cert" {
-  name = "${var.region}-consul-ca-cert"
+  name_prefix = "${var.region}-consul-ca-cert"
 }
 
 resource "aws_secretsmanager_secret_version" "consul_ca_cert" {
