@@ -83,8 +83,8 @@ resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
 
 resource "consul_config_entry" "us_west_2_export_upstream" {
   kind = "exported-services"
-  name = "ecs-upstream-export"
-  partition = "ecs"
+  name = "ecs" # this is the partition
+  # partition = "ecs" # unused
 
   config_json = jsonencode({
     # Name = "default"
