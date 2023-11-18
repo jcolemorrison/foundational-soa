@@ -71,7 +71,7 @@ resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
     DefaultForFailover = true
     IncludeLocal       = true
     Members = [
-      # { Peer = "${local.dc_us_east_1}-ecs" },
+      { Peer = "${local.dc_us_east_1}-ecs" },
       { Peer = "${local.dc_eu_west_1}-ecs" }
     ]
   })
@@ -113,14 +113,6 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
   partition = "ecs"
   config_json = jsonencode({
     Sources = [
-      # {
-      #   Name = "${local.us_east_1}-ecs-api"
-      #   Action = "allow"
-      #   Peer = "${local.dc_us_east_1}-ecs"
-      #   Namespace = "default"
-      #   # Partition = "ecs"
-      #   # SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
-      # },
       {
         Name = "ecs-api"
         Action = "allow"
@@ -129,13 +121,6 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
         # Partition = "ecs"
         SamenessGroup = "ecs-sameness-group"
       }
-      # {
-      #   Name = "${local.eu_west_1}-ecs-api"
-      #   Action = "allow"
-      #   Peer = "${local.dc_eu_west_1}-ecs"
-      #   Namespace = "default"
-      #   # Partition = "ecs"
-      # }
     ]
   })
 

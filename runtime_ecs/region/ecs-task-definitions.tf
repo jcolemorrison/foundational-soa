@@ -52,7 +52,10 @@ module "ecs_api" {
   upstreams = [
     {
       destinationName = "ecs-upstream" #consul service name
-      localBindPort   = 1234
+      localBindPort   = 1234,
+      meshGateway = {
+        mode = "local"
+      }
     }
   ]
 
