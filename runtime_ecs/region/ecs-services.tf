@@ -50,6 +50,7 @@ resource "aws_ecs_service" "ecs_upstream" {
   # iam_role = var.ecs_service_role # service linked role exists
   enable_execute_command = true
   launch_type            = "EC2"
+  health_check_grace_period_seconds = 120
   propagate_tags         = "TASK_DEFINITION"
   task_definition        = module.ecs_upstream.task_definition_arn
 
