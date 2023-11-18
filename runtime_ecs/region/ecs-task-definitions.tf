@@ -132,15 +132,15 @@ module "ecs_upstream" {
         {
           name = "ERROR_RATE"
           value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
+        },
+        {
+          name = "ERROR_TYPE"
+          value = "delay" // to simulate outage
+        },
+        {
+          name = "ERROR_DELAY"
+          value = "30s" // to simulate outage
         }
-        # {
-        #   name = "ERROR_TYPE"
-        #   value = "delay" // to simulate outage
-        # },
-        # {
-        #   name = "ERROR_DELAY"
-        #   value = "20s" // to simulate outage
-        # }
       ]
 
       healthCheck = {
