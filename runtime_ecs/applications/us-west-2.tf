@@ -101,6 +101,8 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
     ]
   })
 
+  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
+
   provider = consul.us_west_2
 }
 
@@ -123,6 +125,8 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
       }
     ]
   })
+
+  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
 
   provider = consul.us_west_2
 }
