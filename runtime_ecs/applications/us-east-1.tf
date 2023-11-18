@@ -59,10 +59,9 @@ resource "consul_config_entry" "us_east_1_ecs_sameness_group" {
 
   config_json = jsonencode({
     DefaultForFailover = true
-    # IncludeLocal       = true
+    IncludeLocal       = true
     Members = [
       { Peer = "${local.dc_us_west_2}-ecs" },
-      { Partition = "ecs" },
       { Peer = "${local.dc_eu_west_1}-ecs" }
     ]
   })
@@ -113,7 +112,7 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
 resource "consul_config_entry" "us_east_1_export_upstream" {
   kind = "exported-services"
   name = "ecs" # this is the partition
-  # partition = "ecs" # unused
+  partition = "ecs" # unused
 
   config_json = jsonencode({
     # Name = "default"
