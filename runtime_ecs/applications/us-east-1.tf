@@ -143,9 +143,9 @@ resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
 
   redirect {
     service = "ecs-upstream"
-    # peer = "${local.dc_us_west_2}-ecs"
+    peer = "${local.dc_us_west_2}-ecs"
     namespace = "default"
-    sameness_group = "ecs-sameness-group"
+    # sameness_group = "ecs-sameness-group"
   }
 
   provider = consul.us_east_1
