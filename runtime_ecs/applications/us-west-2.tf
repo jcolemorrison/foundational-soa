@@ -81,52 +81,52 @@ resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
 
 ## Service Exports
 
-# resource "consul_config_entry" "us_west_2_export_upstream" {
-#   kind = "exported-services"
-#   name = "ecs" # this is the partition
-#   partition = "ecs" # unused
+resource "consul_config_entry" "us_west_2_export_upstream" {
+  kind = "exported-services"
+  name = "ecs" # this is the partition
+  partition = "ecs" # unused
 
-#   config_json = jsonencode({
-#     # Name = "default"
-#     Services = [
-#       {
-#         Name = "ecs-upstream"
-#         Namespace = "default"
-#         Consumers = [
-#           {
-#             SamenessGroup = "ecs-sameness-group"
-#           }
-#         ]
-#       }
-#     ]
-#   })
+  config_json = jsonencode({
+    # Name = "default"
+    Services = [
+      {
+        Name = "ecs-upstream"
+        Namespace = "default"
+        Consumers = [
+          {
+            SamenessGroup = "ecs-sameness-group"
+          }
+        ]
+      }
+    ]
+  })
 
-#   depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
+  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
 
-#   provider = consul.us_west_2
-# }
+  provider = consul.us_west_2
+}
 
 ## Service Intentions
 
-# resource "consul_config_entry" "us_west_2_api_to_upstreams" {
-#   kind = "service-intentions"
-#   name = "ecs-upstream"
-#   namespace = "default"
-#   partition = "ecs"
-#   config_json = jsonencode({
-#     Sources = [
-#       {
-#         Name = "ecs-api"
-#         Action = "allow"
-#         # Peer = "prod-${local.us_west_2}-ecs"
-#         Namespace = "default"
-#         # Partition = "ecs"
-#         SamenessGroup = "ecs-sameness-group"
-#       }
-#     ]
-#   })
+resource "consul_config_entry" "us_west_2_api_to_upstreams" {
+  kind = "service-intentions"
+  name = "ecs-upstream"
+  namespace = "default"
+  partition = "ecs"
+  config_json = jsonencode({
+    Sources = [
+      {
+        Name = "ecs-api"
+        Action = "allow"
+        # Peer = "prod-${local.us_west_2}-ecs"
+        Namespace = "default"
+        # Partition = "ecs"
+        SamenessGroup = "ecs-sameness-group"
+      }
+    ]
+  })
 
-#   depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
+  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
 
-#   provider = consul.us_west_2
-# }
+  provider = consul.us_west_2
+}
