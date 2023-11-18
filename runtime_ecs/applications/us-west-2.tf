@@ -60,7 +60,7 @@
 # }
 
 
-# ## Sameness Groups
+## Sameness Groups
 
 resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
   kind      = "sameness-group"

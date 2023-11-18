@@ -142,6 +142,17 @@ module "ecs_upstream" {
           value = "20s" // to simulate outage
         }
       ]
+
+      healthCheck = {
+        retries = 3
+        command = [
+            "CMD-SHELL",
+            "curl -f http://localhost:9090/ || exit 1"
+        ],
+        timeout = 5,
+        interval = 30,
+        startPeriod = null
+      }
     }
   ]
 
