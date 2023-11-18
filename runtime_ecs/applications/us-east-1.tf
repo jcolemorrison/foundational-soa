@@ -129,7 +129,7 @@ resource "consul_config_entry" "us_east_1_export_upstream" {
     ]
   })
 
-  provider = consul.us_west_2
+  provider = consul.us_east_1
 }
 
 # ## Service Resolvers
