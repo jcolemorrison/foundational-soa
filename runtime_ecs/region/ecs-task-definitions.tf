@@ -150,7 +150,7 @@ module "ecs_upstream" {
             "curl -f http://localhost:9090/ || exit 1"
         ],
         timeout = 5,
-        interval = 60,
+        interval = 30,
         startPeriod = null
       }
     }
