@@ -131,11 +131,11 @@ module "ecs_upstream" {
         {
           name  = "MESSAGE"
           value = "Hello from the ecs upstream in ${var.region}"
+        },
+        {
+          name = "ERROR_RATE"
+          value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
         }
-        # {
-        #   name = "ERROR_RATE"
-        #   value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
-        # }
       ]
     }
   ]
