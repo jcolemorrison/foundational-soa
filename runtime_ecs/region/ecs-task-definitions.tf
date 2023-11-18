@@ -144,13 +144,13 @@ module "ecs_upstream" {
       ]
 
       healthCheck = {
-        retries = 15
+        retries = 10
         command = [
             "CMD-SHELL",
             "curl -f http://localhost:9090/ || exit 1"
         ],
         timeout = 5,
-        interval = 30,
+        interval = 60,
         startPeriod = null
       }
     }
