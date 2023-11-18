@@ -64,7 +64,7 @@
 
 resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
   kind      = "sameness-group"
-  name      = "${local.us_west_2}-ecs-sameness-group"
+  name      = "ecs-sameness-group"
   partition = "ecs"
 
   config_json = jsonencode({
@@ -79,7 +79,7 @@ resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
   provider = consul.us_west_2
 }
 
-# ## Service Exports
+## Service Exports
 
 resource "consul_config_entry" "us_west_2_export_upstream" {
   kind = "exported-services"
@@ -94,7 +94,7 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
         Namespace = "default"
         Consumers = [
           {
-            SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
+            SamenessGroup = "ecs-sameness-group"
           }
         ]
       }
@@ -104,7 +104,7 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
   provider = consul.us_west_2
 }
 
-# ## Service Intentions
+## Service Intentions
 
 resource "consul_config_entry" "us_west_2_api_to_upstreams" {
   kind = "service-intentions"
@@ -127,7 +127,7 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
         # Peer = "prod-${local.us_west_2}-ecs"
         Namespace = "default"
         # Partition = "ecs"
-        SamenessGroup = "${local.us_west_2}-ecs-sameness-group"
+        SamenessGroup = "ecs-sameness-group"
       }
       # {
       #   Name = "${local.eu_west_1}-ecs-api"

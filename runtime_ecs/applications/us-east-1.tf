@@ -54,7 +54,7 @@
 
 resource "consul_config_entry" "us_east_1_ecs_sameness_group" {
   kind      = "sameness-group"
-  name      = "${local.us_east_1}-ecs-sameness-group"
+  name      = "ecs-sameness-group"
   partition = "ecs"
 
   config_json = jsonencode({
@@ -69,7 +69,7 @@ resource "consul_config_entry" "us_east_1_ecs_sameness_group" {
   provider = consul.us_east_1
 }
 
-# ## Service Intentions
+## Service Intentions
 
 resource "consul_config_entry" "us_east_1_api_to_upstreams" {
   kind = "service-intentions"
@@ -84,7 +84,7 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
         # Peer = "prod-${local.us_east_1}-ecs"
         Namespace = "default"
         # Partition = "ecs"
-        SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
+        SamenessGroup = "ecs-sameness-group"
       }
       # {
       #   Name = "${local.us_west_2}-ecs-api"
@@ -107,21 +107,46 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
   provider = consul.us_east_1
 }
 
+## Service Exports
+
+resource "consul_config_entry" "us_east_1_export_upstream" {
+  kind = "exported-services"
+  name = "ecs" # this is the partition
+  # partition = "ecs" # unused
+
+  config_json = jsonencode({
+    # Name = "default"
+    Services = [
+      {
+        Name = "ecs-upstream"
+        Namespace = "default"
+        Consumers = [
+          {
+            SamenessGroup = "ecs-sameness-group"
+          }
+        ]
+      }
+    ]
+  })
+
+  provider = consul.us_west_2
+}
+
 # ## Service Resolvers
 
-resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
-  name = "ecs-upstream" # name of service this applies to, despite inaccurate docs
-  namespace = "default"
-  partition = "ecs"
-  connect_timeout = "1s" # required fields
-  request_timeout = "1s"
+# resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
+#   name = "ecs-upstream" # name of service this applies to, despite inaccurate docs
+#   namespace = "default"
+#   partition = "ecs"
+#   connect_timeout = "1s" # required fields
+#   request_timeout = "1s"
 
-  redirect {
-    service = "ecs-upstream"
-    # peer = "${local.dc_us_west_2}-ecs"
-    namespace = "default"
-    sameness_group = "${local.us_east_1}-ecs-sameness-group"
-  }
+#   redirect {
+#     service = "ecs-upstream"
+#     # peer = "${local.dc_us_west_2}-ecs"
+#     namespace = "default"
+#     sameness_group = "${local.us_east_1}-ecs-sameness-group"
+#   }
 
-  provider = consul.us_east_1
-}
+#   provider = consul.us_east_1
+# }
