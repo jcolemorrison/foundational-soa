@@ -71,7 +71,7 @@ resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
     DefaultForFailover = true
     IncludeLocal       = true
     Members = [
-      { Peer = "${local.dc_us_east_1}-ecs" },
+      # { Peer = "${local.dc_us_east_1}-ecs" },
       { Peer = "${local.dc_eu_west_1}-ecs" }
     ]
   })
