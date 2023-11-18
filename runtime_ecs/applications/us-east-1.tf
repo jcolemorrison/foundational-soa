@@ -120,7 +120,7 @@ resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
     service = "ecs-upstream"
     # peer = "${local.dc_us_west_2}-ecs"
     namespace = "default"
-    SamenessGroup = "${local.us_east_1}-ecs-sameness-group"
+    sameness_group = "${local.us_east_1}-ecs-sameness-group"
   }
 
   provider = consul.us_east_1
