@@ -134,19 +134,19 @@ resource "consul_config_entry" "us_east_1_export_upstream" {
 
 ## Service Resolvers
 
-# resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
-#   name = "ecs-upstream" # name of service this applies to, despite inaccurate docs
-#   namespace = "default"
-#   partition = "ecs"
-#   connect_timeout = "10s" # required fields
-#   request_timeout = "15s"
+resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
+  name = "ecs-upstream" # name of service this applies to, despite inaccurate docs
+  namespace = "default"
+  partition = "ecs"
+  connect_timeout = "10s" # required fields
+  request_timeout = "15s"
 
-#   redirect {
-#     service = "ecs-upstream"
-#     # peer = "${local.dc_us_west_2}-ecs"
-#     namespace = "default"
-#     sameness_group = "ecs-sameness-group"
-#   }
+  redirect {
+    service = "ecs-upstream"
+    # peer = "${local.dc_us_west_2}-ecs"
+    namespace = "default"
+    sameness_group = "ecs-sameness-group"
+  }
 
-#   provider = consul.us_east_1
-# }
+  provider = consul.us_east_1
+}
