@@ -53,9 +53,6 @@ module "ecs_api" {
     {
       destinationName = "ecs-upstream" #consul service name
       localBindPort   = 1234
-      # meshGateway = {
-      #   mode = "local"
-      # }
     }
   ]
 
@@ -131,12 +128,31 @@ module "ecs_upstream" {
         {
           name  = "MESSAGE"
           value = "Hello from the ecs upstream in ${var.region}"
+        },
+        {
+          name = "ERROR_RATE"
+          value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
+        },
+        {
+          name = "ERROR_TYPE"
+          value = "delay" // to simulate outage
+        },
+        {
+          name = "ERROR_DELAY"
+          value = "30s" // to simulate outage
         }
-        # {
-        #   name = "ERROR_RATE"
-        #   value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
-        # }
       ]
+
+      healthCheck = {
+        retries = 10
+        command = [
+            "CMD-SHELL",
+            "curl -f http://localhost:9090/ || exit 1"
+        ],
+        timeout = 5,
+        interval = 30,
+        startPeriod = null
+      }
     }
   ]
 
