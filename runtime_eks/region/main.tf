@@ -1,7 +1,3 @@
-locals {
-  runtime = "eks"
-}
-
 # Boundary Worker
 module "boundary_worker" {
   count  = var.create_boundary_workers ? 1 : 0
@@ -21,7 +17,7 @@ module "boundary_worker" {
 
   boundary_cluster_id = var.boundary_cluster_id
   keypair_name        = aws_key_pair.boundary.key_name
-  runtime             = local.runtime
+  runtime             = var.runtime
 }
 
 # EKS
@@ -46,13 +42,13 @@ module "eks" {
 module "boundary_eks_hosts" {
   source = "../../modules/boundary/hosts"
 
-  name_prefix = "${replace(var.region, "-", "_")}_eks"
+  name_prefix = "${replace(var.region, "-", "_")}_${var.runtime}"
   description = "EKS nodes in ${var.region}"
   scope_id    = var.boundary_project_scope_id
   target_ips  = zipmap(data.aws_instances.eks.ids, data.aws_instances.eks.private_ips)
 
-  ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
-  egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  ingress_worker_filter = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
   default_port          = 22
 
   depends_on = [module.eks, data.aws_instances.eks]
@@ -75,13 +71,13 @@ module "boundary_eks_gateway" {
   source = "../../modules/boundary/hosts"
   count  = length(data.aws_lb.consul_api_gateway) > 0 ? 1 : 0
 
-  name_prefix = "${replace(var.region, "-", "_")}_eks_api_gateway"
-  description = "Consul API Gateway on EKS cluster in ${var.region}"
+  name_prefix = "${replace(var.region, "-", "_")}_${var.runtime}_api_gateway"
+  description = "Consul API Gateway on ${var.runtime} cluster in ${var.region}"
   scope_id    = var.boundary_project_scope_id
   target_ips  = { for k, v in data.aws_lb.consul_api_gateway : v.name => v.dns_name }
 
-  ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
-  egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  ingress_worker_filter = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
   default_port          = 80
 
   depends_on = [module.eks, data.aws_lb.consul_api_gateway]
@@ -100,7 +96,7 @@ data "aws_instances" "boundary_worker" {
 data "vault_kv_secret_v2" "boundary_worker_token_eks" {
   count = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
   mount = var.boundary_worker_vault_path
-  name  = "${var.region}-${local.runtime}-${split(".", module.boundary_worker.0.private_dns).0}"
+  name  = "${var.region}-${var.runtime}-${split(".", module.boundary_worker.0.private_dns).0}"
 }
 
 resource "boundary_worker" "eks" {

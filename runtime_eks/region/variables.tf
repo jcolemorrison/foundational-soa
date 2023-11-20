@@ -9,6 +9,12 @@ variable "region" {
   description = "AWS region to deploy the transit gateway to.  Only used for naming purposes."
 }
 
+variable "runtime" {
+  type        = string
+  description = "Runtime"
+  default     = "eks"
+}
+
 variable "transit_gateway_id" {
   type        = string
   description = "transit gateway ID to point traffic to for shared services, hcp, etc."
