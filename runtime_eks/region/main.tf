@@ -110,4 +110,11 @@ resource "boundary_worker" "eks" {
   name                        = data.vault_kv_secret_v2.boundary_worker_token_eks.0.name
   description                 = "Self-managed worker ${data.vault_kv_secret_v2.boundary_worker_token_eks.0.name} for EKS"
   worker_generated_auth_token = data.vault_kv_secret_v2.boundary_worker_token_eks.0.data.token
+
+  lifecycle {
+    precondition {
+      condition     = length(data.vault_kv_secret_v2.boundary_worker_token_eks) > 0
+      error_message = "The Boundary EC2 instance has not registered its worker auth token into Vault yet. Wait and re-apply Terraform to register worker."
+    }
+  }
 }
