@@ -27,3 +27,11 @@ provider "consul" {
   token      = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.token
   datacenter = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.datacenter
 }
+
+module "runtimes" {
+  source = "../../modules/runtimes"
+}
+
+locals {
+  runtimes = module.runtimes.list
+}
