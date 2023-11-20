@@ -37,27 +37,27 @@ resource "kubernetes_manifest" "exported_services_default_us_west_2" {
   provider = kubernetes.us_west_2
 }
 
-resource "kubernetes_manifest" "service_resolver_application_to_database" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceResolver"
-    "metadata" = {
-      "name"      = "database"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "connectTimeout" = "30s"
-      "failover" = {
-        "*" = {
-          "targets" = [
-            {
-              "peer" = local.peers.eu_west_1
-            },
-          ]
-        }
-      }
-    }
-  }
+# resource "kubernetes_manifest" "service_resolver_application_to_database" {
+#   manifest = {
+#     "apiVersion" = "consul.hashicorp.com/v1alpha1"
+#     "kind"       = "ServiceResolver"
+#     "metadata" = {
+#       "name"      = "database"
+#       "namespace" = var.namespace
+#     }
+#     "spec" = {
+#       "connectTimeout" = "30s"
+#       "failover" = {
+#         "*" = {
+#           "targets" = [
+#             {
+#               "peer" = local.peers.eu_west_1
+#             },
+#           ]
+#         }
+#       }
+#     }
+#   }
 
-  provider = kubernetes.us_west_2
-}
+#   provider = kubernetes.us_west_2
+# }
