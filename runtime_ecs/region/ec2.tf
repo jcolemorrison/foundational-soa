@@ -59,7 +59,7 @@ resource "aws_autoscaling_group" "container_instance" {
 
   launch_template {
     id      = aws_launch_template.container_instance.id
-    version = "$Latest"
+    version = aws_launch_template.container_instance.latest_version
   }
 
   lifecycle {
