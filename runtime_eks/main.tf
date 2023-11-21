@@ -76,7 +76,7 @@ module "us_west_2" {
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
-  create_database         = true
+  create_database         = false
   is_database_primary     = false
   global_cluster_id       = aws_rds_global_cluster.database.id
   database_engine         = aws_rds_global_cluster.database.engine
