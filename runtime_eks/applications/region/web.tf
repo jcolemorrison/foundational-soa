@@ -24,6 +24,25 @@ resource "kubernetes_manifest" "reference_grant" {
   }
 }
 
+resource "kubernetes_manifest" "route_retry_filter" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "RouteRetryFilter"
+    "metadata" = {
+      "name"      = "route-root"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "numRetries" = 10
+      "retryOn" = [
+        "5xx",
+        "connect-failure"
+      ]
+      "retryOnConnectFailure" = true
+    }
+  }
+}
+
 resource "kubernetes_manifest" "http_route" {
   manifest = {
     "apiVersion" = "gateway.networking.k8s.io/v1beta1"
@@ -57,6 +76,16 @@ resource "kubernetes_manifest" "http_route" {
               }
             },
           ]
+          "filters" = [
+            {
+              "extensionRef" = {
+                "group" = "consul.hashicorp.com"
+                "kind"  = "RouteRetryFilter"
+                "name"  = "route-root"
+              }
+              "type" = "ExtensionRef"
+            },
+          ]
         },
       ]
     }
@@ -88,7 +117,7 @@ resource "kubernetes_manifest" "service_intentions_web" {
         {
           "action" = "allow"
           "name"   = "api-gateway"
-        },
+        }
       ]
     }
   }

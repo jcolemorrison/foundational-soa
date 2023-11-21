@@ -9,30 +9,6 @@ module "application" {
 }
 
 resource "kubernetes_manifest" "service_intentions_application" {
-  count = var.peer_for_application_failover != "" ? 0 : 1
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceIntentions"
-    "metadata" = {
-      "name"      = "application"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "destination" = {
-        "name" = "application"
-      }
-      "sources" = concat([
-        {
-          "action" = "allow"
-          "name"   = "web"
-        },
-      ])
-    }
-  }
-}
-
-resource "kubernetes_manifest" "service_intentions_application_peered" {
-  count = var.peer_for_application_failover != "" ? 1 : 0
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceIntentions"
@@ -50,9 +26,9 @@ resource "kubernetes_manifest" "service_intentions_application_peered" {
           "name"   = "web"
         },
         {
-          "action" = "allow"
-          "name"   = "web"
-          "peer"   = var.peer_for_application_failover
+          "action"        = "allow"
+          "name"          = "web"
+          "samenessGroup" = var.sameness_group_name
         },
       ]
     }

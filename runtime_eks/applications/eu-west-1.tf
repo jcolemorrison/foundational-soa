@@ -4,7 +4,7 @@ module "fake_service_eu_west_1" {
   region    = "eu-west-1"
   namespace = var.namespace
 
-  peer_for_database_failover = local.peers.us_west_2
+  peers_for_failover = [local.peers.us_west_2, local.peers.us_east_1]
 
   providers = {
     kubernetes = kubernetes.eu_west_1
@@ -24,7 +24,7 @@ resource "kubernetes_manifest" "exported_services_default_eu_west_1" {
         {
           "consumers" = [
             {
-              "peer" = local.peers.us_west_2
+              "samenessGroup" = module.fake_service_eu_west_1.sameness_group
             },
           ]
           "name" = "database"

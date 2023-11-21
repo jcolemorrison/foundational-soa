@@ -3,9 +3,9 @@ module "fake_service_us_west_2" {
 
   region                 = "us-west-2"
   namespace              = var.namespace
-  test_failover_database = true
+  test_failover_database = false
 
-  peer_for_application_failover = local.peers.us_east_1
+  peers_for_failover = [local.peers.eu_west_1, local.peers.us_east_1]
 
   providers = {
     kubernetes = kubernetes.us_west_2
@@ -25,7 +25,7 @@ resource "kubernetes_manifest" "exported_services_default_us_west_2" {
         {
           "consumers" = [
             {
-              "peer" = local.peers.us_east_1
+              "samenessGroup" = module.fake_service_us_west_2.sameness_group
             },
           ]
           "name" = "application"
@@ -37,27 +37,23 @@ resource "kubernetes_manifest" "exported_services_default_us_west_2" {
   provider = kubernetes.us_west_2
 }
 
-# resource "kubernetes_manifest" "service_resolver_application_to_database" {
-#   manifest = {
-#     "apiVersion" = "consul.hashicorp.com/v1alpha1"
-#     "kind"       = "ServiceResolver"
-#     "metadata" = {
-#       "name"      = "database"
-#       "namespace" = var.namespace
-#     }
-#     "spec" = {
-#       "connectTimeout" = "30s"
-#       "failover" = {
-#         "*" = {
-#           "targets" = [
-#             {
-#               "peer" = local.peers.eu_west_1
-#             },
-#           ]
-#         }
-#       }
-#     }
-#   }
+resource "kubernetes_manifest" "service_resolver_application_to_database" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceResolver"
+    "metadata" = {
+      "name"      = "database"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "connectTimeout" = "0s"
+      "failover" = {
+        "*" = {
+          "samenessGroup" = module.fake_service_us_west_2.sameness_group
+        }
+      }
+    }
+  }
 
-#   provider = kubernetes.us_west_2
-# }
+  provider = kubernetes.us_west_2
+}

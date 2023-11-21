@@ -8,6 +8,12 @@ variable "namespace" {
   description = "Namespace for services"
 }
 
+variable "sameness_group_name" {
+  type        = string
+  description = "Name of sameness group"
+  default     = "customers"
+}
+
 variable "test_failover_application" {
   type        = bool
   description = "Test failover across regions for application service"
@@ -20,16 +26,10 @@ variable "test_failover_database" {
   default     = false
 }
 
-variable "peer_for_application_failover" {
-  type        = string
-  description = "Cluster peer for application failover"
-  default     = ""
-}
-
-variable "peer_for_database_failover" {
-  type        = string
-  description = "Cluster peer for database failover"
-  default     = ""
+variable "peers_for_failover" {
+  type        = list(string)
+  description = "Cluster peers for failover"
+  default     = []
 }
 
 locals {

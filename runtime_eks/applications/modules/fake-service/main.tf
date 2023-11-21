@@ -67,6 +67,10 @@ locals {
       "name"  = "ERROR_DELAY"
       "value" = "100s"
     },
+    {
+      "name" = "ERROR_CODE"
+      "value" = var.error_code
+    }
   ]
   env_vars = var.upstream_uris != "" ? concat(local.base_env_vars, [{
     "name"  = "UPSTREAM_URIS"

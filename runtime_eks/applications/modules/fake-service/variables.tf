@@ -35,3 +35,9 @@ variable "error_rate" {
   description = "Error rate as a percentage to pass onto the application"
   default     = 0.0
 }
+
+variable "error_code" {
+  type        = string
+  description = "HTTP status code to return on error"
+  default     = "500"
+}
