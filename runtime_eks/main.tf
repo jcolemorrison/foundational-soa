@@ -53,6 +53,7 @@ module "us_east_1" {
 }
 
 module "us_west_2" {
+  depends_on                 = [module.us_east_1]
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_us_west_2
   region                     = local.us_west_2
@@ -89,6 +90,7 @@ module "us_west_2" {
 }
 
 module "eu_west_1" {
+  depends_on                 = [module.us_east_1]
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_eu_west_1
   region                     = local.eu_west_1
@@ -111,6 +113,13 @@ module "eu_west_1" {
   create_eks_cluster = true
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
+
+  create_database         = true
+  is_database_primary     = false
+  global_cluster_id       = aws_rds_global_cluster.database.id
+  database_engine         = aws_rds_global_cluster.database.engine
+  database_engine_version = aws_rds_global_cluster.database.engine_version
+  db_name                 = local.db_name
 
   providers = {
     aws = aws.eu_west_1
