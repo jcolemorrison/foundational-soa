@@ -30,3 +30,8 @@ output "database_security_group_id" {
   value       = var.create_database ? module.database.0.security_group_id : null
   description = "Database security group ID"
 }
+
+output "database_kms_key_id" {
+  value       = var.create_database ? module.database.0.kms_key_id : null
+  description = "Database KMS key ID"
+}

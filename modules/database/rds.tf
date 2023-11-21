@@ -1,10 +1,8 @@
 resource "random_pet" "database" {
-  count  = var.is_primary ? 1 : 0
   length = 1
 }
 
 resource "random_password" "database" {
-  count            = var.is_primary ? 1 : 0
   length           = 16
   min_upper        = 2
   min_lower        = 2
@@ -22,12 +20,12 @@ resource "aws_rds_cluster" "database" {
   allow_major_version_upgrade = true
   apply_immediately           = true
   cluster_identifier          = local.identifier
-  database_name               = var.db_name
+  database_name               = var.is_primary ? var.db_name : null
   engine                      = var.database_engine
   engine_version              = var.database_engine_version
   global_cluster_identifier   = var.global_cluster_id
-  master_password             = var.is_primary ? random_password.database.0.result : null
-  master_username             = var.is_primary ? random_pet.database.0.id : null
+  master_password             = random_password.database.result
+  master_username             = random_pet.database.id
   skip_final_snapshot         = true
   db_subnet_group_name        = aws_db_subnet_group.default.name
   vpc_security_group_ids      = [aws_security_group.database.id]

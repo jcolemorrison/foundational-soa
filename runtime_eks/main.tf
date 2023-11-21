@@ -17,7 +17,7 @@ resource "aws_rds_global_cluster" "database" {
   engine                    = "aurora-postgresql"
   database_name             = local.db_name
   force_destroy             = true
-  storage_encrypted         = true
+  storage_encrypted         = false
 }
 
 module "us_east_1" {
@@ -75,6 +75,13 @@ module "us_west_2" {
   create_eks_cluster = true
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
+
+  create_database         = true
+  is_database_primary     = false
+  global_cluster_id       = aws_rds_global_cluster.database.id
+  database_engine         = aws_rds_global_cluster.database.engine
+  database_engine_version = aws_rds_global_cluster.database.engine_version
+  db_name                 = local.db_name
 
   providers = {
     aws = aws.us_west_2
