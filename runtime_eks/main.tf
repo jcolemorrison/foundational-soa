@@ -8,7 +8,16 @@ locals {
   hcp_hvn_cidr_blocks         = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
   accessible_cidr_blocks      = data.terraform_remote_state.shared_services.outputs.accessible_cidr_blocks
 
-  name = "prod"
+  name    = "prod"
+  db_name = "customers"
+}
+
+resource "aws_rds_global_cluster" "database" {
+  global_cluster_identifier = local.name
+  engine                    = "aurora-postgresql"
+  database_name             = local.db_name
+  force_destroy             = true
+  storage_encrypted         = true
 }
 
 module "us_east_1" {
@@ -34,6 +43,13 @@ module "us_east_1" {
   create_eks_cluster = true
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
+
+  create_database         = true
+  is_database_primary     = true
+  global_cluster_id       = aws_rds_global_cluster.database.id
+  database_engine         = aws_rds_global_cluster.database.engine
+  database_engine_version = aws_rds_global_cluster.database.engine_version
+  db_name                 = local.db_name
 }
 
 module "us_west_2" {

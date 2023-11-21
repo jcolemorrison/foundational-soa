@@ -107,3 +107,41 @@ variable "boundary_project_scope_id" {
   type        = string
   description = "Boundary project scope ID for EKS runtime"
 }
+
+## Database
+
+variable "create_database" {
+  type        = bool
+  description = "Create database instance"
+  default     = false
+}
+
+variable "global_cluster_id" {
+  type        = string
+  description = "RDS global cluster ID"
+  default     = null
+}
+
+variable "database_engine_version" {
+  type        = string
+  description = "Engine version from global cluster"
+  default     = null
+}
+
+variable "database_engine" {
+  type        = string
+  description = "Engine from global cluster"
+  default     = null
+}
+
+variable "is_database_primary" {
+  type        = bool
+  default     = false
+  description = "Database is the primary instance"
+}
+
+variable "db_name" {
+  type        = string
+  description = "Database name to create in instance"
+  default     = null
+}
