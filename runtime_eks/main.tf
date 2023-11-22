@@ -33,7 +33,7 @@ module "us_east_1" {
 
   name = local.name
 
-  create_boundary_workers     = false
+  create_boundary_workers     = true
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_east_1
@@ -67,7 +67,6 @@ module "us_east_1" {
 # }
 
 module "us_west_2" {
-  depends_on                 = [module.us_east_1]
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_us_west_2
   region                     = local.us_west_2
@@ -104,7 +103,6 @@ module "us_west_2" {
 }
 
 module "eu_west_1" {
-  depends_on                 = [module.us_east_1]
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_eu_west_1
   region                     = local.eu_west_1
