@@ -29,8 +29,10 @@ output "irsa" {
 
 output "vault_database" {
   value = {
-    path = module.database_vault.database_secrets_path
-    role = module.database_vault.database_secrets_role
+    namespace = module.database_vault.namespace
+    path      = module.database_vault.database_secrets_path
+    role      = module.database_vault.database_secrets_role
   }
   description = "Vault database secrets role"
+  sensitive   = true
 }
