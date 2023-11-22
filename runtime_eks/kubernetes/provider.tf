@@ -91,19 +91,19 @@ provider "vault" {
   alias     = "us_east_1"
   address   = local.us_east_1.vault.address
   token     = local.us_east_1.vault.token
-  namespace = local.us_east_1.vault.namespace
+  namespace = local.vault_database.namespace
 }
 
 provider "vault" {
   alias     = "us_west_2"
   address   = local.us_west_2.vault.address
   token     = local.us_west_2.vault.token
-  namespace = local.us_west_2.vault.namespace
+  namespace = local.vault_database.namespace
 }
 
 provider "vault" {
   alias     = "eu_west_1"
   address   = local.eu_west_1.vault.address
   token     = local.eu_west_1.vault.token
-  namespace = local.eu_west_1.vault.namespace
+  namespace = local.vault_database.namespace
 }
