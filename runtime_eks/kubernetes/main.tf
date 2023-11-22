@@ -22,6 +22,7 @@ module "us_east_1" {
     aws        = aws
     kubernetes = kubernetes.us_east_1
     helm       = helm.us_east_1
+    vault      = vault.us_east_1
   }
 }
 
@@ -49,6 +50,7 @@ module "us_west_2" {
     aws        = aws.us_west_2
     kubernetes = kubernetes.us_west_2
     helm       = helm.us_west_2
+    vault      = vault.us_west_2
   }
 }
 
@@ -76,5 +78,6 @@ module "eu_west_1" {
     aws        = aws.eu_west_1
     kubernetes = kubernetes.eu_west_1
     helm       = helm.eu_west_1
+    vault      = vault.eu_west_1
   }
 }
