@@ -39,3 +39,14 @@ variable "vault_database_path" {
   type        = string
   description = "Path to database secrets engine in Vault"
 }
+
+variable "vault_database_secret_role" {
+  type        = string
+  description = "Vault database secret role to allow application to access database credentials"
+}
+
+variable "vault_kubernetes_auth_path" {
+  type        = string
+  description = "Vault Kubernetes authentication method path"
+  default     = "kubernetes"
+}

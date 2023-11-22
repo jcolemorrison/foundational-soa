@@ -154,7 +154,7 @@ resource "kubernetes_manifest" "vault_auth" {
         "serviceAccount" = var.name
       }
       "method"    = "kubernetes"
-      "mount"     = "kubernetes"
+      "mount"     = var.vault_kubernetes_auth_path
       "namespace" = var.vault_namespace
     }
   }
@@ -174,16 +174,15 @@ resource "kubernetes_manifest" "vault_dynamic_secret" {
         "name"   = local.database_credentials
         "type"   = "Opaque"
       }
-      "mount"        = var.vault_database_path
-      "path"         = "creds"
-      "refreshAfter" = "1m"
+      "mount" = var.vault_database_path
+      "path"  = "creds"
       "rolloutRestartTargets" = [
         {
           "kind" = "Deployment"
           "name" = var.name
         }
       ]
-      "vaultAuthRef" = "payments-processor"
+      "vaultAuthRef" = var.name
     }
   }
 }

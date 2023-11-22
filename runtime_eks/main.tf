@@ -50,6 +50,11 @@ module "us_east_1" {
   database_engine         = aws_rds_global_cluster.database.engine
   database_engine_version = aws_rds_global_cluster.database.engine_version
   db_name                 = local.db_name
+
+  providers = {
+    aws    = aws
+    consul = consul.us_east_1
+  }
 }
 
 module "us_west_2" {
@@ -84,7 +89,8 @@ module "us_west_2" {
   db_name                 = local.db_name
 
   providers = {
-    aws = aws.us_west_2
+    aws    = aws.us_west_2
+    consul = consul.us_west_2
   }
 }
 
@@ -120,6 +126,7 @@ module "eu_west_1" {
   db_name                 = local.db_name
 
   providers = {
-    aws = aws.eu_west_1
+    aws    = aws.eu_west_1
+    consul = consul.eu_west_1
   }
 }

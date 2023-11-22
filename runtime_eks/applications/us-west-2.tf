@@ -1,14 +1,20 @@
 module "fake_service_us_west_2" {
   source = "./region"
 
-  region                 = "us-west-2"
-  namespace              = var.namespace
-  test_failover_database = false
+  region    = "us-west-2"
+  namespace = var.namespace
 
   peers_for_failover = [local.peers.eu_west_1, local.peers.us_east_1]
 
+  service_name = local.service_name
+
+  vault_database_path        = local.vault_database.path
+  vault_database_secret_role = local.vault_database.role
+
   providers = {
     kubernetes = kubernetes.us_west_2
+    vault      = vault.us_west_2
+    consul     = consul.us_west_2
   }
 }
 

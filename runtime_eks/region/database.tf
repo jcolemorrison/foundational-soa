@@ -15,3 +15,49 @@ module "database" {
   accessible_cidr_blocks            = var.accessible_cidr_blocks
   boundary_worker_security_group_id = module.boundary_worker.0.security_group_id
 }
+
+locals {
+  database_address = var.is_database_primary ? module.database.0.address : module.database.0.read_only_address
+}
+
+resource "consul_node" "database" {
+  count   = var.create_database ? 1 : 0
+  name    = "${var.name}-database"
+  address = local.database_address
+
+  meta = {
+    "external-node"  = "true"
+    "external-probe" = "true"
+  }
+}
+
+resource "consul_service" "database" {
+  count = var.create_database ? 1 : 0
+  name  = "${var.name}-database"
+  node  = consul_node.database.0.name
+  port  = module.database.0.port
+  tags  = ["external"]
+  meta  = {}
+
+  check {
+    check_id = "service:postgres"
+    name     = "Postgres health check"
+    status   = "passing"
+    tcp      = "${local.database_address}:${module.database.0.port}"
+    interval = "30s"
+    timeout  = "3s"
+  }
+}
+
+resource "consul_config_entry" "service_defaults" {
+  count = var.create_database ? 1 : 0
+  name  = "${var.name}-database"
+  kind  = "service-defaults"
+
+  config_json = jsonencode({
+    Protocol         = "tcp"
+    Expose           = {}
+    MeshGateway      = {}
+    TransparentProxy = {}
+  })
+}
