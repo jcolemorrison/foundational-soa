@@ -33,14 +33,14 @@ module "us_east_1" {
 
   name = local.name
 
-  create_boundary_workers     = true
+  create_boundary_workers     = false
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_east_1
   vault_address               = local.vault_us_east_1.address
   vault_namespace             = local.boundary_worker_vault_namespace
 
-  create_eks_cluster = true
+  create_eks_cluster = false
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
@@ -80,14 +80,14 @@ module "us_west_2" {
 
   name = local.name
 
-  create_boundary_workers     = true
+  create_boundary_workers     = false
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_west_2
   vault_address               = local.vault_us_west_2.address
   vault_namespace             = local.boundary_worker_vault_namespace
 
-  create_eks_cluster = true
+  create_eks_cluster = false
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
@@ -117,14 +117,14 @@ module "eu_west_1" {
 
   name = local.name
 
-  create_boundary_workers     = true
+  create_boundary_workers     = false
   boundary_cluster_id         = local.boundary_cluster_id
   boundary_worker_vault_path  = local.boundary_worker_vault_path
   boundary_worker_vault_token = local.boundary_worker_vault_tokens.eu_west_1
   vault_address               = local.vault_eu_west_1.address
   vault_namespace             = local.boundary_worker_vault_namespace
 
-  create_eks_cluster = true
+  create_eks_cluster = false
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
