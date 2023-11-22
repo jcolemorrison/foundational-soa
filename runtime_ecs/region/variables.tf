@@ -110,7 +110,7 @@ variable "api_deployment_minimum_healthy_percent" {
 variable "api_deployment_maximum_percent" {
   type        = number
   description = "Maximum percent relative to api_desired_count number of tasks for service to be considered healthy"
-  default     = 300
+  default     = 200
 }
 
 variable "api_task_max_count" {
@@ -140,7 +140,7 @@ variable "upstream_deployment_minimum_healthy_percent" {
 variable "upstream_deployment_maximum_percent" {
   type        = number
   description = "Maximum percent relative to upstream_desired_count number of tasks for service to be considered healthy"
-  default     = 300
+  default     = 200
 }
 
 variable "upstream_task_max_count" {
