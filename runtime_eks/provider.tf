@@ -53,3 +53,11 @@ provider "vault" {
   namespace = local.boundary_worker_vault_namespace
   token     = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.token
 }
+
+provider "vault" {
+  address   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.address
+  namespace = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.namespace
+  token     = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.token
+
+  alias = "admin"
+}

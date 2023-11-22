@@ -19,5 +19,5 @@ data "vault_policy_document" "static" {
 
 resource "vault_policy" "static" {
   name   = "${var.service}-static-read"
-  policy = data.vault_policy_document.database.hcl
+  policy = data.vault_policy_document.static.hcl
 }

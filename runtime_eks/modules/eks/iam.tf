@@ -7,6 +7,10 @@ data "aws_iam_session_context" "current" {
 
 locals {
   iam_role_policy_prefix = "arn:${data.aws_partition.current.partition}:iam::aws:policy"
+  policies = [
+    "${local.iam_role_policy_prefix}/AmazonEKSClusterPolicy",
+    "${local.iam_role_policy_prefix}/AmazonEKSVPCResourceController",
+  ]
 }
 
 data "aws_iam_policy_document" "assume_role_policy_cluster" {
@@ -47,12 +51,9 @@ resource "aws_iam_role" "cluster" {
 }
 
 resource "aws_iam_role_policy_attachment" "cluster" {
-  for_each = toset([
-    "${local.iam_role_policy_prefix}/AmazonEKSClusterPolicy",
-    "${local.iam_role_policy_prefix}/AmazonEKSVPCResourceController",
-  ])
+  count = length(local.policies)
 
-  policy_arn = each.value
+  policy_arn = local.policies[count.index]
   role       = aws_iam_role.cluster.name
 }
 

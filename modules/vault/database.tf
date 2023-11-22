@@ -46,12 +46,6 @@ resource "vault_database_secret_backend_role" "database" {
 data "vault_policy_document" "database" {
   count = var.db_name != null ? 1 : 0
   rule {
-    path         = "${vault_mount.database.path}/creds/${vault_database_secret_backend_role.database.0.name}"
-    capabilities = ["read"]
-    description  = "get database credentials for ${vault_database_secret_backend_role.database.0.name}"
-  }
-
-  rule {
     path         = "${vault_mount.database.0.path}/creds/${vault_database_secret_backend_role.database.0.name}"
     capabilities = ["read"]
     description  = "get database credentials for ${vault_database_secret_backend_role.database.0.name}"

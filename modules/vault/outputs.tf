@@ -14,5 +14,5 @@ output "database_secrets_path" {
 output "policies" {
   value = concat([
     vault_policy.static.name
-  ], var.db_name != null ? vault_policy.database.0.name : [])
+  ], var.db_name != null ? [vault_policy.database.0.name] : [])
 }
