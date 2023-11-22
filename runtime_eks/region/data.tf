@@ -11,7 +11,7 @@ data "aws_lbs" "consul_api_gateway" {
   }
 }
 
-# data "aws_lb" "consul_api_gateway" {
-#   for_each = toset(data.aws_lbs.consul_api_gateway.arns)
-#   arn      = each.value
-# }
+data "aws_lb" "consul_api_gateway" {
+  for_each = toset(data.aws_lbs.consul_api_gateway.arns)
+  arn      = each.value
+}

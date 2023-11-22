@@ -52,22 +52,6 @@ module "us_east_1" {
   db_name                 = local.db_name
 }
 
-import {
-  id = "/aws/eks/prod/cluster"
-  to = module.us_east_1.module.eks[0].aws_cloudwatch_log_group.cluster
-}
-
-
-import {
-  id = "/aws/eks/prod/cluster"
-  to = module.us_west_2.module.eks[0].aws_cloudwatch_log_group.cluster
-}
-
-import {
-  id = "/aws/eks/prod/cluster"
-  to = module.eu_west_1.module.eks[0].aws_cloudwatch_log_group.cluster
-}
-
 module "us_west_2" {
   source                     = "./region"
   vpc_cidr_block             = local.accessible_cidr_blocks.runtime_eks_us_west_2
@@ -92,7 +76,7 @@ module "us_west_2" {
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
-  create_database         = false
+  create_database         = true # NOTE: set us-east-1 to true FIRST to set database primary
   is_database_primary     = false
   global_cluster_id       = aws_rds_global_cluster.database.id
   database_engine         = aws_rds_global_cluster.database.engine
@@ -128,7 +112,7 @@ module "eu_west_1" {
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
-  create_database         = false
+  create_database         = true # NOTE: set us-east-1 to true FIRST to set database primary
   is_database_primary     = false
   global_cluster_id       = aws_rds_global_cluster.database.id
   database_engine         = aws_rds_global_cluster.database.engine
