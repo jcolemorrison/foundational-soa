@@ -26,8 +26,6 @@ resource "kubernetes_manifest" "gateway_consul_api_gateway" {
       ]
     }
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "clusterrolebinding_consul_api_gateway_tokenreview_binding" {
@@ -50,8 +48,6 @@ resource "kubernetes_manifest" "clusterrolebinding_consul_api_gateway_tokenrevie
       },
     ]
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "clusterrole_consul_api_gateway_auth" {
@@ -75,8 +71,6 @@ resource "kubernetes_manifest" "clusterrole_consul_api_gateway_auth" {
       },
     ]
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "clusterrolebinding_consul_api_gateway_auth_binding" {
@@ -99,8 +93,6 @@ resource "kubernetes_manifest" "clusterrolebinding_consul_api_gateway_auth_bindi
       },
     ]
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "clusterrolebinding_consul_auth_binding" {
@@ -123,8 +115,6 @@ resource "kubernetes_manifest" "clusterrolebinding_consul_auth_binding" {
       },
     ]
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "serviceaccount_consul_consul_api_gateway" {
@@ -137,8 +127,6 @@ resource "kubernetes_manifest" "serviceaccount_consul_consul_api_gateway" {
       "namespace" = "consul"
     }
   }
-
-  provider = kubernetes.us_east_1
 }
 
 resource "kubernetes_manifest" "secret_consul_consul_api_gateway_token" {
@@ -154,6 +142,4 @@ resource "kubernetes_manifest" "secret_consul_consul_api_gateway_token" {
     }
     "type" = "kubernetes.io/service-account-token"
   }
-
-  provider = kubernetes.us_east_1
 }

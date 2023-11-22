@@ -1,5 +1,5 @@
 module "partition_us_east_1" {
-  for_each = toset([for runtime in var.runtimes : runtime if runtime != "default"])
+  for_each = toset([for runtime in local.runtimes : runtime if runtime != "default"])
   source   = "./region"
 
   runtime = each.value
@@ -10,7 +10,7 @@ module "partition_us_east_1" {
 }
 
 module "partition_us_west_2" {
-  for_each = toset([for runtime in var.runtimes : runtime if runtime != "default"])
+  for_each = toset([for runtime in local.runtimes : runtime if runtime != "default"])
   source   = "./region"
 
   runtime = each.value
@@ -21,7 +21,7 @@ module "partition_us_west_2" {
 }
 
 module "partition_eu_west_1" {
-  for_each = toset([for runtime in var.runtimes : runtime if runtime != "default"])
+  for_each = toset([for runtime in local.runtimes : runtime if runtime != "default"])
   source   = "./region"
 
   runtime = each.value

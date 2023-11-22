@@ -35,7 +35,7 @@ export VAULT_ADDR=${vault_addr}
 export VAULT_NAMESPACE=${vault_namespace}
 export VAULT_TOKEN=${vault_token}
 
-vault kv delete -mount=${vault_path} $(hostname)
+vault kv delete -mount=${vault_path} ${region}-${runtime}-$(hostname)
 EOF
 %{ endif }
 
