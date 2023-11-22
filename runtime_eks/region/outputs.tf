@@ -16,11 +16,12 @@ output "irsa" {
 
 output "database" {
   value = var.create_database ? {
-    address  = module.database.0.address
-    port     = module.database.0.port
-    username = module.database.0.username
-    password = module.database.0.password
-    dbname   = module.database.0.dbname
+    address           = module.database.0.address
+    read_only_address = module.database.0.read_only_address
+    port              = module.database.0.port
+    username          = module.database.0.username
+    password          = module.database.0.password
+    dbname            = module.database.0.dbname
   } : null
   description = "Database attributes"
   sensitive   = true

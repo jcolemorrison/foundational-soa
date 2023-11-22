@@ -44,7 +44,7 @@ module "us_east_1" {
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
-  create_database         = false
+  create_database         = true
   is_database_primary     = true
   global_cluster_id       = aws_rds_global_cluster.database.id
   database_engine         = aws_rds_global_cluster.database.engine
@@ -90,7 +90,7 @@ module "us_west_2" {
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
-  create_database         = false
+  create_database         = true
   is_database_primary     = false
   global_cluster_id       = aws_rds_global_cluster.database.id
   database_engine         = aws_rds_global_cluster.database.engine
@@ -126,7 +126,7 @@ module "eu_west_1" {
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
-  create_database         = false
+  create_database         = true
   is_database_primary     = false
   global_cluster_id       = aws_rds_global_cluster.database.id
   database_engine         = aws_rds_global_cluster.database.engine

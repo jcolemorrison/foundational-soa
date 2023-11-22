@@ -3,6 +3,10 @@ output "address" {
   description = "Address of database"
 }
 
+output "read_only_address" {
+  value = aws_rds_cluster.database.reader_endpoint
+}
+
 output "port" {
   value       = aws_rds_cluster.database.port
   description = "Port of database"
