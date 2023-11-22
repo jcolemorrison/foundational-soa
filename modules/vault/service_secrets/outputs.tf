@@ -1,5 +1,5 @@
 output "namespace" {
-  value       = vault_namespace.service.id
+  value       = trimsuffix(vault_namespace.service.id, "/")
   description = "Service namespace in Vault"
 }
 
