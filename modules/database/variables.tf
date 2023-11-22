@@ -61,3 +61,8 @@ variable "accessible_cidr_blocks" {
   description = "List of routable CIDR blocks to allow Consul proxies to connect"
   default     = []
 }
+
+variable "boundary_worker_security_group_id" {
+  type        = string
+  description = "Boundary worker security group ID"
+}

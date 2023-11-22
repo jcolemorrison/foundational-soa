@@ -7,10 +7,11 @@ module "database" {
   private_subnet_ids     = module.network.vpc_private_subnet_ids
   hcp_network_cidr_block = var.hcp_hvn_cidr_block
 
-  database_engine           = var.database_engine
-  database_engine_version   = var.database_engine_version
-  global_cluster_id         = var.global_cluster_id
-  is_primary                = var.is_database_primary
+  database_engine         = var.database_engine
+  database_engine_version = var.database_engine_version
+  global_cluster_id       = var.global_cluster_id
+  is_primary              = var.is_database_primary
 
-  accessible_cidr_blocks = var.accessible_cidr_blocks
+  accessible_cidr_blocks            = var.accessible_cidr_blocks
+  boundary_worker_security_group_id = module.boundary_worker.0.security_group_id
 }

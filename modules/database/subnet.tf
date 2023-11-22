@@ -27,6 +27,15 @@ resource "aws_security_group_rule" "allow_database_from_vpc" {
   security_group_id = aws_security_group.database.id
 }
 
+resource "aws_security_group_rule" "allow_database_from_boundary_worker" {
+  type                     = "ingress"
+  from_port                = 5432
+  to_port                  = 5432
+  protocol                 = "tcp"
+  source_security_group_id = var.boundary_worker_security_group_id
+  security_group_id        = aws_security_group.database.id
+}
+
 resource "aws_security_group_rule" "allow_database_egress" {
   type              = "egress"
   from_port         = 0
