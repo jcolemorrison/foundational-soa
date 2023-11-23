@@ -6,4 +6,4 @@ terraform.tfstate.backup
 .DS_Store
 
 secrets/
-shared_services/backend.tf
+**/backend.tf
