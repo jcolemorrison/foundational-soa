@@ -12,7 +12,7 @@ module "database" {
   global_cluster_id       = var.global_cluster_id
   is_primary              = var.is_database_primary
 
-  accessible_cidr_blocks            = var.accessible_cidr_blocks
+  accessible_cidr_blocks            = concat(var.accessible_cidr_blocks, [var.vpc_cidr_block])
   boundary_worker_security_group_id = module.boundary_worker.0.security_group_id
 }
 

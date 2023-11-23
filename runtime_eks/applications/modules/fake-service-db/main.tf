@@ -67,8 +67,6 @@ resource "kubernetes_manifest" "deployment" {
         "metadata" = {
           "annotations" = {
             "consul.hashicorp.com/connect-inject"            = "true"
-            "consul.hashicorp.com/connect-service-upstreams" = "${var.database_service_name}:${var.database_service_port}"
-            "consul.hashicorp.com/transparent-proxy"         = "false"
           }
           "labels" = {
             "app" = var.name
@@ -92,7 +90,7 @@ resource "kubernetes_manifest" "deployment" {
                 },
                 {
                   "name"  = "DATABASE_HOST"
-                  "value" = "127.0.0.1"
+                  "value" = "prod-database.virtual.consul"
                 },
                 {
                   "name" = "DATABASE_USER"
