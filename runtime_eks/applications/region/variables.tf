@@ -37,6 +37,17 @@ variable "service_name" {
   description = "Service name for gateway"
 }
 
+variable "database_port" {
+  type        = number
+  description = "Port for database service"
+  default     = 5432
+}
+
+variable "vault_namespace" {
+  type        = string
+  description = "Vault namespace for database credentials"
+}
+
 variable "vault_database_path" {
   type        = string
   description = "Vault database path to allow application to access database credentials"

@@ -25,9 +25,14 @@ variable "port" {
   description = "Port of application"
 }
 
-variable "database_host" {
+variable "database_service_name" {
   type        = string
-  description = "Database host to access via Consul"
+  description = "Database service name"
+}
+
+variable "database_service_port" {
+  type        = string
+  description = "Database service port"
 }
 
 variable "vault_namespace" {

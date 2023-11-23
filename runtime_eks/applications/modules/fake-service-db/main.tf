@@ -66,7 +66,9 @@ resource "kubernetes_manifest" "deployment" {
       "template" = {
         "metadata" = {
           "annotations" = {
-            "consul.hashicorp.com/connect-inject" = "true"
+            "consul.hashicorp.com/connect-inject"            = "true"
+            "consul.hashicorp.com/connect-service-upstreams" = "${var.database_service_name}:${var.database_service_port}"
+            "consul.hashicorp.com/transparent-proxy"         = "false"
           }
           "labels" = {
             "app" = var.name
@@ -86,7 +88,7 @@ resource "kubernetes_manifest" "deployment" {
                 },
                 {
                   "name"  = "DATABASE_HOST"
-                  "value" = var.database_host
+                  "value" = "127.0.0.1:5432"
                 },
                 {
                   "name" = "DATABASE_USER"
@@ -107,7 +109,7 @@ resource "kubernetes_manifest" "deployment" {
                   }
                 },
               ]
-              "image" = module.static.container_image
+              "image" = "rosemarywang/fake-service-db:v0.0.1"
               "name"  = var.name
               "ports" = [
                 {
@@ -150,7 +152,7 @@ resource "kubernetes_manifest" "vault_auth" {
         "audiences" = [
           "vault",
         ]
-        "role"           = var.name
+        "role"           = var.vault_database_secret_role
         "serviceAccount" = var.name
       }
       "method"    = "kubernetes"
