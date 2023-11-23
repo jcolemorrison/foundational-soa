@@ -176,8 +176,9 @@ resource "kubernetes_manifest" "vault_dynamic_secret" {
         "name"   = local.database_credentials
         "type"   = "Opaque"
       }
-      "mount" = var.vault_database_path
-      "path"  = "creds"
+      "mount"     = var.vault_database_path
+      "path"      = "creds/customers"
+      "namespace" = var.vault_namespace
       "rolloutRestartTargets" = [
         {
           "kind" = "Deployment"
