@@ -93,6 +93,10 @@ resource "kubernetes_manifest" "deployment" {
                   "value" = "prod-database.virtual.consul"
                 },
                 {
+                  "name"  = "DATABASE_PORT"
+                  "value" = "5432"
+                },
+                {
                   "name" = "DATABASE_USER"
                   "valueFrom" = {
                     "secretKeyRef" = {
