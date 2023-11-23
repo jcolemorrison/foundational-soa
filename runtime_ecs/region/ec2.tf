@@ -11,7 +11,7 @@ resource "aws_launch_template" "container_instance" {
   vpc_security_group_ids = [
     aws_security_group.container_instance.id,
     aws_security_group.consul_client.id,
-    # module.boundary_worker.0.security_group_id
+    module.boundary_worker.0.security_group_id
   ]
 
   iam_instance_profile {
@@ -27,47 +27,47 @@ resource "aws_launch_template" "container_instance" {
   }))
 }
 
-resource "aws_autoscaling_group" "container_instance" {
-  health_check_type     = "EC2"
-  max_size              = 0
-  min_size              = 0
-  name_prefix           = "${var.region}-ecs-instance"
-  protect_from_scale_in = false
-  target_group_arns     = []
-  vpc_zone_identifier   = module.network.vpc_private_subnet_ids
+# resource "aws_autoscaling_group" "container_instance" {
+#   health_check_type     = "EC2"
+#   max_size              = 0
+#   min_size              = 0
+#   name_prefix           = "${var.region}-ecs-instance"
+#   protect_from_scale_in = false
+#   target_group_arns     = []
+#   vpc_zone_identifier   = module.network.vpc_private_subnet_ids
 
-  enabled_metrics = [
-    "GroupMinSize",
-    "GroupMaxSize",
-    "GroupDesiredCapacity",
-    "GroupInServiceInstances",
-    "GroupPendingInstances",
-    "GroupStandbyInstances",
-    "GroupTerminatingInstances",
-    "GroupTotalInstances",
-    "GroupInServiceCapacity",
-    "GroupPendingCapacity",
-    "GroupStandbyCapacity",
-    "GroupTerminatingCapacity",
-    "GroupTotalCapacity"
-  ]
+#   enabled_metrics = [
+#     "GroupMinSize",
+#     "GroupMaxSize",
+#     "GroupDesiredCapacity",
+#     "GroupInServiceInstances",
+#     "GroupPendingInstances",
+#     "GroupStandbyInstances",
+#     "GroupTerminatingInstances",
+#     "GroupTotalInstances",
+#     "GroupInServiceCapacity",
+#     "GroupPendingCapacity",
+#     "GroupStandbyCapacity",
+#     "GroupTerminatingCapacity",
+#     "GroupTotalCapacity"
+#   ]
 
-  instance_refresh {
-    strategy = "Rolling"
-  }
+#   instance_refresh {
+#     strategy = "Rolling"
+#   }
 
-  launch_template {
-    id      = aws_launch_template.container_instance.id
-    version = aws_launch_template.container_instance.latest_version
-  }
+#   launch_template {
+#     id      = aws_launch_template.container_instance.id
+#     version = aws_launch_template.container_instance.latest_version
+#   }
 
-  lifecycle {
-    create_before_destroy = true
-  }
+#   lifecycle {
+#     create_before_destroy = true
+#   }
 
-  tag {
-    key                 = "Name"
-    value               = "${var.region}-ecs-instance"
-    propagate_at_launch = true
-  }
-}
+#   tag {
+#     key                 = "Name"
+#     value               = "${var.region}-ecs-instance"
+#     propagate_at_launch = true
+#   }
+# }
