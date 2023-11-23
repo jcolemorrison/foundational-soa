@@ -59,5 +59,5 @@ variable "vault_kubernetes_auth_path" {
 variable "fake_service_db_container_image" {
   type        = string
   description = "Fake service DB container image"
-  default     = "rosemarywang/fake-service-db:v0.0.2"
+  default     = "rosemarywang/fake-service-db:v0.0.3"
 }
