@@ -121,14 +121,14 @@ resource "aws_security_group_rule" "container_instance_allow_alb_to_ephemeral" {
   source_security_group_id = aws_security_group.public_alb.id
 }
 
-resource "aws_security_group_rule" "container_instance_allow_ssh_boundary" {
-  type                     = "ingress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.container_instance.id
-  source_security_group_id =  module.boundary_worker.0.security_group_id
-}
+# resource "aws_security_group_rule" "container_instance_allow_ssh_boundary" {
+#   type                     = "ingress"
+#   from_port                = 22
+#   to_port                  = 22
+#   protocol                 = "tcp"
+#   security_group_id        = aws_security_group.container_instance.id
+#   source_security_group_id =  module.boundary_worker.0.security_group_id
+# }
 
 resource "aws_security_group_rule" "container_instance_allow_egress" {
   type              = "egress"
