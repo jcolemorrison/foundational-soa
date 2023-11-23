@@ -7,3 +7,4 @@ terraform.tfstate.backup
 
 secrets/
 **/backend.tf
+**.pem

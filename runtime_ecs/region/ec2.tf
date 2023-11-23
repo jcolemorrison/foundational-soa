@@ -10,8 +10,7 @@ resource "aws_launch_template" "container_instance" {
   name_prefix            = "${var.region}-ecs-instance"
   vpc_security_group_ids = [
     aws_security_group.container_instance.id,
-    aws_security_group.consul_client.id,
-    module.boundary_worker.0.security_group_id
+    aws_security_group.consul_client.id
   ]
 
   iam_instance_profile {
