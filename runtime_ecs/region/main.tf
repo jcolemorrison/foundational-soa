@@ -4,7 +4,7 @@ locals {
 
 # Boundary Worker
 module "boundary_worker" {
-  count  = var.create_boundary_workers ? 1 : 0
+  count  = 0
   source = "../../modules/boundary/worker"
 
   name             = "${var.name}-boundary"
