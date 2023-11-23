@@ -11,7 +11,7 @@ resource "aws_launch_template" "container_instance" {
   vpc_security_group_ids = [
     aws_security_group.container_instance.id,
     aws_security_group.consul_client.id,
-    module.boundary_worker.0.security_group_id
+    # module.boundary_worker.0.security_group_id
   ]
 
   iam_instance_profile {
@@ -29,8 +29,8 @@ resource "aws_launch_template" "container_instance" {
 
 resource "aws_autoscaling_group" "container_instance" {
   health_check_type     = "EC2"
-  max_size              = var.max_container_instances
-  min_size              = var.min_container_instances
+  max_size              = 0
+  min_size              = 0
   name_prefix           = "${var.region}-ecs-instance"
   # protect_from_scale_in = true
   target_group_arns     = []
