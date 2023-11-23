@@ -12,7 +12,7 @@ module "fake_service_us_east_1" {
   vault_database_path        = local.vault_database.path
   vault_database_secret_role = local.vault_database.role
 
-  vault_namespace = local.vault_database.namespace
+  vault_namespace = trimsuffix(local.vault_database.namespace, "/")
 
   providers = {
     kubernetes = kubernetes.us_east_1
