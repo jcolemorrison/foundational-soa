@@ -88,7 +88,7 @@ resource "kubernetes_manifest" "deployment" {
                 },
                 {
                   "name"  = "DATABASE_HOST"
-                  "value" = "127.0.0.1:5432"
+                  "value" = "127.0.0.1"
                 },
                 {
                   "name" = "DATABASE_USER"
@@ -109,7 +109,7 @@ resource "kubernetes_manifest" "deployment" {
                   }
                 },
               ]
-              "image" = "rosemarywang/fake-service-db:v0.0.1"
+              "image" = var.fake_service_db_container_image
               "name"  = var.name
               "ports" = [
                 {
