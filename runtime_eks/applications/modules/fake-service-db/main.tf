@@ -87,6 +87,10 @@ resource "kubernetes_manifest" "deployment" {
                   "value" = module.static.name
                 },
                 {
+                  "name"  = "DATABASE_NAME"
+                  "value" = var.vault_database_secret_role
+                },
+                {
                   "name"  = "DATABASE_HOST"
                   "value" = "127.0.0.1"
                 },

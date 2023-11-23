@@ -31,7 +31,7 @@ module "us_west_2" {
 
   hcp_consul_cluster_id     = local.us_west_2.consul.id
   hcp_vault_private_address = local.us_west_2.vault.private_address
-  kubernetes_endpoint       = replace(data.aws_eks_cluster.us_west_2.endpoint, "https://", "")
+  kubernetes_endpoint       = data.aws_eks_cluster.us_west_2.endpoint
 
   hcp_consul_observability = {
     client_id     = var.hcp_consul_observability.us_west_2.client_id
@@ -59,7 +59,7 @@ module "eu_west_1" {
 
   hcp_consul_cluster_id     = local.eu_west_1.consul.id
   hcp_vault_private_address = local.eu_west_1.vault.private_address
-  kubernetes_endpoint       = replace(data.aws_eks_cluster.eu_west_1.endpoint, "https://", "")
+  kubernetes_endpoint       = data.aws_eks_cluster.eu_west_1.endpoint
 
   hcp_consul_observability = {
     client_id     = var.hcp_consul_observability.eu_west_1.client_id
