@@ -17,18 +17,19 @@ locals {
 }
 
 resource "aws_rds_cluster" "database" {
-  allow_major_version_upgrade = true
-  apply_immediately           = true
-  cluster_identifier          = local.identifier
-  database_name               = var.is_primary ? var.db_name : null
-  engine                      = var.database_engine
-  engine_version              = var.database_engine_version
-  global_cluster_identifier   = var.global_cluster_id
-  master_password             = var.is_primary ? random_password.database.result : null
-  master_username             = var.is_primary ? random_pet.database.id : null
-  skip_final_snapshot         = true
-  db_subnet_group_name        = aws_db_subnet_group.default.name
-  vpc_security_group_ids      = [aws_security_group.database.id]
+  allow_major_version_upgrade    = true
+  apply_immediately              = true
+  cluster_identifier             = local.identifier
+  database_name                  = var.is_primary ? var.db_name : null
+  engine                         = var.database_engine
+  engine_version                 = var.database_engine_version
+  global_cluster_identifier      = var.global_cluster_id
+  master_password                = var.is_primary ? random_password.database.result : null
+  master_username                = var.is_primary ? random_pet.database.id : null
+  skip_final_snapshot            = true
+  db_subnet_group_name           = aws_db_subnet_group.default.name
+  vpc_security_group_ids         = [aws_security_group.database.id]
+  enable_global_write_forwarding = true
 
   lifecycle {
     ignore_changes = [engine_version]
