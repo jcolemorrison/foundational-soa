@@ -5,7 +5,6 @@ yum install -y unzip
 # ECS Configuration
 
 echo ECS_CLUSTER='${ECS_CLUSTER_NAME}' >> /etc/ecs/ecs.config
-export ECS_CLUSTER='${ECS_CLUSTER_NAME}'
 
 # --- #
 
@@ -61,9 +60,7 @@ rm vault_${VAULT_VERSION}_SHA256SUMS.sig
 
 # vault agent template
 cat > /opt/vault/apikey.tpl <<- EOF
-{{ with secret "kv/data/prod-ecs-api-key" }}
-{{ .Data.data.apikey }}
-{{ end }}
+{{ with secret "kv/data/prod-ecs-api-key" }}{{ .Data.data.apikey }}{{ end }}
 EOF
 
 chown vault:vault /opt/vault/apikey.tpl
