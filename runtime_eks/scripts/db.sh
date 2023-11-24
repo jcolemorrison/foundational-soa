@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export BOUNDARY_ADDR=$(cd shared_services && terraform output -json hcp_us_east_1 | jq -r .boundary.address)
+
 mkdir -p secrets
 echo "$(cd shared_services && terraform output -json hcp_us_east_1 | jq -r .boundary.password)" > secrets/boundary_admin
 
