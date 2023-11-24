@@ -6,7 +6,8 @@ resource "aws_launch_template" "container_instance" {
   description            = "launch template for ECS container instances"
   image_id               = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type          = var.instance_type
-  key_name               = aws_key_pair.boundary.key_name
+  # key_name               = aws_key_pair.boundary.key_name
+  key_name = var.test_bastion_keypair
   name_prefix            = "${var.region}-ecs-instance"
   vpc_security_group_ids = [
     aws_security_group.container_instance.id,
@@ -23,6 +24,10 @@ resource "aws_launch_template" "container_instance" {
 
   user_data = base64encode(templatefile("${path.module}/scripts/container_instance.sh", {
     ECS_CLUSTER_NAME = aws_ecs_cluster.main.name
+    VAULT_VERSION = "1.14.3"
+    VAULT_NAMESPACE = var.vault_secrets_namespace
+    VAULT_ROLE = "vault-ecs-role-${var.region}"
+    VAULT_ADDR = var.vault_address
   }))
 }
 

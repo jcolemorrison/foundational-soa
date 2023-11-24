@@ -44,6 +44,8 @@ module "us_east_1" {
   consul_admin_partition = "ecs"
   consul_cluster_id      = local.consul_us_east_1.id
 
+  vault_secrets_namespace = vault_namespace.service.path
+
   test_bastion_enabled = true
   test_bastion_keypair = var.test_bastion_keypair_us_east_1
   test_bastion_cidr_blocks = [
@@ -86,6 +88,8 @@ module "us_west_2" {
   consul_server_hosts    = local.consul_us_west_2.retry_join
   consul_admin_partition = "ecs"
   consul_cluster_id      = local.consul_us_west_2.id
+
+  vault_secrets_namespace = vault_namespace.service.path
 
   test_bastion_enabled = true
   test_bastion_keypair = var.test_bastion_keypair_us_west_2
@@ -133,6 +137,8 @@ module "eu_west_1" {
   consul_server_hosts    = local.consul_eu_west_1.retry_join
   consul_admin_partition = "ecs"
   consul_cluster_id      = local.consul_eu_west_1.id
+
+  vault_secrets_namespace = vault_namespace.service.path
 
   test_bastion_enabled = true
   test_bastion_keypair = var.test_bastion_keypair_eu_west_1

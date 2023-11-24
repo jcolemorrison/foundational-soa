@@ -263,6 +263,13 @@ variable "boundary_project_scope_id" {
   description = "Boundary project scope ID for EKS runtime"
 }
 
+## Vault Secrets
+
+variable "vault_secrets_namespace" {
+  type = string
+  description = "Namespace used for Vault secrets for ECS"
+}
+
 ## Test Bastion
 
 variable "test_bastion_enabled" {
