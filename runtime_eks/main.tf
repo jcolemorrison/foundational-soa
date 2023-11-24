@@ -95,7 +95,6 @@ module "us_west_2" {
     aws    = aws.us_west_2
     consul = consul.us_west_2
     vault  = vault.us_west_2
-
   }
 }
 

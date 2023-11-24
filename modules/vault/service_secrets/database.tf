@@ -1,6 +1,9 @@
+# If database is primary, it has a username and password.
+# Store the static username and password in Vault for
+# Boundary to use.
 
 resource "vault_kv_secret_v2" "database" {
-  count               = var.db_name != null ? 1 : 0
+  count               = var.db_password != null ? 1 : 0
   namespace           = var.vault_namespace
   mount               = vault_mount.static.path
   name                = "${var.db_name}-admin"
@@ -13,6 +16,24 @@ resource "vault_kv_secret_v2" "database" {
 }
 EOT
 }
+
+data "vault_policy_document" "database_admin" {
+  count = var.db_password != null ? 1 : 0
+  rule {
+    path         = "${vault_mount.static.path}/data/${vault_kv_secret_v2.database.0.name}"
+    capabilities = ["read"]
+    description  = "get admin database credentials for ${vault_database_secret_backend_role.database.0.name}"
+  }
+}
+
+resource "vault_policy" "database_admin" {
+  count     = var.db_password != null ? 1 : 0
+  namespace = var.vault_namespace
+  name      = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-admin"
+  policy    = data.vault_policy_document.database_admin.0.hcl
+}
+
+# Enable database secrets engine.
 
 resource "vault_mount" "database" {
   count     = var.db_name != null ? 1 : 0
