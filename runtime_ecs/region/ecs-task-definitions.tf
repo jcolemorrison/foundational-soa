@@ -35,7 +35,7 @@ module "ecs_api" {
       environment = [
         {
           name  = "NAME"
-          value = "ecs-api"
+          value = "ecs-api $ECS_CLUSTER"
         },
         {
           name  = "MESSAGE"

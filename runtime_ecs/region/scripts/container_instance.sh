@@ -5,6 +5,7 @@ yum install -y unzip
 # ECS Configuration
 
 echo ECS_CLUSTER='${ECS_CLUSTER_NAME}' >> /etc/ecs/ecs.config
+export ECS_CLUSTER='${ECS_CLUSTER_NAME}'
 
 # --- #
 
@@ -19,6 +20,7 @@ mkdir -p /opt/vault/bin
 mkdir -p /opt/vault/config
 mkdir -p /opt/vault/tls
 mkdir -p /opt/vault/token
+mkdir -p /opt/vault/public
 
 # Give corret permissions
 chmod 755 /opt/vault
@@ -73,7 +75,7 @@ pid_file = "/opt/vault/pidfile"
 auto_auth {
   method "aws" {
       mount_path = "auth/aws"
-      namespace = "${VAULT_NAMESPACE}"
+      namespace = "admin/${VAULT_NAMESPACE}"
       config = {
           type = "iam"
           role = "${VAULT_ROLE}"
@@ -98,7 +100,7 @@ vault {
 
 template {
   source      = "/opt/vault/apikey.tpl"
-  destination = "/opt/vault/apikey.txt"
+  destination = "/opt/vault/public/apikey.txt"
 }
 EOF
 
