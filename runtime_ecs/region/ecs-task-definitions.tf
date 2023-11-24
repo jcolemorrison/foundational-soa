@@ -8,13 +8,6 @@ module "ecs_api" {
   memory                   = 256
   requires_compatibilities = ["EC2"]
 
-  # volumes = [
-  #   {
-  #     name = "apikey"
-  #     host_path = "/opt/vault/public/apikey.txt"
-  #   }
-  # ]
-
   container_definitions = [
     {
       name      = "api"
@@ -53,13 +46,6 @@ module "ecs_api" {
           value = "http://localhost:1234"
         }
       ]
-
-      # mountPoints = [{
-      #   sourceVolume = "apiKey"
-      #   containerPath = "/opt/vault/public/apikey.txt"
-      # }]
-
-      entryPoint = ["MESSAGE='Override' /app/fake-service"]
     }
   ]
 
