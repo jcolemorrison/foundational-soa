@@ -8,7 +8,16 @@ locals {
   hcp_hvn_cidr_blocks         = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
   accessible_cidr_blocks      = data.terraform_remote_state.shared_services.outputs.accessible_cidr_blocks
 
-  name = "prod"
+  name    = "prod"
+  db_name = "customers"
+}
+
+resource "aws_rds_global_cluster" "database" {
+  global_cluster_identifier = local.name
+  engine                    = "aurora-postgresql"
+  database_name             = local.db_name
+  force_destroy             = true
+  storage_encrypted         = false
 }
 
 module "us_east_1" {
@@ -24,16 +33,31 @@ module "us_east_1" {
 
   name = local.name
 
-  create_boundary_workers     = true
-  boundary_cluster_id         = local.boundary_cluster_id
-  boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_east_1
-  vault_address               = local.vault_us_east_1.address
-  vault_namespace             = local.boundary_worker_vault_namespace
+  create_boundary_workers                  = true
+  boundary_cluster_id                      = local.boundary_cluster_id
+  boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
+  boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
+  boundary_worker_vault_path               = local.boundary_worker_vault_path
+  boundary_worker_vault_token              = local.boundary_worker_vault_tokens.us_east_1
+  vault_address                            = local.vault_us_east_1.address
+  vault_namespace                          = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
+
+  create_database         = true
+  is_database_primary     = true
+  global_cluster_id       = aws_rds_global_cluster.database.id
+  database_engine         = aws_rds_global_cluster.database.engine
+  database_engine_version = aws_rds_global_cluster.database.engine_version
+  db_name                 = local.db_name
+
+  providers = {
+    aws    = aws
+    consul = consul.us_east_1
+    vault  = vault.us_east_1
+  }
 }
 
 module "us_west_2" {
@@ -49,19 +73,30 @@ module "us_west_2" {
 
   name = local.name
 
-  create_boundary_workers     = true
-  boundary_cluster_id         = local.boundary_cluster_id
-  boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_west_2
-  vault_address               = local.vault_us_west_2.address
-  vault_namespace             = local.boundary_worker_vault_namespace
+  create_boundary_workers                  = true
+  boundary_cluster_id                      = local.boundary_cluster_id
+  boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
+  boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
+  boundary_worker_vault_path               = local.boundary_worker_vault_path
+  boundary_worker_vault_token              = local.boundary_worker_vault_tokens.us_west_2
+  vault_address                            = local.vault_us_west_2.address
+  vault_namespace                          = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
+  create_database         = true # NOTE: set us-east-1 to true FIRST to set database primary
+  is_database_primary     = false
+  global_cluster_id       = aws_rds_global_cluster.database.id
+  database_engine         = aws_rds_global_cluster.database.engine
+  database_engine_version = aws_rds_global_cluster.database.engine_version
+  db_name                 = local.db_name
+
   providers = {
-    aws = aws.us_west_2
+    aws    = aws.us_west_2
+    consul = consul.us_west_2
+    vault  = vault.us_west_2
   }
 }
 
@@ -78,18 +113,29 @@ module "eu_west_1" {
 
   name = local.name
 
-  create_boundary_workers     = true
-  boundary_cluster_id         = local.boundary_cluster_id
-  boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_tokens.eu_west_1
-  vault_address               = local.vault_eu_west_1.address
-  vault_namespace             = local.boundary_worker_vault_namespace
+  create_boundary_workers                  = true
+  boundary_cluster_id                      = local.boundary_cluster_id
+  boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
+  boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
+  boundary_worker_vault_path               = local.boundary_worker_vault_path
+  boundary_worker_vault_token              = local.boundary_worker_vault_tokens.eu_west_1
+  vault_address                            = local.vault_eu_west_1.address
+  vault_namespace                          = local.boundary_worker_vault_namespace
 
   create_eks_cluster = true
 
   boundary_project_scope_id = boundary_scope.runtime_eks.id
 
+  create_database         = true # NOTE: set us-east-1 to true FIRST to set database primary
+  is_database_primary     = false
+  global_cluster_id       = aws_rds_global_cluster.database.id
+  database_engine         = aws_rds_global_cluster.database.engine
+  database_engine_version = aws_rds_global_cluster.database.engine_version
+  db_name                 = local.db_name
+
   providers = {
-    aws = aws.eu_west_1
+    aws    = aws.eu_west_1
+    consul = consul.eu_west_1
+    vault  = vault.eu_west_1
   }
 }

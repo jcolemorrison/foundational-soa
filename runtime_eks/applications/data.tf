@@ -20,6 +20,17 @@ data "terraform_remote_state" "runtime_eks" {
   }
 }
 
+data "terraform_remote_state" "runtime_eks_kubernetes" {
+  backend = "remote"
+
+  config = {
+    organization = var.terraform_cloud_organization
+    workspaces = {
+      name = "runtime-eks-kubernetes"
+    }
+  }
+}
+
 locals {
   aws_default_region = data.terraform_remote_state.runtime_eks.outputs.default_region.id
   cluster_name       = data.terraform_remote_state.runtime_eks.outputs.cluster_name
@@ -28,6 +39,11 @@ locals {
   eu_west_1          = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1
 
   aws_irsa = data.terraform_remote_state.runtime_eks.outputs.irsa
+
+  vault_database = data.terraform_remote_state.runtime_eks.outputs.vault_database
+  service_name   = data.terraform_remote_state.runtime_eks.outputs.cluster_name
+
+  vault_kubernetes_auth_path = data.terraform_remote_state.runtime_eks_kubernetes.outputs.kubernetes_auth_path
 }
 
 data "aws_eks_cluster" "us_east_1" {
