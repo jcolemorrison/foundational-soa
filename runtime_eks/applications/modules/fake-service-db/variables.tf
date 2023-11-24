@@ -53,7 +53,6 @@ variable "vault_database_secret_role" {
 variable "vault_kubernetes_auth_path" {
   type        = string
   description = "Vault Kubernetes authentication method path"
-  default     = "kubernetes"
 }
 
 variable "fake_service_db_container_image" {

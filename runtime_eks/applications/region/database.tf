@@ -8,6 +8,7 @@ module "database" {
   vault_namespace            = var.vault_namespace
   vault_database_path        = var.vault_database_path
   vault_database_secret_role = var.vault_database_secret_role
+  vault_kubernetes_auth_path = var.vault_kubernetes_auth_path
 
   database_service_name = "${var.service_name}-database"
   database_service_port = var.database_port
