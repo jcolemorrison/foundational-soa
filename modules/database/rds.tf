@@ -43,10 +43,3 @@ resource "aws_rds_cluster_instance" "database" {
   instance_class       = var.db_instance_class
   db_subnet_group_name = aws_db_subnet_group.default.name
 }
-
-resource "aws_rds_cluster_endpoint" "writer" {
-  count                       = var.is_primary ? 0 : 1
-  cluster_identifier          = aws_rds_cluster.database.id
-  cluster_endpoint_identifier = "writer"
-  custom_endpoint_type        = "ANY"
-}
