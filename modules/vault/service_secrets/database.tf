@@ -4,7 +4,6 @@
 
 resource "vault_kv_secret_v2" "database" {
   count               = var.db_password != null ? 1 : 0
-  namespace           = var.vault_namespace
   mount               = vault_mount.static.path
   name                = "${var.db_name}-admin"
   delete_all_versions = true
@@ -28,7 +27,6 @@ data "vault_policy_document" "database_admin" {
 
 resource "vault_policy" "database_admin" {
   count     = var.db_password != null ? 1 : 0
-  namespace = var.vault_namespace
   name      = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-admin"
   policy    = data.vault_policy_document.database_admin.0.hcl
 }
@@ -37,14 +35,12 @@ resource "vault_policy" "database_admin" {
 
 resource "vault_mount" "database" {
   count     = var.db_name != null ? 1 : 0
-  namespace = var.vault_namespace
   path      = "database/${var.db_name}"
   type      = "database"
 }
 
 resource "vault_database_secret_backend_connection" "database" {
   count         = var.db_name != null ? 1 : 0
-  namespace     = var.vault_namespace
   backend       = vault_mount.database.0.path
   name          = var.db_name
   allowed_roles = [var.db_name]
@@ -58,7 +54,6 @@ resource "vault_database_secret_backend_connection" "database" {
 
 resource "vault_database_secret_backend_role" "database" {
   count                 = var.db_name != null ? 1 : 0
-  namespace             = var.vault_namespace
   backend               = vault_mount.database.0.path
   name                  = var.db_name
   db_name               = vault_database_secret_backend_connection.database.0.name
@@ -79,7 +74,6 @@ data "vault_policy_document" "database" {
 
 resource "vault_policy" "database" {
   count     = var.db_name != null ? 1 : 0
-  namespace = var.vault_namespace
   name      = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-read"
   policy    = data.vault_policy_document.database.0.hcl
 }

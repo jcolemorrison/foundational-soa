@@ -8,7 +8,6 @@ module "database_vault" {
   source = "../modules/vault/service_secrets"
 
   service         = local.name
-  vault_namespace = vault_namespace.database.namespace
 
   db_name     = module.us_east_1.database.dbname
   db_username = module.us_east_1.database.username
@@ -17,14 +16,13 @@ module "database_vault" {
   db_port     = module.us_east_1.database.port
 
   providers = {
-    vault = vault.us_east_1
+    vault = vault.service
   }
 }
 
 resource "vault_policy" "boundary_controller" {
   count     = module.us_east_1.database != null ? 1 : 0
   name      = "boundary-controller"
-  namespace = vault_namespace.database.namespace
   policy    = <<EOT
 path "auth/token/lookup-self" {
   capabilities = ["read"]
@@ -51,12 +49,11 @@ path "sys/capabilities-self" {
 }
 EOT
 
-  provider = vault.us_east_1
+  provider = vault.service
 }
 
 resource "vault_token" "boundary_controller" {
   count             = module.us_east_1.database != null ? 1 : 0
-  namespace         = local.name
   policies          = concat([vault_policy.boundary_controller.0.name], values(module.database_vault.0.database_secrets_policies))
   no_default_policy = true
   no_parent         = true
@@ -66,7 +63,7 @@ resource "vault_token" "boundary_controller" {
   renewable         = true
   num_uses          = 0
 
-  provider = vault.us_east_1
+  provider = vault.service
 }
 
 resource "boundary_credential_store_vault" "database" {

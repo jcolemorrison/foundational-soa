@@ -56,6 +56,13 @@ provider "vault" {
 }
 
 provider "vault" {
+  alias     = "service"
+  address   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.address
+  namespace = vault_namespace.database.id
+  token     = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.token
+}
+
+provider "vault" {
   alias     = "us_west_2"
   address   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.address
   namespace = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.namespace

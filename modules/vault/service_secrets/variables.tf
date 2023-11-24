@@ -33,8 +33,3 @@ variable "db_port" {
   description = "Database port"
   default     = null
 }
-
-variable "vault_namespace" {
-  type        = string
-  description = "Vault namespace for database service"
-}
