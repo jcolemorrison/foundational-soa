@@ -3,6 +3,11 @@ output "boundary_worker_namespace" {
   description = "Boundary namespace in Vault"
 }
 
+output "boundary_worker_namespace_relative" {
+  value       = vault_namespace.boundary.path
+  description = "Boundary namespace in Vault, does not include provider namespace"
+}
+
 output "boundary_worker_path" {
   value       = vault_mount.boundary_worker.path
   description = "Boundary worker secrets path in Vault"
