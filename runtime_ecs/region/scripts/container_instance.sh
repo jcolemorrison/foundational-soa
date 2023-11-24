@@ -82,7 +82,7 @@ auto_auth {
 
   sink "file" {
       config = {
-          path = "/opt/vault/vault-token-via-agent"
+          path = "/opt/vault/token/vault-token-via-agent"
       }
   }
 }
