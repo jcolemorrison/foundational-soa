@@ -2,7 +2,7 @@ module "us_east_1" {
   source = "./region"
 
   hcp_consul_cluster_id     = local.us_east_1.consul.id
-  hcp_vault_private_address = local.us_east_1.vault.private_address
+  hcp_vault_primary_address = local.us_east_1.vault.address
   kubernetes_endpoint       = data.aws_eks_cluster.us_east_1.endpoint
 
   hcp_consul_observability = {
@@ -30,7 +30,7 @@ module "us_west_2" {
   source = "./region"
 
   hcp_consul_cluster_id     = local.us_west_2.consul.id
-  hcp_vault_private_address = local.us_west_2.vault.private_address
+  hcp_vault_primary_address = local.us_east_1.vault.address
   kubernetes_endpoint       = data.aws_eks_cluster.us_west_2.endpoint
 
   hcp_consul_observability = {
@@ -58,7 +58,7 @@ module "eu_west_1" {
   source = "./region"
 
   hcp_consul_cluster_id     = local.eu_west_1.consul.id
-  hcp_vault_private_address = local.eu_west_1.vault.private_address
+  hcp_vault_primary_address = local.us_east_1.vault.address
   kubernetes_endpoint       = data.aws_eks_cluster.eu_west_1.endpoint
 
   hcp_consul_observability = {
