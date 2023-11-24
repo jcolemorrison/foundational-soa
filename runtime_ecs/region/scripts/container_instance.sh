@@ -57,6 +57,15 @@ rm vault_${VAULT_VERSION}_linux_amd64.zip
 rm vault_${VAULT_VERSION}_SHA256SUMS
 rm vault_${VAULT_VERSION}_SHA256SUMS.sig
 
+# vault agent template
+cat > /opt/vault/apikey.tpl <<- EOF
+{{ with secret "kv/data/prod-ecs-api-key" }}
+{{ .Data.data.apikey }}
+{{ end }}
+EOF
+
+chown vault:vault /opt/vault/apikey.tpl
+
 # The vault agent config file
 cat > /opt/vault/config/agent.hcl <<- EOF
 pid_file = "/opt/vault/pidfile"
@@ -87,9 +96,9 @@ vault {
    address = "${VAULT_ADDR}"
 }
 
-env_template "API_KEY" {
-   contents             = "{{ with secret \"kv/data/prod-ecs-api-key\" }}{{ .Data.data.apikey }}{{ end }}"
-   error_on_missing_key = true
+template {
+  source      = "/opt/vault/apikey.tpl"
+  destination = "/opt/vault/apikey.txt"
 }
 EOF
 
