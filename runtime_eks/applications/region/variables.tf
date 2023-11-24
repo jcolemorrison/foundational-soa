@@ -63,6 +63,11 @@ variable "vault_kubernetes_auth_path" {
   description = "Vault Kubernetes authentication method path"
 }
 
+variable "vault_database_secret_policy" {
+  type        = string
+  description = "Vault database secret read policy"
+}
+
 locals {
   service_ports = {
     web         = 9090
