@@ -29,7 +29,7 @@ output "irsa" {
 
 output "vault_database" {
   value = {
-    namespace = module.database_vault.0.namespace
+    namespace = vault_namespace.database.id
     path      = module.database_vault.0.database_secrets_path
     role      = module.database_vault.0.database_secrets_role
   }

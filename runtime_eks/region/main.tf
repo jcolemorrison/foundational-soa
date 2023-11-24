@@ -11,7 +11,7 @@ module "boundary_worker" {
   vault = {
     address   = var.vault_address
     token     = var.boundary_worker_vault_token
-    namespace = var.boundary_worker_vault_namespace
+    namespace = var.boundary_worker_vault_namespace_absolute
     path      = var.boundary_worker_vault_path
   }
 

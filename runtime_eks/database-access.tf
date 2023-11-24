@@ -7,7 +7,7 @@ module "database_vault" {
   count  = module.us_east_1.database != null ? 1 : 0
   source = "../modules/vault/service_secrets"
 
-  service         = local.name
+  service = local.name
 
   db_name     = module.us_east_1.database.dbname
   db_username = module.us_east_1.database.username
@@ -21,9 +21,9 @@ module "database_vault" {
 }
 
 resource "vault_policy" "boundary_controller" {
-  count     = module.us_east_1.database != null ? 1 : 0
-  name      = "boundary-controller"
-  policy    = <<EOT
+  count  = module.us_east_1.database != null ? 1 : 0
+  name   = "boundary-controller"
+  policy = <<EOT
 path "auth/token/lookup-self" {
   capabilities = ["read"]
 }
