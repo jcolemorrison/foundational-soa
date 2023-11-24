@@ -1,9 +1,5 @@
-resource "vault_namespace" "service" {
-  path = var.service
-}
-
 resource "vault_mount" "static" {
-  namespace   = vault_namespace.service.path
+  namespace   = var.vault_namespace
   path        = "kv"
   type        = "kv"
   options     = { version = "2" }
@@ -19,7 +15,7 @@ data "vault_policy_document" "static" {
 }
 
 resource "vault_policy" "static" {
-  namespace = vault_namespace.service.path
+  namespace = var.vault_namespace
   name      = "${var.service}-static-read"
   policy    = data.vault_policy_document.static.hcl
 }

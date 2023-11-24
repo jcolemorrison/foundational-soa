@@ -34,4 +34,7 @@ variable "db_port" {
   default     = null
 }
 
-
+variable "vault_namespace" {
+  type        = string
+  description = "Vault namespace for database service"
+}

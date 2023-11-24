@@ -84,6 +84,12 @@ variable "vault_namespace" {
   default     = null
 }
 
+variable "boundary_worker_vault_namespace" {
+  type        = string
+  description = "Namespace in Vault for Boundary worker to store secret"
+  default     = null
+}
+
 variable "boundary_worker_vault_path" {
   type        = string
   description = "Path in Vault for Boundary worker to store secret"

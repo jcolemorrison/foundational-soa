@@ -9,9 +9,10 @@ data "aws_instances" "boundary_worker" {
 }
 
 data "vault_kv_secret_v2" "boundary_worker_token_eks" {
-  count = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
-  mount = var.boundary_worker_vault_path
-  name  = "${var.region}-${var.runtime}-${split(".", module.boundary_worker.0.private_dns).0}"
+  count     = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
+  mount     = var.boundary_worker_vault_path
+  namespace = var.boundary_worker_vault_namespace
+  name      = "${var.region}-${var.runtime}-${split(".", module.boundary_worker.0.private_dns).0}"
 }
 
 resource "boundary_worker" "eks" {

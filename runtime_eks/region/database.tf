@@ -61,3 +61,7 @@ resource "consul_config_entry" "service_defaults" {
     TransparentProxy = {}
   })
 }
+
+resource "vault_namespace" "database" {
+  path = var.name
+}
