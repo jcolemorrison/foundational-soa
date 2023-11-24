@@ -83,6 +83,7 @@ resource "vault_aws_auth_backend_client" "aws" {
 
 resource "vault_aws_auth_backend_role" "aws_us_east_1" {
   backend                         = vault_auth_backend.aws.path
+  namespace = vault_namespace.service.path
   role                            = "vault-ecs-role-${local.us_east_1}"
   auth_type                       = "iam"
   bound_iam_role_arns             = [aws_iam_role.container_instance.arn]
@@ -98,6 +99,7 @@ resource "vault_aws_auth_backend_role" "aws_us_east_1" {
 
 resource "vault_aws_auth_backend_role" "aws_us_west_2" {
   backend                         = vault_auth_backend.aws.path
+  namespace = vault_namespace.service.path
   role                            = "vault-ecs-role-${local.us_west_2}"
   auth_type                       = "iam"
   bound_iam_role_arns             = [aws_iam_role.container_instance.arn]
@@ -113,6 +115,7 @@ resource "vault_aws_auth_backend_role" "aws_us_west_2" {
 
 resource "vault_aws_auth_backend_role" "aws_eu_west_1" {
   backend                         = vault_auth_backend.aws.path
+  namespace = vault_namespace.service.path
   role                            = "vault-ecs-role-${local.eu_west_1}"
   auth_type                       = "iam"
   bound_iam_role_arns             = [aws_iam_role.container_instance.arn]
