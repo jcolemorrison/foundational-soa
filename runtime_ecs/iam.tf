@@ -296,3 +296,33 @@ data "aws_iam_policy_document" "ecs_service_role_policy" {
     resources = ["*"]
   }
 }
+
+## IAM Vault Resources
+
+resource "aws_iam_user" "vault_user" {
+  name = "vault-ecs-user"
+}
+
+resource "aws_iam_access_key" "vault_user" {
+  user = aws_iam_user.vault_user.name
+}
+
+data "aws_iam_policy_document" "vault_user" {
+  statement {
+    sid    = "VaultAWSAuthMethod"
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeInstances",
+      "iam:GetInstanceProfile",
+      "iam:GetUser",
+      "iam:GetRole",
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_user_policy" "vault_user" {
+  name   = "vault-ecs-user-policy"
+  user   = aws_iam_user.vault_user.name
+  policy = data.aws_iam_policy_document.vault_user.json
+}
