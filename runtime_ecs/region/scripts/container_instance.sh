@@ -1,5 +1,6 @@
 #!/bin/bash
 yum update -y
+yum install -y unzip
 
 # ECS Configuration
 
