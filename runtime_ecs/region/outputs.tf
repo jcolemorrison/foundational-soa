@@ -8,3 +8,8 @@ output "ssh_private_key" {
   description = "Boundary worker SSH key"
   sensitive   = true
 }
+
+output "public_alb_dns_name" {
+  value = aws_lb.public_alb.dns_name
+  description = "DNS Name of regional public application load balancer for the ECS API"
+}
