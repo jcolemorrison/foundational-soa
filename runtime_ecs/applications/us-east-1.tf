@@ -126,10 +126,10 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
 resource "consul_config_entry" "us_east_1_sameness_failover_resolver" {
   name = "ecs-upstream"
   kind = "service-resolver"
+  partition = "ecs"
+  namespace = "default"
 
   config_json = jsonencode({
-    partition = "ecs"
-    namespace = "default"
     connectTimeout = "0s"
     failover = {
       "*" = {
