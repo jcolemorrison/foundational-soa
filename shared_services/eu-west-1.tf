@@ -44,8 +44,24 @@ resource "aws_ec2_transit_gateway_route" "eu_west_1_to_us_east_1" {
   provider = aws.eu_west_1
 }
 
+resource "aws_ec2_transit_gateway_route" "eu_west_1_to_runtime_eks_us_east_1" {
+  destination_cidr_block         = local.runtime_eks_us_east_1
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
+
+  provider = aws.eu_west_1
+}
+
 resource "aws_ec2_transit_gateway_route" "eu_west_1_to_runtime_ecs_us_east_1" {
   destination_cidr_block         = local.runtime_ecs_us_east_1
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
+
+  provider = aws.eu_west_1
+}
+
+resource "aws_ec2_transit_gateway_route" "eu_west_1_to_runtime_ec2_us_east_1" {
+  destination_cidr_block         = local.runtime_ec2_us_east_1
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_east_1_to_eu_west_1.id
   transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
 
@@ -71,6 +87,14 @@ resource "aws_ec2_transit_gateway_route" "eu_west_1_to_runtime_eks_us_west_2" {
 
 resource "aws_ec2_transit_gateway_route" "eu_west_1_to_runtime_ecs_us_west_2" {
   destination_cidr_block         = local.runtime_ecs_us_west_2
+  transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
+  transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
+
+  provider = aws.eu_west_1
+}
+
+resource "aws_ec2_transit_gateway_route" "eu_west_1_to_runtime_ec2_us_west_2" {
+  destination_cidr_block         = local.runtime_ec2_us_west_2
   transit_gateway_attachment_id  = aws_ec2_transit_gateway_peering_attachment.us_west_2_to_eu_west_1.id
   transit_gateway_route_table_id = module.network_eu_west_1.transit_gateway_route_table_id
 
