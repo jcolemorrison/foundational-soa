@@ -33,7 +33,7 @@ module "us_east_1" {
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
 
-  deploy_services          = false
+  deploy_services          = true
   hcp_consul_cluster_id    = local.consul_us_east_1.id
   hcp_consul_cluster_token = local.consul_us_east_1.token
 }
