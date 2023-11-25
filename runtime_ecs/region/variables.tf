@@ -270,7 +270,13 @@ variable "vault_secrets_namespace" {
   description = "Namespace used for Vault secrets for ECS"
 }
 
-## Test Bastion
+## Testing
+
+variable "test_failover" {
+  type = bool
+  description = "whether or not to trigger failover"
+  default = false
+}
 
 variable "test_bastion_enabled" {
   type        = bool

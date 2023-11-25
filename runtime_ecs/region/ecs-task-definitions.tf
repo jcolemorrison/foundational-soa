@@ -131,7 +131,7 @@ module "ecs_upstream" {
         },
         {
           name = "ERROR_RATE"
-          value = var.region == "us-east-1" ? "100" : "0" // to simulate outage
+          value = var.region == "us-east-1" && var.test_failover ? "100" : "0" // to simulate outage
         },
         {
           name = "ERROR_TYPE"
