@@ -1,0 +1,15 @@
+[Unit]
+Description=Consul Mesh Gateway
+After=network.target consul.service
+Requires=consul.service
+
+[Service]
+Type=simple
+ExecStart=bash -o pipefail -c '/usr/bin/consul connect envoy -gateway=mesh -register -service "mesh-gateway" -address "{{GetPrivateIP}}:8443" -wan-address "{{GetPrivateIP}}:8443" -expose-servers -token=${consul_acl_token} 2>&1 | tee'
+User=consul
+Group=consul
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

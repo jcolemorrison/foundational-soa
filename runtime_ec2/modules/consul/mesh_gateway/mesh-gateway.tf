@@ -1,4 +1,5 @@
-resource "aws_instance" "instance" {
+resource "aws_instance" "mesh_gateway" {
+  count                       = var.is_mesh_gateway ? 1 : 0
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
   associate_public_ip_address = false
@@ -8,7 +9,7 @@ resource "aws_instance" "instance" {
 
   user_data = templatefile("${path.module}/templates/user_data.sh", {
     setup = base64gzip(templatefile("${path.module}/templates/setup.sh", {
-      service_name     = var.name,
+      service_name     = var.fake_service_name,
       consul_ca        = data.hcp_consul_cluster.cluster.consul_ca_file
       consul_config    = data.hcp_consul_cluster.cluster.consul_config_file
       consul_acl_token = var.hcp_consul_cluster_token

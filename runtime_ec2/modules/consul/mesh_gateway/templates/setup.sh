@@ -58,11 +58,13 @@ cd /home/ubuntu/
 setup_deps
 setup_consul
 
+%{if service_name != null}
 setup_service
 echo "${service}" | base64 -d > ${service_name}.service
 start_service "${service_name}"
 
 echo "${service_definition}" | base64 -d > /etc/consul.d/${service_name}.hcl
+%{endif}
 
 echo "${envoy}" | base64 -d > consul-envoy.service
 

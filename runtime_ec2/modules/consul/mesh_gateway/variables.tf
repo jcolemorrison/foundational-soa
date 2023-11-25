@@ -3,14 +3,22 @@ variable "name" {
   description = "Name used for VMs and other resources"
 }
 
+variable "is_mesh_gateway" {
+  type        = bool
+  description = "Deploy instance as Consul mesh gateway"
+  default     = false
+}
+
 variable "fake_service_name" {
   type        = string
   description = "Name to pass to fake-service"
+  default     = null
 }
 
 variable "fake_service_message" {
   type        = string
   description = "Message to pass to fake-service"
+  default     = null
 }
 
 variable "fake_service_port" {
