@@ -23,14 +23,19 @@ module "us_east_1" {
 
   name = local.name
 
-  create_boundary_workers     = true
-  boundary_cluster_id         = local.boundary_cluster_id
-  boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_east_1
-  vault_address               = local.vault_us_east_1.address
-  vault_namespace             = local.boundary_worker_vault_namespace
+  create_boundary_workers                  = true
+  boundary_cluster_id                      = local.boundary_cluster_id
+  boundary_worker_vault_path               = local.boundary_worker_vault_path
+  boundary_worker_vault_token              = local.boundary_worker_vault_tokens.us_east_1
+  boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
+  boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
+  vault_address                            = local.vault_us_east_1.address
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
+
+  deploy_services          = false
+  hcp_consul_cluster_id    = local.consul_us_east_1.id
+  hcp_consul_cluster_token = local.consul_us_east_1.token
 }
 
 module "us_west_2" {
@@ -46,14 +51,18 @@ module "us_west_2" {
 
   name = local.name
 
-  create_boundary_workers     = true
-  boundary_cluster_id         = local.boundary_cluster_id
-  boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_west_2
-  vault_address               = local.vault_us_west_2.address
-  vault_namespace             = local.boundary_worker_vault_namespace
+  create_boundary_workers                  = true
+  boundary_cluster_id                      = local.boundary_cluster_id
+  boundary_worker_vault_path               = local.boundary_worker_vault_path
+  boundary_worker_vault_token              = local.boundary_worker_vault_tokens.us_west_2
+  boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
+  boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
+  vault_address                            = local.vault_us_west_2.address
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
+
+  hcp_consul_cluster_id    = local.consul_us_west_2.id
+  hcp_consul_cluster_token = local.consul_us_west_2.token
 
   providers = {
     aws = aws.us_west_2
@@ -73,14 +82,18 @@ module "eu_west_1" {
 
   name = local.name
 
-  create_boundary_workers     = true
-  boundary_cluster_id         = local.boundary_cluster_id
-  boundary_worker_vault_path  = local.boundary_worker_vault_path
-  boundary_worker_vault_token = local.boundary_worker_vault_tokens.us_west_2
-  vault_address               = local.vault_us_west_2.address
-  vault_namespace             = local.boundary_worker_vault_namespace
+  create_boundary_workers                  = true
+  boundary_cluster_id                      = local.boundary_cluster_id
+  boundary_worker_vault_path               = local.boundary_worker_vault_path
+  boundary_worker_vault_token              = local.boundary_worker_vault_tokens.us_west_2
+  boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
+  boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
+  vault_address                            = local.vault_us_west_2.address
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
+
+  hcp_consul_cluster_id    = local.consul_eu_west_1.id
+  hcp_consul_cluster_token = local.consul_eu_west_1.token
 
   providers = {
     aws = aws.eu_west_1

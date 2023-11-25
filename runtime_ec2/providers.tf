@@ -16,8 +16,14 @@ terraform {
       source  = "hashicorp/vault"
       version = "~> 3.22"
     }
+    hcp = {
+      source  = "hashicorp/hcp"
+      version = "~> 0.76"
+    }
   }
 }
+
+provider "hcp" {}
 
 provider "aws" {
   region = var.aws_default_region
@@ -50,6 +56,6 @@ provider "boundary" {
 
 provider "vault" {
   address   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.address
-  namespace = local.boundary_worker_vault_namespace
+  namespace = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.namespace
   token     = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.token
 }
