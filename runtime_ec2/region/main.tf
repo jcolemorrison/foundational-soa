@@ -81,6 +81,10 @@ locals {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
+
+  boundary_tag = {
+    Boundary = "true"
+  }
 }
 
 resource "aws_security_group" "instances" {
@@ -143,4 +147,22 @@ module "payments" {
   hcp_consul_cluster_token = var.hcp_consul_cluster_token
 
   key_pair_name = aws_key_pair.boundary.key_name
+
+  tags = local.boundary_tag
+}
+
+module "boundary_ec2_targets" {
+  count  = var.deploy_services ? 1 : 0
+  source = "../../modules/boundary/hosts"
+
+  name_prefix = "${replace(var.region, "-", "_")}_${var.runtime}"
+  description = "EC2 instances in ${var.region}"
+  scope_id    = var.boundary_project_scope_id
+  target_ips  = zipmap(data.aws_instances.ec2.ids, data.aws_instances.ec2.private_ips)
+
+  ingress_worker_filter = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  default_port          = 22
+
+  depends_on = [module.payments, data.aws_instances.ec2]
 }
