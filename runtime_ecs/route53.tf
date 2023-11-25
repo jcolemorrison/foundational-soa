@@ -22,7 +22,7 @@ resource "aws_route53_record" "subdomain" {
 
 
 resource "aws_route53_record" "ecs_public_api" {
-  for_each = {for i, values in local.local.public_alb_dns_values : i => values }
+  for_each = {for i, values in local.public_alb_dns_values : i => values }
 
   zone_id = aws_route53_zone.subdomain.zone_id
   name    = local.subdomain
