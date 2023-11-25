@@ -83,3 +83,14 @@ variable "boundary_project_scope_id" {
   type        = string
   description = "Boundary project scope ID for EKS runtime"
 }
+
+variable "hcp_consul_cluster_id" {
+  type        = string
+  description = "HCP Consul cluster ID"
+}
+
+variable "hcp_consul_cluster_token" {
+  type        = string
+  description = "Consul bootstrap token for clients to start"
+  sensitive   = true
+}

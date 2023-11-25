@@ -1,0 +1,14 @@
+[Unit]
+Description=${service_name}
+After=syslog.target network.target
+
+[Service]
+Environment=${message}
+Environment="NAME=${service_name}"
+%{if upstream_uris != null}Environment="UPSTREAM_URIS=${upstream_uris}"%{endif}
+ExecStart=/usr/local/bin/fake-service
+ExecStop=/bin/sleep 5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

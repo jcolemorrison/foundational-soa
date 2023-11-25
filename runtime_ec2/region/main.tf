@@ -1,50 +1,113 @@
 locals {
   runtime = "ec2"
-}
 
-# Boundary Worker
-module "boundary_worker" {
-  count  = var.create_boundary_workers ? 1 : 0
-  source = "../../modules/boundary/worker"
-
-  name             = "${var.name}-boundary"
-  region           = var.region
-  vpc_id           = module.network.vpc_id
-  public_subnet_id = module.network.vpc_public_subnet_ids.0
-
-  vault = {
-    address   = var.vault_address
-    token     = var.boundary_worker_vault_token
-    namespace = var.vault_namespace
-    path      = var.boundary_worker_vault_path
+  security_group_rules = {
+    allow_in_security_group = {
+      description = "Allow instances in security group to communicate with each other"
+      protocol    = "tcp"
+      from_port   = -1
+      to_port     = -1
+      type        = "ingress"
+      self        = true
+    },
+    consul_udp_8301 = {
+      description = "Allow Consul to communicate with instance over UDP"
+      protocol    = "udp"
+      from_port   = 8301
+      to_port     = 8301
+      type        = "ingress"
+      cidr_blocks = [var.hcp_hvn_cidr_block]
+    },
+    consul_tcp_8301 = {
+      description = "Allow Consul to communicate with instance over TCP"
+      protocol    = "tcp"
+      from_port   = 8301
+      to_port     = 8301
+      type        = "ingress"
+      cidr_blocks = [var.hcp_hvn_cidr_block]
+    },
+    consul_mesh_gateway_8443 = {
+      description = "Allow Consul to communicate with mesh gatewaysP"
+      protocol    = "tcp"
+      from_port   = 8301
+      to_port     = 8301
+      type        = "ingress"
+      cidr_blocks = [var.hcp_hvn_cidr_block]
+    },
+    consul_mesh_gateway_envoy_20000_22000 = {
+      description = "Allow Consul to communicate with mesh gatewaysP"
+      protocol    = "tcp"
+      from_port   = 20000
+      to_port     = 22000
+      type        = "ingress"
+      cidr_blocks = concat([var.hcp_hvn_cidr_block], var.accessible_cidr_blocks)
+    },
+    consul_mesh_gateway_wan = {
+      description = "Allow Consul to communicate with mesh gatewaysP"
+      protocol    = "tcp"
+      from_port   = 443
+      to_port     = 443
+      type        = "ingress"
+      cidr_blocks = concat([var.hcp_hvn_cidr_block], var.accessible_cidr_blocks)
+    },
   }
-
-  boundary_cluster_id = var.boundary_cluster_id
-  keypair_name        = aws_key_pair.boundary.key_name
-  runtime             = local.runtime
 }
 
-# Register worker into Boundary after its token is stored in Vault
+resource "aws_security_group" "instances" {
+  name_prefix = "runtime-ec2-instances-"
+  description = "Security group for EC2 instances"
+  vpc_id      = module.network.vpc_id
 
-data "aws_instances" "boundary_worker" {
-  filter {
-    name   = "instance-id"
-    values = [module.boundary_worker.0.instance_id]
+  tags = {
+    Name = "runtime-ec2-instances"
   }
-  instance_state_names = ["running"]
 }
 
-data "vault_kv_secret_v2" "boundary_worker_token_ec2" {
-  count = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
-  mount = var.boundary_worker_vault_path
-  name  = "${var.region}-${local.runtime}-${split(".", module.boundary_worker.0.private_dns).0}"
+resource "aws_security_group_rule" "instances" {
+  for_each = local.security_group_rules
+
+  # Required
+  security_group_id = aws_security_group.instances.id
+  protocol          = each.value.protocol
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+  type              = each.value.type
+
+  # Optional
+  description              = lookup(each.value, "description", null)
+  cidr_blocks              = lookup(each.value, "cidr_blocks", null)
+  ipv6_cidr_blocks         = lookup(each.value, "ipv6_cidr_blocks", null)
+  prefix_list_ids          = lookup(each.value, "prefix_list_ids", [])
+  self                     = lookup(each.value, "self", null)
+  source_security_group_id = lookup(each.value, "source_cluster_security_group", null)
 }
 
-resource "boundary_worker" "ec2" {
-  count                       = length(data.aws_instances.boundary_worker) > 0 ? 1 : 0
-  depends_on                  = [module.boundary_worker, data.vault_kv_secret_v2.boundary_worker_token_ec2]
-  scope_id                    = "global"
-  name                        = data.vault_kv_secret_v2.boundary_worker_token_ec2.0.name
-  description                 = "Self-managed worker ${data.vault_kv_secret_v2.boundary_worker_token_ec2.0.name} for EC2"
-  worker_generated_auth_token = data.vault_kv_secret_v2.boundary_worker_token_ec2.0.data.token
+module "static" {
+  source  = "../../modules/fake_service"
+  region  = var.region
+  service = "payments"
+  runtime = local.runtime
+}
+
+resource "random_integer" "payments_subnet" {
+  min = 1
+  max = length(module.network.vpc_private_subnet_ids)
+}
+
+module "payments" {
+  source               = "../modules/ec2"
+  name                 = "payments"
+  fake_service_name    = module.static.name
+  fake_service_message = module.static.message
+
+  vpc_id         = module.network.vpc_id
+  vpc_cidr_block = module.network.vpc_cidr_block
+  subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.result]
+
+  security_group_ids = [aws_security_group.instances.id]
+
+  hcp_consul_cluster_id    = var.hcp_consul_cluster_id
+  hcp_consul_cluster_token = var.hcp_consul_cluster_token
+
+  key_pair_name = aws_key_pair.boundary.key_name
 }
