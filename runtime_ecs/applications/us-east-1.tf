@@ -132,7 +132,9 @@ resource "consul_config_entry" "us_east_1_sameness_failover_resolver" {
   config_json = jsonencode({
     connectTimeout = "0s"
     failover = {
-      "*" = "ecs-sameness-group"
+      "*" = {
+        samenessGroup = "ecs-sameness-group"
+      }
     }
   })
 
