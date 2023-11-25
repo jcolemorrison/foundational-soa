@@ -58,7 +58,7 @@ resource "consul_config_entry" "us_east_1_ecs_sameness_group" {
   partition = "ecs"
 
   config_json = jsonencode({
-    DefaultForFailover = true
+    DefaultForFailover = false
     IncludeLocal       = true
     Members = [
       { Peer = "${local.dc_us_west_2}-ecs" },
@@ -123,18 +123,42 @@ resource "consul_config_entry" "us_east_1_api_to_upstreams" {
 
 ## Service Resolvers
 
+resource "consul_config_entry" "us_east_1_sameness_failover_resolver" {
+  name = "ecs-upstream"
+  kind = "ServiceResolver"
+  partition = "ecs"
+  namespace = "default"
+
+  config_json = jsonencode({
+    connectTimeout = "0s"
+    failover = {
+      "*" = "ecs-sameness-group"
+    }
+  })
+
+  depends_on = [ consul_config_entry.us_east_1_ecs_sameness_group ]
+
+  provider = consul.us_east_1
+}
+
 # resource "consul_config_entry_service_resolver" "us_east_1_upstream_test" {
 #   name = "ecs-upstream" # name of service this applies to, despite inaccurate docs
 #   namespace = "default"
 #   partition = "ecs"
-#   connect_timeout = "10s" # required fields
-#   request_timeout = "15s"
+#   connect_timeout = "0s" # required fields
+#   # request_timeout = "15s"
 
 #   redirect {
 #     service = "ecs-upstream"
 #     # peer = "${local.dc_us_west_2}-ecs"
 #     namespace = "default"
 #     # sameness_group = "ecs-sameness-group"
+#   }
+
+#   failover {
+#     service = "ecs-upstream"
+#     namespace = "default"
+#     sameness_group = "ecs-sameness-group"
 #   }
 
 #   provider = consul.us_east_1
