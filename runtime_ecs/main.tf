@@ -20,6 +20,13 @@ module "us_east_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_us_east_1]
+  public_domain_name     = var.public_domain_name
+  public_subdomain_name  = var.public_subdomain_name
+  subdomain_zone_id      = aws_route53_zone.subdomain.zone_id
+
+  container_instance_profile = aws_iam_instance_profile.container_instance_profile.arn
+  execute_command_policy     = aws_iam_policy.execute_command.arn
+  ecs_service_role           = aws_iam_role.ecs_service.arn
 
   name = local.name
 
@@ -31,6 +38,21 @@ module "us_east_1" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
+
+  consul_bootstrap_token = local.consul_us_east_1.token
+  consul_server_hosts    = local.consul_us_east_1.retry_join
+  consul_admin_partition = "ecs"
+  consul_cluster_id      = local.consul_us_east_1.id
+
+  vault_secrets_namespace = vault_namespace.service.path
+
+  test_bastion_enabled = true
+  test_bastion_keypair = var.test_bastion_keypair_us_east_1
+  test_bastion_cidr_blocks = [
+    local.accessible_cidr_blocks.runtime_ecs_us_east_1,
+    local.accessible_cidr_blocks.runtime_ecs_us_west_2,
+    local.accessible_cidr_blocks.runtime_ecs_eu_west_1
+  ]
 }
 
 module "us_west_2" {
@@ -43,6 +65,13 @@ module "us_west_2" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_us_west_2]
+  public_domain_name     = var.public_domain_name
+  public_subdomain_name  = var.public_subdomain_name
+  subdomain_zone_id      = aws_route53_zone.subdomain.zone_id
+
+  container_instance_profile = aws_iam_instance_profile.container_instance_profile.arn
+  execute_command_policy     = aws_iam_policy.execute_command.arn
+  ecs_service_role           = aws_iam_role.ecs_service.arn
 
   name = local.name
 
@@ -54,6 +83,21 @@ module "us_west_2" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
+
+  consul_bootstrap_token = local.consul_us_west_2.token
+  consul_server_hosts    = local.consul_us_west_2.retry_join
+  consul_admin_partition = "ecs"
+  consul_cluster_id      = local.consul_us_west_2.id
+
+  vault_secrets_namespace = vault_namespace.service.path
+
+  test_bastion_enabled = true
+  test_bastion_keypair = var.test_bastion_keypair_us_west_2
+  test_bastion_cidr_blocks = [
+    local.accessible_cidr_blocks.runtime_ecs_us_east_1,
+    local.accessible_cidr_blocks.runtime_ecs_us_west_2,
+    local.accessible_cidr_blocks.runtime_ecs_eu_west_1
+  ]
 
   providers = {
     aws = aws.us_west_2
@@ -70,6 +114,13 @@ module "eu_west_1" {
 
   # create routes to TGW for all CIDRs except own VPC
   accessible_cidr_blocks = [for cidr in values(local.accessible_cidr_blocks) : cidr if cidr != local.accessible_cidr_blocks.runtime_ecs_eu_west_1]
+  public_domain_name     = var.public_domain_name
+  public_subdomain_name  = var.public_subdomain_name
+  subdomain_zone_id      = aws_route53_zone.subdomain.zone_id
+
+  container_instance_profile = aws_iam_instance_profile.container_instance_profile.arn
+  execute_command_policy     = aws_iam_policy.execute_command.arn
+  ecs_service_role           = aws_iam_role.ecs_service.arn
 
   name = local.name
 
@@ -81,6 +132,21 @@ module "eu_west_1" {
   vault_namespace             = local.boundary_worker_vault_namespace
 
   boundary_project_scope_id = boundary_scope.runtime_ecs.id
+
+  consul_bootstrap_token = local.consul_eu_west_1.token
+  consul_server_hosts    = local.consul_eu_west_1.retry_join
+  consul_admin_partition = "ecs"
+  consul_cluster_id      = local.consul_eu_west_1.id
+
+  vault_secrets_namespace = vault_namespace.service.path
+
+  test_bastion_enabled = true
+  test_bastion_keypair = var.test_bastion_keypair_eu_west_1
+  test_bastion_cidr_blocks = [
+    local.accessible_cidr_blocks.runtime_ecs_us_east_1,
+    local.accessible_cidr_blocks.runtime_ecs_us_west_2,
+    local.accessible_cidr_blocks.runtime_ecs_eu_west_1
+  ]
 
   providers = {
     aws = aws.eu_west_1

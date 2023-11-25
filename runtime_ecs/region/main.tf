@@ -2,6 +2,23 @@ locals {
   runtime = "ecs"
 }
 
+# Boundary ECS Container Instance Hosts
+
+module "boundary_ecs_hosts" {
+  source = "../../modules/boundary/hosts"
+
+  name_prefix = "${replace(var.region, "-", "_")}_ecs"
+  description = "ECS container instances in ${var.region}"
+  scope_id    = var.boundary_project_scope_id
+  target_ips  = zipmap(data.aws_instances.ecs.ids, data.aws_instances.ecs.private_ips)
+
+  ingress_worker_filter = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  egress_worker_filter  = "\"${local.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
+  default_port          = 22
+
+  depends_on = [aws_autoscaling_group.container_instance, data.aws_instances.ecs]
+}
+
 # Boundary Worker
 module "boundary_worker" {
   count  = var.create_boundary_workers ? 1 : 0
