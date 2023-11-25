@@ -39,8 +39,8 @@ resource "vault_policy" "static" {
 }
 
 resource "random_string" "random" {
-  length           = 16
-  special          = false
+  length    = 16
+  special   = false
   min_lower = 3
   min_upper = 3
 }
@@ -63,33 +63,33 @@ EOT
 ## AWS Vault Auth Method
 
 resource "vault_auth_backend" "aws" {
-  type = "aws"
+  type      = "aws"
   namespace = vault_namespace.service.path
 
   provider = vault.admin
 }
 
 resource "vault_aws_auth_backend_client" "aws" {
-  backend    = vault_auth_backend.aws.path
-  namespace = vault_namespace.service.path
-  access_key = aws_iam_access_key.vault_user.id
-  secret_key = aws_iam_access_key.vault_user.secret
+  backend                    = vault_auth_backend.aws.path
+  namespace                  = vault_namespace.service.path
+  access_key                 = aws_iam_access_key.vault_user.id
+  secret_key                 = aws_iam_access_key.vault_user.secret
   use_sts_region_from_client = true
 
-  depends_on = [ aws_iam_access_key.vault_user ]
+  depends_on = [aws_iam_access_key.vault_user]
 
   provider = vault.admin
 }
 
 resource "vault_aws_auth_backend_role" "aws_us_east_1" {
   backend                         = vault_auth_backend.aws.path
-  namespace = vault_namespace.service.path
+  namespace                       = vault_namespace.service.path
   role                            = "vault-ecs-role-${local.us_east_1}"
   auth_type                       = "iam"
   bound_iam_role_arns             = [aws_iam_role.container_instance.arn]
   bound_iam_instance_profile_arns = [aws_iam_instance_profile.container_instance_profile.arn]
   inferred_entity_type            = "ec2_instance"
-  inferred_aws_region             = "${local.us_east_1}"
+  inferred_aws_region             = local.us_east_1
   token_ttl                       = 60
   token_max_ttl                   = 120
   token_policies                  = [vault_policy.static.name]
@@ -99,13 +99,13 @@ resource "vault_aws_auth_backend_role" "aws_us_east_1" {
 
 resource "vault_aws_auth_backend_role" "aws_us_west_2" {
   backend                         = vault_auth_backend.aws.path
-  namespace = vault_namespace.service.path
+  namespace                       = vault_namespace.service.path
   role                            = "vault-ecs-role-${local.us_west_2}"
   auth_type                       = "iam"
   bound_iam_role_arns             = [aws_iam_role.container_instance.arn]
   bound_iam_instance_profile_arns = [aws_iam_instance_profile.container_instance_profile.arn]
   inferred_entity_type            = "ec2_instance"
-  inferred_aws_region             = "${local.us_west_2}"
+  inferred_aws_region             = local.us_west_2
   token_ttl                       = 60
   token_max_ttl                   = 120
   token_policies                  = [vault_policy.static.name]
@@ -115,13 +115,13 @@ resource "vault_aws_auth_backend_role" "aws_us_west_2" {
 
 resource "vault_aws_auth_backend_role" "aws_eu_west_1" {
   backend                         = vault_auth_backend.aws.path
-  namespace = vault_namespace.service.path
+  namespace                       = vault_namespace.service.path
   role                            = "vault-ecs-role-${local.eu_west_1}"
   auth_type                       = "iam"
   bound_iam_role_arns             = [aws_iam_role.container_instance.arn]
   bound_iam_instance_profile_arns = [aws_iam_instance_profile.container_instance_profile.arn]
   inferred_entity_type            = "ec2_instance"
-  inferred_aws_region             = "${local.eu_west_1}"
+  inferred_aws_region             = local.eu_west_1
   token_ttl                       = 60
   token_max_ttl                   = 120
   token_policies                  = [vault_policy.static.name]
