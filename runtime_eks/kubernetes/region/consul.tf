@@ -4,7 +4,7 @@ data "hcp_consul_agent_kubernetes_secret" "cluster" {
 
 data "hcp_consul_agent_helm_config" "cluster" {
   cluster_id          = var.hcp_consul_cluster_id
-  kubernetes_endpoint = var.kubernetes_endpoint
+  kubernetes_endpoint = replace(var.kubernetes_endpoint, "https://", "")
 }
 
 data "hcp_consul_cluster" "cluster" {

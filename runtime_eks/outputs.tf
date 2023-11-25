@@ -26,3 +26,14 @@ output "irsa" {
   }
   description = "IAM Role service account attributes for AWS LB controller"
 }
+
+output "vault_database" {
+  value = {
+    namespace = vault_namespace.database.id
+    path      = module.database_vault.0.database_secrets_path
+    role      = module.database_vault.0.database_secrets_role
+    policy    = module.database_vault.0.database_secrets_policies.read
+  }
+  description = "Vault database secrets role"
+  sensitive   = true
+}

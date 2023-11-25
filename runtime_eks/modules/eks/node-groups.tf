@@ -19,14 +19,18 @@ resource "aws_iam_role" "node_group" {
   tags = local.tags
 }
 
-resource "aws_iam_role_policy_attachment" "node_group" {
-  for_each = toset([
+locals {
+  node_group_policies = [
     "${local.iam_role_policy_prefix}/AmazonEKSWorkerNodePolicy",
     "${local.iam_role_policy_prefix}/AmazonEC2ContainerRegistryReadOnly",
     "${local.iam_role_policy_prefix}/AmazonEKS_CNI_Policy",
-  ])
+  ]
+}
 
-  policy_arn = each.value
+resource "aws_iam_role_policy_attachment" "node_group" {
+  count = length(local.node_group_policies)
+
+  policy_arn = local.node_group_policies[count.index]
   role       = aws_iam_role.node_group.name
 }
 

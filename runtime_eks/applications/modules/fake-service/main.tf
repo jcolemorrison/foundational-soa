@@ -68,7 +68,7 @@ locals {
       "value" = "100s"
     },
     {
-      "name" = "ERROR_CODE"
+      "name"  = "ERROR_CODE"
       "value" = var.error_code
     }
   ]

@@ -17,9 +17,9 @@ variable "vault_operator_helm_version" {
   default     = "0.3.4"
 }
 
-variable "hcp_vault_private_address" {
+variable "hcp_vault_primary_address" {
   type        = string
-  description = "HCP Vault private address"
+  description = "HCP Vault primary address"
 }
 
 # Attributes for deploying Consul Helm Chart

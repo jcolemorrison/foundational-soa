@@ -84,6 +84,18 @@ variable "vault_namespace" {
   default     = null
 }
 
+variable "boundary_worker_vault_namespace" {
+  type        = string
+  description = "Namespace in Vault for Boundary worker to store secret"
+  default     = null
+}
+
+variable "boundary_worker_vault_namespace_absolute" {
+  type        = string
+  description = "Namespace in Vault for Boundary worker to store secret, includes full path"
+  default     = null
+}
+
 variable "boundary_worker_vault_path" {
   type        = string
   description = "Path in Vault for Boundary worker to store secret"
@@ -106,4 +118,42 @@ variable "boundary_cluster_id" {
 variable "boundary_project_scope_id" {
   type        = string
   description = "Boundary project scope ID for EKS runtime"
+}
+
+## Database
+
+variable "create_database" {
+  type        = bool
+  description = "Create database instance"
+  default     = false
+}
+
+variable "global_cluster_id" {
+  type        = string
+  description = "RDS global cluster ID"
+  default     = null
+}
+
+variable "database_engine_version" {
+  type        = string
+  description = "Engine version from global cluster"
+  default     = null
+}
+
+variable "database_engine" {
+  type        = string
+  description = "Engine from global cluster"
+  default     = null
+}
+
+variable "is_database_primary" {
+  type        = bool
+  default     = false
+  description = "Database is the primary instance"
+}
+
+variable "db_name" {
+  type        = string
+  description = "Database name to create in instance"
+  default     = null
 }

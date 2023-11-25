@@ -32,6 +32,42 @@ variable "peers_for_failover" {
   default     = []
 }
 
+variable "service_name" {
+  type        = string
+  description = "Service name for gateway"
+}
+
+variable "database_port" {
+  type        = number
+  description = "Port for database service"
+  default     = 5432
+}
+
+variable "vault_namespace" {
+  type        = string
+  description = "Vault namespace for database credentials"
+}
+
+variable "vault_database_path" {
+  type        = string
+  description = "Vault database path to allow application to access database credentials"
+}
+
+variable "vault_database_secret_role" {
+  type        = string
+  description = "Vault database secret role to allow application to access database credentials"
+}
+
+variable "vault_kubernetes_auth_path" {
+  type        = string
+  description = "Vault Kubernetes authentication method path"
+}
+
+variable "vault_database_secret_policy" {
+  type        = string
+  description = "Vault database secret read policy"
+}
+
 locals {
   service_ports = {
     web         = 9090

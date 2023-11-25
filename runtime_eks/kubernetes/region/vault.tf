@@ -6,16 +6,6 @@ resource "helm_release" "vault" {
   repository = "https://helm.releases.hashicorp.com"
   chart      = "vault"
   version    = var.vault_helm_version
-
-  set {
-    name  = "injector.enabled"
-    value = "true"
-  }
-
-  set {
-    name  = "injector.externalVaultAddr"
-    value = var.hcp_vault_private_address
-  }
 }
 
 resource "helm_release" "vault_operator" {
@@ -34,6 +24,29 @@ resource "helm_release" "vault_operator" {
 
   set {
     name  = "defaultVaultConnection.address"
-    value = var.hcp_vault_private_address
+    value = var.hcp_vault_primary_address
   }
+}
+
+data "kubernetes_service_account" "vault_auth" {
+  depends_on = [helm_release.vault]
+
+  metadata {
+    name      = "vault"
+    namespace = helm_release.vault.namespace
+  }
+}
+
+resource "kubernetes_secret" "vault_auth" {
+  depends_on = [helm_release.vault]
+  metadata {
+    name      = "vault"
+    namespace = helm_release.vault.namespace
+    annotations = {
+      "kubernetes.io/service-account.name"      = data.kubernetes_service_account.vault_auth.metadata.0.name
+      "kubernetes.io/service-account.namespace" = data.kubernetes_service_account.vault_auth.metadata.0.namespace
+    }
+  }
+
+  type = "kubernetes.io/service-account-token"
 }
