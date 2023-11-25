@@ -20,9 +20,9 @@ output "subdomain_name_servers" {
 
 output "public_alb_dns_names" {
   value = {
-    us_east_1 = module.us_east_1.public_alb_dns_name
-    us_west_2 = module.us_west_2.public_alb_dns_name
-    eu_west_1 = module.eu_west_1.public_alb_dns_name
+    "us-east-1" = module.us_east_1.public_alb_dns_name
+    "us-west-2" = module.us_west_2.public_alb_dns_name
+    "eu-west-1" = module.eu_west_1.public_alb_dns_name
   }
   description = "DNS names of each regional public ALB that maps to its regional public API"
 }

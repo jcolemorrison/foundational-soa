@@ -23,4 +23,5 @@ data "terraform_remote_state" "runtime_ecs" {
 locals {
   aws_default_region = data.terraform_remote_state.shared_services.outputs.default_region.id
   aws_default_tags   = data.terraform_remote_state.shared_services.outputs.default_tags
+  ecs_public_api_dns_names = data.terraform_remote_state.runtime_ecs.outputs.public_alb_dns_names
 }
