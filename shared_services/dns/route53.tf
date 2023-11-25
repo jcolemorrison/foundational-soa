@@ -19,6 +19,7 @@ resource "aws_route53_record" "ecs_public_api" {
   type    = "CNAME"
   ttl     = "300"
   records = [each.value]
+  set_identifier = "${each.key}-ecs-public-api"
 
   latency_routing_policy {
     region = each.key
