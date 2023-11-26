@@ -46,6 +46,7 @@ resource "kubernetes_manifest" "service_account" {
 }
 
 resource "kubernetes_manifest" "deployment" {
+  computed_fields = ["metadata.annotations"]
   manifest = {
     "apiVersion" = "apps/v1"
     "kind"       = "Deployment"
@@ -66,7 +67,7 @@ resource "kubernetes_manifest" "deployment" {
       "template" = {
         "metadata" = {
           "annotations" = {
-            "consul.hashicorp.com/connect-inject"            = "true"
+            "consul.hashicorp.com/connect-inject" = "true"
           }
           "labels" = {
             "app" = var.name

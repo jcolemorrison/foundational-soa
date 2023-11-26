@@ -79,6 +79,7 @@ locals {
 }
 
 resource "kubernetes_manifest" "deployment" {
+  computed_fields = ["metadata.annotations"]
   manifest = {
     "apiVersion" = "apps/v1"
     "kind"       = "Deployment"
