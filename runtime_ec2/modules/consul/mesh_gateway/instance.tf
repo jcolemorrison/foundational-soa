@@ -1,4 +1,5 @@
-resource "aws_instance" "instance" {
+resource "aws_instance" "mesh_gateway" {
+  depends_on                  = [aws_lb.mesh_gateway]
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
   associate_public_ip_address = false
@@ -13,12 +14,19 @@ resource "aws_instance" "instance" {
       consul_acl_token = var.hcp_consul_cluster_token
       consul_version   = data.hcp_consul_cluster.cluster.consul_version
       envoy = base64encode(templatefile("${path.module}/templates/services/envoy", {
-        service_name     = var.name,
-        consul_acl_token = var.hcp_consul_cluster_token
+        service_name          = var.name,
+        consul_acl_token      = var.hcp_consul_cluster_token
+        load_balancer_address = aws_lb.mesh_gateway.dns_name
       })),
       vpc_cidr = var.vpc_cidr_block
     })),
   })
 
   tags = local.tags
+
+  lifecycle {
+    replace_triggered_by = [
+      aws_lb.mesh_gateway.dns_name
+    ]
+  }
 }

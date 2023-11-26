@@ -118,16 +118,17 @@ resource "aws_security_group_rule" "instances" {
 
 ## Deploy Consul mesh gateway
 resource "random_integer" "mesh_gateway" {
-  min = 1
+  min = 0
   max = length(module.network.vpc_private_subnet_ids) - 1
 }
 
 module "mesh_gateway" {
   source = "../modules/consul/mesh_gateway"
 
-  vpc_id         = module.network.vpc_id
-  vpc_cidr_block = module.network.vpc_cidr_block
-  subnet_id      = module.network.vpc_public_subnet_ids[random_integer.mesh_gateway.result]
+  vpc_id            = module.network.vpc_id
+  vpc_cidr_block    = module.network.vpc_cidr_block
+  subnet_id         = module.network.vpc_private_subnet_ids[random_integer.mesh_gateway.result]
+  public_subnet_ids = module.network.vpc_public_subnet_ids
 
   security_group_ids = [aws_security_group.instances.id]
 
@@ -151,7 +152,7 @@ module "static" {
 
 resource "random_integer" "payments_subnet" {
   count = var.deploy_services ? 1 : 0
-  min   = 1
+  min   = 0
   max   = length(module.network.vpc_private_subnet_ids) - 1
 }
 

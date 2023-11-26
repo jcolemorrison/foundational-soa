@@ -37,6 +37,11 @@ variable "hcp_consul_cluster_token" {
   sensitive   = true
 }
 
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "Public subnet IDs for mesh gateway load balancer"
+}
+
 variable "subnet_id" {
   type        = string
   description = "ID of subnet to create instance"
