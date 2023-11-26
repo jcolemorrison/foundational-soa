@@ -3,7 +3,7 @@ module "fake_service_us_east_1" {
 
   region                  = "us-east-1"
   namespace               = var.namespace
-  test_failover_customers = true
+  test_failover_customers = false
 
   peers_for_failover = [local.peers.us_west_2, local.peers.eu_west_1]
 
