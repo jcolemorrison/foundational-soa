@@ -98,7 +98,7 @@ module "store" {
   region        = var.region
   name          = "store"
   port          = local.service_ports.store
-  upstream_uris = "http://customers.virtual.consul"
+  upstream_uris = "http://customers.virtual.consul,http://payments.virtual.consul"
 }
 
 resource "kubernetes_manifest" "service_intentions_store" {
