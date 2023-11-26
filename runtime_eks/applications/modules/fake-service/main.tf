@@ -19,7 +19,7 @@ resource "kubernetes_manifest" "service" {
       "ports" = [
         {
           "name"       = "http"
-          "port"       = var.port
+          "port"       = var.enable_load_balancer ? 80 : var.port
           "protocol"   = "TCP"
           "targetPort" = var.port
         },
