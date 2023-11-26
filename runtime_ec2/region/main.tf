@@ -227,6 +227,13 @@ resource "consul_config_entry" "payments_intentions" {
         Precedence    = 9
         Type          = "consul"
         SamenessGroup = var.sameness_group
+      },
+      {
+        Action     = "allow"
+        Name       = "ecs-api"
+        Precedence = 9
+        Type       = "consul"
+        Partition  = "ecs"
       }
     ]
   })

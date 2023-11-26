@@ -42,9 +42,34 @@ resource "consul_config_entry" "exported_services_payments_ec2" {
           Partition = "default"
         },
         {
+          Partition = "ecs"
+        },
+        {
           SamenessGroup = var.sameness_group
         }
       ]
+    }]
+  })
+}
+
+resource "consul_config_entry" "sameness_group" {
+  name      = var.sameness_group
+  kind      = "sameness-group"
+  partition = var.runtime
+
+  config_json = jsonencode({
+    Services = [{
+      IncludeLocal       = false
+      DefaultForFailover = false
+      Members = [{
+        Partition = "ec2"
+        },
+        {
+          Partition = "ecs"
+        },
+        {
+          Partition = "default"
+      }]
     }]
   })
 }
