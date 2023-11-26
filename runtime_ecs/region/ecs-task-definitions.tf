@@ -43,7 +43,7 @@ module "ecs_api" {
         },
         {
           name  = "UPSTREAM_URIS"
-          value = "http://localhost:1234,http://localhost:1345"
+          value = "http://localhost:1234"
         }
       ]
     }
@@ -53,10 +53,6 @@ module "ecs_api" {
     {
       destinationName = "ecs-upstream" #consul service name
       localBindPort   = 1234
-    },
-    {
-      destinationName = "payments" # ec2 consul service
-      localBindPort = 1345
     }
   ]
 
