@@ -20,6 +20,12 @@ variable "test_failover_customers" {
   default     = false
 }
 
+variable "enable_payments_service" {
+  type        = bool
+  description = "Add payments in EC2 to store as upstream"
+  default     = false
+}
+
 variable "peers_for_failover" {
   type        = list(string)
   description = "Cluster peers for failover"

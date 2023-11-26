@@ -92,13 +92,18 @@ resource "kubernetes_manifest" "http_route" {
   }
 }
 
+locals {
+  customers_url = "http://customers.virtual.consul"
+  payments_url  = "http://payments.virtual.consul"
+}
+
 module "store" {
   source = "../modules/fake-service"
 
   region        = var.region
   name          = "store"
   port          = local.service_ports.store
-  upstream_uris = "http://customers.virtual.consul,http://payments.virtual.consul"
+  upstream_uris = var.enable_payments_service ? "${local.customers_url},${local.payments_url}" : local.customers_url
 }
 
 resource "kubernetes_manifest" "service_intentions_store" {
@@ -139,14 +144,26 @@ resource "kubernetes_manifest" "service_intentions_payments" {
         {
           "action" = "allow"
           "name"   = "store"
-        },
-        {
-          "action"        = "allow"
-          "name"          = "store"
-          "samenessGroup" = var.sameness_group_name
-        },
+        }
       ]
     }
   }
 }
 
+resource "kubernetes_manifest" "service_resolver_store_to_customers" {
+  count = var.enable_payments_service ? 1 : 0
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceResolver"
+    "metadata" = {
+      "name"      = "payments"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "redirect" = {
+        "service"   = "payments"
+        "partition" = "ec2"
+      }
+    }
+  }
+}
