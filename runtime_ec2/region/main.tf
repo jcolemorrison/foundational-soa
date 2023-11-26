@@ -54,7 +54,7 @@ locals {
       from_port   = 8443
       to_port     = 8443
       type        = "ingress"
-      cidr_blocks = [var.hcp_hvn_cidr_block]
+      cidr_blocks = concat([var.hcp_hvn_cidr_block], var.accessible_cidr_blocks)
     },
     consul_mesh_gateway_envoy_20000_22000 = {
       description = "Allow Consul to communicate with mesh gateways"
