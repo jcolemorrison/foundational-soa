@@ -34,22 +34,3 @@ resource "kubernetes_manifest" "service_intentions_customers" {
     }
   }
 }
-
-resource "kubernetes_manifest" "service_resolver_store_to_customers" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceResolver"
-    "metadata" = {
-      "name"      = "customers"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "connectTimeout" = "0s"
-      "failover" = {
-        "*" = {
-          "samenessGroup" = var.sameness_group_name
-        }
-      }
-    }
-  }
-}
