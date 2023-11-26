@@ -1,24 +1,24 @@
-module "application" {
+module "customers" {
   source = "../modules/fake-service"
 
   region        = var.region
-  name          = "application"
-  port          = local.service_ports.application
+  name          = "customers"
+  port          = local.service_ports.customers
   upstream_uris = "http://database.virtual.consul"
-  error_rate    = var.test_failover_application ? 100.0 : 0.0
+  error_rate    = var.test_failover_customers ? 100.0 : 0.0
 }
 
-resource "kubernetes_manifest" "service_intentions_application" {
+resource "kubernetes_manifest" "service_intentions_customers" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceIntentions"
     "metadata" = {
-      "name"      = "application"
+      "name"      = "customers"
       "namespace" = var.namespace
     }
     "spec" = {
       "destination" = {
-        "name" = "application"
+        "name" = "customers"
       }
       "sources" = [
         {

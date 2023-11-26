@@ -63,9 +63,9 @@ resource "kubernetes_manifest" "http_route" {
           "backendRefs" = [
             {
               "kind"      = "Service"
-              "name"      = "web"
+              "name"      = "store"
               "namespace" = var.namespace
-              "port"      = local.service_ports.web
+              "port"      = local.service_ports.store
             },
           ]
           "matches" = [
@@ -92,26 +92,26 @@ resource "kubernetes_manifest" "http_route" {
   }
 }
 
-module "web" {
+module "store" {
   source = "../modules/fake-service"
 
   region        = var.region
-  name          = "web"
-  port          = local.service_ports.web
-  upstream_uris = "http://application.virtual.consul"
+  name          = "store"
+  port          = local.service_ports.store
+  upstream_uris = "http://customers.virtual.consul"
 }
 
-resource "kubernetes_manifest" "service_intentions_web" {
+resource "kubernetes_manifest" "service_intentions_store" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceIntentions"
     "metadata" = {
-      "name"      = "web"
+      "name"      = "store"
       "namespace" = var.namespace
     }
     "spec" = {
       "destination" = {
-        "name" = "web"
+        "name" = "store"
       }
       "sources" = [
         {

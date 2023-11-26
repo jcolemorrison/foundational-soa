@@ -14,15 +14,9 @@ variable "sameness_group_name" {
   default     = "customers"
 }
 
-variable "test_failover_application" {
+variable "test_failover_customers" {
   type        = bool
-  description = "Test failover across regions for application service"
-  default     = false
-}
-
-variable "test_failover_database" {
-  type        = bool
-  description = "Test failover across regions for database service"
+  description = "Test failover across regions for customer service"
   default     = false
 }
 
@@ -70,8 +64,8 @@ variable "vault_database_secret_policy" {
 
 locals {
   service_ports = {
-    web         = 9090
-    application = 9090
-    database    = 9090
+    store     = 9090
+    customers = 9090
+    database  = 9090
   }
 }
