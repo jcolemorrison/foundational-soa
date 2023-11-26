@@ -118,7 +118,7 @@ variable "hcp_consul_cluster_token" {
 variable "sameness_group" {
   type        = string
   description = "Sameness group"
-  default     = "payments"
+  default     = "ec2-sameness-group"
 }
 
 variable "peers_for_failover" {
