@@ -13,7 +13,9 @@ resource "consul_config_entry" "proxy_defaults_us_east_1" {
       Mode = "local"
     }
     TransparentProxy = {}
-    Protocol         = "http"
+    Config = {
+      Protocol = "http"
+    }
   })
 
   provider = consul.us_east_1
@@ -34,7 +36,9 @@ resource "consul_config_entry" "proxy_defaults_us_west_2" {
       Mode = "local"
     }
     TransparentProxy = {}
-    Protocol         = "http"
+    Config = {
+      Protocol = "http"
+    }
   })
 
   provider = consul.us_west_2
@@ -55,7 +59,9 @@ resource "consul_config_entry" "proxy_defaults_eu_west_1" {
       Mode = "local"
     }
     TransparentProxy = {}
-    Protocol         = "http"
+    Config = {
+      Protocol = "http"
+    }
   })
 
   provider = consul.eu_west_1
