@@ -11,18 +11,18 @@ variable "namespace" {
 variable "sameness_group_name" {
   type        = string
   description = "Name of sameness group"
-  default     = "customers"
+  default     = "common"
 }
 
-variable "test_failover_application" {
+variable "test_failover_customers" {
   type        = bool
-  description = "Test failover across regions for application service"
+  description = "Test failover across regions for customer service"
   default     = false
 }
 
-variable "test_failover_database" {
+variable "enable_payments_service" {
   type        = bool
-  description = "Test failover across regions for database service"
+  description = "Add payments in EC2 to store as upstream"
   default     = false
 }
 
@@ -70,8 +70,8 @@ variable "vault_database_secret_policy" {
 
 locals {
   service_ports = {
-    web         = 9090
-    application = 9090
-    database    = 9090
+    store     = 9090
+    customers = 9090
+    database  = 9090
   }
 }

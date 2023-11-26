@@ -30,6 +30,12 @@ variable "upstream_uris" {
   description = "Comma-delimited set of upstreams URIs for service to connect"
 }
 
+variable "enable_load_balancer" {
+  type        = string
+  description = "Enable load balancer for service"
+  default     = false
+}
+
 variable "error_rate" {
   type        = number
   description = "Error rate as a percentage to pass onto the application"

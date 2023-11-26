@@ -2,6 +2,10 @@ locals {
   peers = [for peer in var.peers_for_failover : {
     "peer" = peer
   }]
+  consul_partitions = ["default", "ec2", "ecs"]
+  partitions = [for partition in local.consul_partitions : {
+    "partition" = partition
+  }]
 }
 
 resource "kubernetes_manifest" "sameness_group" {
@@ -13,9 +17,9 @@ resource "kubernetes_manifest" "sameness_group" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "includeLocal"       = true
-      "defaultForFailover" = false
-      "members"            = local.peers
+      "includeLocal"       = false
+      "defaultForFailover" = true
+      "members"            = concat(local.partitions, local.peers)
     }
   }
 }

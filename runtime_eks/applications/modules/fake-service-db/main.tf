@@ -46,6 +46,10 @@ resource "kubernetes_manifest" "service_account" {
 }
 
 resource "kubernetes_manifest" "deployment" {
+  computed_fields = [
+    "spec.template.metadata.annotations"
+  ]
+
   manifest = {
     "apiVersion" = "apps/v1"
     "kind"       = "Deployment"
@@ -66,7 +70,7 @@ resource "kubernetes_manifest" "deployment" {
       "template" = {
         "metadata" = {
           "annotations" = {
-            "consul.hashicorp.com/connect-inject"            = "true"
+            "consul.hashicorp.com/connect-inject" = "true"
           }
           "labels" = {
             "app" = var.name
@@ -140,7 +144,7 @@ resource "kubernetes_manifest" "service_defaults" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "protocol" = "http"
+      "protocol" = "tcp"
     }
   }
 }

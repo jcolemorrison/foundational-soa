@@ -6,6 +6,9 @@ global:
     enableAgentMetrics: true
   peering:
     enabled: true
+  adminPartitions:
+    enabled: true
+  enableConsulNamespaces: true
 
 controller:
   enabled: true
@@ -32,12 +35,12 @@ connectInject:
     mirroringK8S: true
   metrics:
     defaultEnabled: true
-  apiGateway:
-    manageExternalCRDs: true
-    managedGatewayClass:
-      serviceType: LoadBalancer
-      copyAnnotations:
-        service:
-          annotations: |
-            - service.beta.kubernetes.io/aws-load-balancer-type
-            - service.beta.kubernetes.io/aws-load-balancer-nlb-target-type
+  # apiGateway:
+  #   manageExternalCRDs: true
+  #   managedGatewayClass:
+  #     serviceType: LoadBalancer
+  #     copyAnnotations:
+  #       service:
+  #         annotations: |
+  #           - service.beta.kubernetes.io/aws-load-balancer-type
+  #           - service.beta.kubernetes.io/aws-load-balancer-nlb-target-type
