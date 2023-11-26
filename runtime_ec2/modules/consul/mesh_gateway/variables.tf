@@ -1,42 +1,13 @@
 variable "name" {
   type        = string
-  description = "Name used for VMs and other resources"
-}
-
-variable "is_mesh_gateway" {
-  type        = bool
-  description = "Deploy instance as Consul mesh gateway"
-  default     = false
+  description = "Name used for mesh gateway VM"
+  default     = "mesh-gateway"
 }
 
 variable "fake_service_name" {
   type        = string
   description = "Name to pass to fake-service"
   default     = null
-}
-
-variable "fake_service_message" {
-  type        = string
-  description = "Message to pass to fake-service"
-  default     = null
-}
-
-variable "fake_service_port" {
-  type        = string
-  description = "Message to pass to fake-service"
-  default     = 9090
-}
-
-variable "upstream_service_name" {
-  type        = number
-  description = "Upstream service name"
-  default     = null
-}
-
-variable "upstream_service_local_bind_port" {
-  type        = number
-  description = "Local port to bind to access upstream service"
-  default     = 9091
 }
 
 variable "instance_type" {
@@ -90,7 +61,7 @@ variable "tags" {
 locals {
   tags = merge(
     {
-      Module = "foundational-soa//runtime_ec2/modules/ec2",
+      Module = "foundational-soa//runtime_ec2/modules/consul/mesh_gateway",
       Name   = var.name
       Consul = "client"
     },

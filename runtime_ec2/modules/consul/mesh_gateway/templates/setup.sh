@@ -4,13 +4,6 @@
 
 set -ex
 
-setup_service() {
-  curl -LO https://github.com/nicholasjackson/fake-service/releases/download/v0.26.0/fake_service_linux_amd64.zip
-  unzip fake_service_linux_amd64.zip
-  mv fake-service /usr/local/bin
-  chmod +x /usr/local/bin/fake-service
-}
-
 start_service() {
   mv $1.service /usr/lib/systemd/system/
   systemctl enable $1.service
@@ -57,14 +50,6 @@ cd /home/ubuntu/
 
 setup_deps
 setup_consul
-
-%{if service_name != null}
-setup_service
-echo "${service}" | base64 -d > ${service_name}.service
-start_service "${service_name}"
-
-echo "${service_definition}" | base64 -d > /etc/consul.d/${service_name}.hcl
-%{endif}
 
 echo "${envoy}" | base64 -d > consul-envoy.service
 
