@@ -6,13 +6,11 @@ variable "access_map" {
       "frontend"
     ]
     "eks" = [
-      "web", "application", "database"
+      "store", "customers", "database"
     ]
-    "ecs" = [
-      "web", "application", "database"
-    ]
+    "ecs" = []
     "ec2" = [
-      "application", "database"
+      "payments", "reports"
     ]
   }
 }

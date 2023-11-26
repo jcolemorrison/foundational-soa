@@ -29,11 +29,11 @@ resource "kubernetes_manifest" "service_intentions_database" {
       "sources" = [
         {
           "action" = "allow"
-          "name"   = "application"
+          "name"   = "customers"
         },
         {
           "action"        = "allow"
-          "name"          = "application"
+          "name"          = "customers"
           "samenessGroup" = var.sameness_group_name
         },
       ]

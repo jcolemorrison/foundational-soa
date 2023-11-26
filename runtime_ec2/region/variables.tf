@@ -114,3 +114,15 @@ variable "hcp_consul_cluster_token" {
   description = "Consul bootstrap token for clients to start"
   sensitive   = true
 }
+
+variable "sameness_group" {
+  type        = string
+  description = "Sameness group"
+  default     = "common"
+}
+
+variable "peers_for_failover" {
+  type        = list(string)
+  description = "Cluster peers for failover"
+  default     = []
+}

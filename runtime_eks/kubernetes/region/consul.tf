@@ -78,8 +78,8 @@ resource "kubernetes_secret" "hcp_consul_token" {
 locals {
   helm_values = [
     data.hcp_consul_agent_helm_config.cluster.config,
-    file("${path.module}/templates/hcp.yaml"),
-    var.hcp_consul_observability != null ? file("${path.module}/templates/telemetry.yaml") : ""
+    file("${path.module}/templates/hcp.yaml")
+    # var.hcp_consul_observability != null ? file("${path.module}/templates/telemetry.yaml") : ""
   ]
 }
 
@@ -97,6 +97,6 @@ resource "helm_release" "consul_client" {
 
   set {
     name  = "global.image"
-    value = "hashicorp/consul:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}"
+    value = "hashicorp/consul-enterprise:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}-ent"
   }
 }

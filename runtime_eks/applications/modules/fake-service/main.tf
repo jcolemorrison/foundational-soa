@@ -15,10 +15,11 @@ resource "kubernetes_manifest" "service" {
       "namespace" = var.namespace
     }
     "spec" = {
+      "type" = var.enable_load_balancer ? "LoadBalancer" : "ClusterIP"
       "ports" = [
         {
           "name"       = "http"
-          "port"       = var.port
+          "port"       = var.enable_load_balancer ? 80 : var.port
           "protocol"   = "TCP"
           "targetPort" = var.port
         },
@@ -98,7 +99,10 @@ resource "kubernetes_manifest" "deployment" {
       }
       "template" = {
         "metadata" = {
-          "annotations" = {
+          "annotations" = var.enable_load_balancer ? {
+            "consul.hashicorp.com/connect-inject"                          = "true"
+            "consul.hashicorp.com/transparent-proxy-exclude-inbound-ports" = "9090"
+            } : {
             "consul.hashicorp.com/connect-inject" = "true"
           }
           "labels" = {
@@ -134,7 +138,7 @@ resource "kubernetes_manifest" "service_defaults" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "protocol" = "http"
+      "protocol" = "tcp"
     }
   }
 }
