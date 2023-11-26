@@ -124,10 +124,10 @@ resource "kubernetes_manifest" "service_intentions_store" {
           "name"   = "api-gateway"
         },
         {
-          "action"    = "allow"
-          "name"      = "ecs-api"
-          "partition" = "ecs"
-        }
+          "action"        = "allow"
+          "name"          = "ecs-api"
+          "samenessGroup" = local.store_sameness_group
+        },
       ]
     }
   }
@@ -149,7 +149,12 @@ resource "kubernetes_manifest" "service_intentions_payments" {
         {
           "action" = "allow"
           "name"   = "store"
-        }
+        },
+        {
+          "action"        = "allow"
+          "name"          = "store"
+          "samenessGroup" = local.payments_sameness_group
+        },
       ]
     }
   }
@@ -166,8 +171,6 @@ resource "kubernetes_manifest" "service_resolver_store_to_payments" {
     }
     "spec" = {
       "redirect" = {
-        "service"       = "payments"
-        "partition"     = "ec2"
         "samenessGroup" = "payments"
       }
     }

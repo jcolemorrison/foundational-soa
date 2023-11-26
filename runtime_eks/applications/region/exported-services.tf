@@ -23,7 +23,15 @@ resource "kubernetes_manifest" "exported_services_default" {
         {
           "consumers" = [
             {
-              "partition" = "ecs"
+              "samenessGroup" = local.payments_sameness_group
+            },
+          ]
+          "name" = "payments"
+        },
+        {
+          "consumers" = [
+            {
+              "samenessGroup" = local.store_sameness_group
             },
           ]
           "name" = "store"
