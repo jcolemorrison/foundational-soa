@@ -156,6 +156,15 @@ module "payments" {
   tags = merge(local.boundary_tag, local.application_tag)
 }
 
+resource "consul_config_entry" "service_defaults_payments" {
+  name = "payments"
+  kind = "service-defaults"
+
+  config_json = jsonencode({
+    Protocol = "http"
+  })
+}
+
 module "reports_static" {
   count   = var.deploy_services ? 1 : 0
   source  = "../../modules/fake_service"
@@ -184,6 +193,15 @@ module "reports" {
   key_pair_name = aws_key_pair.boundary.key_name
 
   tags = merge(local.boundary_tag, local.application_tag)
+}
+
+resource "consul_config_entry" "service_defaults_reports" {
+  name = "reports"
+  kind = "service-defaults"
+
+  config_json = jsonencode({
+    Protocol = "http"
+  })
 }
 
 resource "consul_config_entry" "payments_intentions" {
