@@ -32,7 +32,7 @@ locals {
   peers = [for peer in var.peers_for_failover : {
     "Peer" = peer
   }]
-  consul_partitions = ["ec2", "ecs", "default"]
+  consul_partitions = ["ec2", "ecs", "default", "frontend"]
   partitions = [for partition in local.consul_partitions : {
     "Partition" = partition
   }]
@@ -65,6 +65,10 @@ resource "consul_config_entry" "exported_services_payments_ec2" {
           SamenessGroup = var.sameness_group
         }
       ], local.partitions)
+    },{
+      Name      = "mesh-gateway"
+      Namespace = "default"
+      Consumers = local.partitions
     }]
   })
 }
