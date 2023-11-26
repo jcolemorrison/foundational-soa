@@ -221,6 +221,14 @@ resource "consul_config_entry" "payments_intentions" {
         Type       = "consul"
         Namespace  = "default"
         Partition  = var.runtime
+      },
+      {
+        Action     = "allow"
+        Name       = "store"
+        Precedence = 9
+        Type       = "consul"
+        Namespace  = "default"
+        Partition  = "default"
       }
     ]
   })

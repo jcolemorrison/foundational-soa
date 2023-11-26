@@ -7,9 +7,14 @@ resource "consul_config_entry" "exported_services_payments_ec2" {
     Services = [{
       Name      = "payments"
       Namespace = "default"
-      Consumers = [{
-        Partition = "default"
-      }]
+      Consumers = [
+        {
+          Partition = "default"
+        },
+        {
+          SamenessGroup = var.sameness_group
+        }
+      ]
     }]
   })
 }
