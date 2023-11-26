@@ -46,7 +46,10 @@ resource "kubernetes_manifest" "service_account" {
 }
 
 resource "kubernetes_manifest" "deployment" {
-  computed_fields = ["metadata.annotations"]
+  computed_fields = [
+    "spec.template.metadata.annotations"
+  ]
+
   manifest = {
     "apiVersion" = "apps/v1"
     "kind"       = "Deployment"
