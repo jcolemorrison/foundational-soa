@@ -20,7 +20,7 @@ variable "fake_service_port" {
 }
 
 variable "upstream_service_name" {
-  type        = number
+  type        = string
   description = "Upstream service name"
   default     = null
 }

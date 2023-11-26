@@ -17,7 +17,7 @@ resource "aws_instance" "instance" {
         service_name  = var.fake_service_name,
         service_port  = var.fake_service_port,
         message       = var.fake_service_message,
-        upstream_uris = var.upstream_service_name != null ? "127.0.0.1:${var.upstream_service_local_bind_port}" : null
+        upstream_uris = var.upstream_service_name != null ? "http://127.0.0.1:${var.upstream_service_local_bind_port}" : null
       })),
       service_definition = base64encode(templatefile("${path.module}/templates/service_definition", {
         service_name                     = var.name,

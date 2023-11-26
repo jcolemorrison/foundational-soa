@@ -61,6 +61,7 @@ module "us_west_2" {
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
 
+  deploy_services          = false
   hcp_consul_cluster_id    = local.consul_us_west_2.id
   hcp_consul_cluster_token = local.consul_us_west_2.token
 
@@ -92,6 +93,7 @@ module "eu_west_1" {
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
 
+  deploy_services          = false
   hcp_consul_cluster_id    = local.consul_eu_west_1.id
   hcp_consul_cluster_token = local.consul_eu_west_1.token
 

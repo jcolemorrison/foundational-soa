@@ -19,13 +19,11 @@ service {
         interval = "10s"
       }
       proxy {
-%{if upstream_service_name != null}
-        upstreams {
+%{if upstream_service_name != null}        upstreams {
           destination_name   = "${upstream_service_name}"
           local_bind_address = "127.0.0.1"
-          local_bind_port    = "${upstream_service_local_bind_port}"
-        }
-%{endif}
+          local_bind_port    = ${upstream_service_local_bind_port}
+        }%{endif}
       }
     }
   }

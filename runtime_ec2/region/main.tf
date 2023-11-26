@@ -142,7 +142,7 @@ module "mesh_gateway" {
 
 ## Deploy example service
 
-module "static" {
+module "payments_static" {
   count   = var.deploy_services ? 1 : 0
   source  = "../../modules/fake_service"
   region  = var.region
@@ -160,8 +160,38 @@ module "payments" {
   count                = var.deploy_services ? 1 : 0
   source               = "../modules/ec2"
   name                 = "payments"
-  fake_service_name    = module.static.0.name
-  fake_service_message = module.static.0.message
+  fake_service_name    = module.payments_static.0.name
+  fake_service_message = module.payments_static.0.message
+
+  vpc_id         = module.network.vpc_id
+  vpc_cidr_block = module.network.vpc_cidr_block
+  subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.0.result]
+
+  security_group_ids = [aws_security_group.instances.id]
+
+  hcp_consul_cluster_id    = var.hcp_consul_cluster_id
+  hcp_consul_cluster_token = var.hcp_consul_cluster_token
+
+  key_pair_name = aws_key_pair.boundary.key_name
+
+  tags = local.boundary_tag
+}
+
+module "reports_static" {
+  count   = var.deploy_services ? 1 : 0
+  source  = "../../modules/fake_service"
+  region  = var.region
+  service = "reports"
+  runtime = var.runtime
+}
+
+module "reports" {
+  count                 = var.deploy_services ? 1 : 0
+  source                = "../modules/ec2"
+  name                  = "reports"
+  fake_service_name     = module.reports_static.0.name
+  fake_service_message  = module.reports_static.0.message
+  upstream_service_name = "payments"
 
   vpc_id         = module.network.vpc_id
   vpc_cidr_block = module.network.vpc_cidr_block
