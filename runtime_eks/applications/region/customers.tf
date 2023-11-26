@@ -35,37 +35,6 @@ resource "kubernetes_manifest" "service_intentions_customers" {
   }
 }
 
-resource "kubernetes_manifest" "exported_services_default" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ExportedServices"
-    "metadata" = {
-      "name"      = "default"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "services" = [
-        {
-          "consumers" = [
-            {
-              "samenessGroup" = var.sameness_group_name
-            },
-          ]
-          "name" = "customers"
-        },
-        {
-          "consumers" = [
-            {
-              "partition" = "ecs"
-            },
-          ]
-          "name" = "store"
-        }
-      ]
-    }
-  }
-}
-
 resource "kubernetes_manifest" "service_resolver_store_to_customers" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
