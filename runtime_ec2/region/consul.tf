@@ -60,12 +60,11 @@ resource "consul_config_entry" "exported_services_payments_ec2" {
     Services = [{
       Name      = "payments"
       Namespace = "default"
-      Consumers = concat([
+      Consumers = [
         {
           SamenessGroup = var.sameness_group
         }
-      ], local.partitions)
-    },{
+      ] }, {
       Name      = "mesh-gateway"
       Namespace = "default"
       Consumers = local.partitions
