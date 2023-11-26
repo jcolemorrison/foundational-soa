@@ -157,8 +157,9 @@ module "payments" {
 }
 
 resource "consul_config_entry" "service_defaults_payments" {
-  name = "payments"
-  kind = "service-defaults"
+  name      = "payments"
+  kind      = "service-defaults"
+  partition = "ec2"
 
   config_json = jsonencode({
     Protocol = "http"
@@ -196,8 +197,9 @@ module "reports" {
 }
 
 resource "consul_config_entry" "service_defaults_reports" {
-  name = "reports"
-  kind = "service-defaults"
+  name      = "reports"
+  kind      = "service-defaults"
+  partition = "ec2"
 
   config_json = jsonencode({
     Protocol = "http"
