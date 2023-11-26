@@ -157,6 +157,7 @@ module "payments" {
 }
 
 resource "consul_config_entry" "service_defaults_payments" {
+  count     = var.deploy_services ? 1 : 0
   name      = "payments"
   kind      = "service-defaults"
   partition = "ec2"
@@ -197,6 +198,7 @@ module "reports" {
 }
 
 resource "consul_config_entry" "service_defaults_reports" {
+  count     = var.deploy_services ? 1 : 0
   name      = "reports"
   kind      = "service-defaults"
   partition = "ec2"

@@ -51,6 +51,7 @@ resource "consul_config_entry" "sameness_group" {
 }
 
 resource "consul_config_entry" "exported_services_payments_ec2" {
+  count     = var.deploy_services ? 1 : 0
   name      = var.runtime
   kind      = "exported-services"
   partition = var.runtime
@@ -69,6 +70,7 @@ resource "consul_config_entry" "exported_services_payments_ec2" {
 }
 
 resource "consul_config_entry" "service_resolver_payments" {
+  count     = var.deploy_services ? 1 : 0
   kind      = "service-resolver"
   name      = "payments"
   partition = var.runtime
