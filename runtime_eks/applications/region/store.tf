@@ -122,3 +122,31 @@ resource "kubernetes_manifest" "service_intentions_store" {
     }
   }
 }
+
+resource "kubernetes_manifest" "service_intentions_payments" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceIntentions"
+    "metadata" = {
+      "name"      = "payments"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "destination" = {
+        "name" = "payments"
+      }
+      "sources" = [
+        {
+          "action" = "allow"
+          "name"   = "store"
+        },
+        {
+          "action"        = "allow"
+          "name"          = "store"
+          "samenessGroup" = var.sameness_group_name
+        },
+      ]
+    }
+  }
+}
+
