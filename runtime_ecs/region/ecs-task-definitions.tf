@@ -35,15 +35,15 @@ module "ecs_api" {
       environment = [
         {
           name  = "NAME"
-          value = "ecs-api"
+          value = "hashidemo-api"
         },
         {
           name  = "MESSAGE"
-          value = "Hello from the ecs api in ${var.region} change"
+          value = "Hello from the HashiDemo API in the ${var.region} region!"
         },
         {
           name  = "UPSTREAM_URIS"
-          value = "http://localhost:1234"
+          value = "http://localhost:1234,http://localhost:1345"
         }
       ]
     }
@@ -53,6 +53,10 @@ module "ecs_api" {
     {
       destinationName = "ecs-upstream" #consul service name
       localBindPort   = 1234
+    },
+    {
+      destinationName = "payments" # ec2 consul service
+      localBindPort = 1345
     }
   ]
 
@@ -123,11 +127,11 @@ module "ecs_upstream" {
       environment = [
         {
           name  = "NAME"
-          value = "ecs-upstream"
+          value = "Messages"
         },
         {
           name  = "MESSAGE"
-          value = "Hello from the ecs upstream in ${var.region}"
+          value = "Hello from the upstream Messages services in ${var.region} region!"
         },
         {
           name = "ERROR_RATE"
@@ -143,16 +147,16 @@ module "ecs_upstream" {
         }
       ]
 
-      healthCheck = {
-        retries = 10
-        command = [
-            "CMD-SHELL",
-            "curl -f http://localhost:9090/ || exit 1"
-        ],
-        timeout = 5,
-        interval = 30,
-        startPeriod = null
-      }
+      # healthCheck = {
+      #   retries = 10
+      #   command = [
+      #       "CMD-SHELL",
+      #       "curl -f http://localhost:9090/ || exit 1"
+      #   ],
+      #   timeout = 5,
+      #   interval = 30,
+      #   startPeriod = null
+      # }
     }
   ]
 

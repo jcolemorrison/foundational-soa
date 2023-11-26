@@ -90,3 +90,19 @@ resource "consul_config_entry" "us_east_1_sameness_failover_resolver" {
 
   provider = consul.us_east_1
 }
+
+resource "consul_config_entry" "us_east_1_ecs_api_to_ec2_payments" {
+  kind = "service-resolver"
+  name = "payments"
+  partition = "ecs"
+  namespace = "default"
+
+  config_json = jsonencode({
+    Redirect = {
+      Service = "payments"
+      Peer    = "prod-${local.us_east_1}-ec2"
+    }
+  })
+
+  provider = consul.us_east_1
+}

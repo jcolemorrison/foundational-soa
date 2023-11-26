@@ -68,3 +68,19 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
 
   provider = consul.us_west_2
 }
+
+resource "consul_config_entry" "us_west_2_ecs_api_to_ec2_payments" {
+  kind = "service-resolver"
+  name = "payments"
+  partition = "ecs"
+  namespace = "default"
+
+  config_json = jsonencode({
+    Redirect = {
+      Service = "payments"
+      Peer    = "prod-${local.us_west_2}-ec2"
+    }
+  })
+
+  provider = consul.us_west_2
+}
