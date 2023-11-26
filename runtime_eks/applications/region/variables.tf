@@ -11,7 +11,7 @@ variable "namespace" {
 variable "sameness_group_name" {
   type        = string
   description = "Name of sameness group"
-  default     = "customers"
+  default     = "common"
 }
 
 variable "test_failover_customers" {

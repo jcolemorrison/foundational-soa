@@ -126,7 +126,7 @@ resource "kubernetes_manifest" "service_intentions_store" {
         {
           "action"        = "allow"
           "name"          = "ecs-api"
-          "samenessGroup" = local.store_sameness_group
+          "samenessGroup" = var.sameness_group_name
         },
       ]
     }
@@ -153,7 +153,7 @@ resource "kubernetes_manifest" "service_intentions_payments" {
         {
           "action"        = "allow"
           "name"          = "store"
-          "samenessGroup" = local.payments_sameness_group
+          "samenessGroup" = var.sameness_group_name
         },
       ]
     }

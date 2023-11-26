@@ -19,44 +19,7 @@ resource "kubernetes_manifest" "sameness_group" {
     "spec" = {
       "includeLocal"       = false
       "defaultForFailover" = true
-      "members"            = concat(local.peers, local.partitions)
-    }
-  }
-}
-
-locals {
-  payments_sameness_group = "payments"
-  store_sameness_group    = "store"
-}
-
-resource "kubernetes_manifest" "sameness_group_payments" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "SamenessGroup"
-    "metadata" = {
-      "name"      = local.payments_sameness_group
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "includeLocal"       = false
-      "defaultForFailover" = true
-      "members"            = concat(local.partitions)
-    }
-  }
-}
-
-resource "kubernetes_manifest" "sameness_group_store" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "SamenessGroup"
-    "metadata" = {
-      "name"      = local.store_sameness_group
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "includeLocal"       = false
-      "defaultForFailover" = true
-      "members"            = concat(local.partitions)
+      "members"            = concat(local.partitions, local.peers)
     }
   }
 }

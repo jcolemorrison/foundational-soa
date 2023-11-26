@@ -23,7 +23,7 @@ resource "kubernetes_manifest" "exported_services_default" {
         {
           "consumers" = [
             {
-              "samenessGroup" = local.payments_sameness_group
+              "samenessGroup" = var.sameness_group_name
             },
           ]
           "name" = "payments"
@@ -31,7 +31,7 @@ resource "kubernetes_manifest" "exported_services_default" {
         {
           "consumers" = [
             {
-              "samenessGroup" = local.store_sameness_group
+              "samenessGroup" = var.sameness_group_name
             },
           ]
           "name" = "store"
