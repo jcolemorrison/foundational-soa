@@ -161,8 +161,7 @@ resource "kubernetes_manifest" "service_resolver_store_to_payments" {
     }
     "spec" = {
       "redirect" = {
-        "service"   = "payments"
-        "partition" = "ec2"
+        "samenessGroup" = var.sameness_group_name
       }
     }
   }

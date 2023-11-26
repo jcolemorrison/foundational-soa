@@ -53,6 +53,14 @@ resource "kubernetes_manifest" "exported_services_default" {
           ]
           "name" = "customers"
         },
+        {
+          "consumers" = [
+            {
+              "samenessGroup" = var.sameness_group_name
+            },
+          ]
+          "name" = "payments"
+        }
       ]
     }
   }
