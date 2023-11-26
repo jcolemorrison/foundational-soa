@@ -100,10 +100,11 @@ locals {
 module "store" {
   source = "../modules/fake-service"
 
-  region        = var.region
-  name          = "store"
-  port          = local.service_ports.store
-  upstream_uris = var.enable_payments_service ? "${local.customers_url},${local.payments_url}" : local.customers_url
+  region               = var.region
+  name                 = "store"
+  port                 = local.service_ports.store
+  upstream_uris        = var.enable_payments_service ? "${local.customers_url},${local.payments_url}" : local.customers_url
+  enable_load_balancer = true
 }
 
 resource "kubernetes_manifest" "service_intentions_store" {

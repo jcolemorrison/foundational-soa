@@ -15,6 +15,7 @@ resource "kubernetes_manifest" "service" {
       "namespace" = var.namespace
     }
     "spec" = {
+      "type" = var.enable_load_balancer ? "LoadBalancer" : "ClusterIP"
       "ports" = [
         {
           "name"       = "http"
