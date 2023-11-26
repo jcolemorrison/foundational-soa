@@ -295,3 +295,8 @@ variable "test_bastion_cidr_blocks" {
   description = "test bastion cidr blocks"
   default     = []
 }
+
+variable "eks_upstream_uri" {
+  type = string
+  description = "endpoint for EKS upstream"
+}

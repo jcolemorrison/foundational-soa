@@ -43,7 +43,7 @@ module "ecs_api" {
         },
         {
           name  = "UPSTREAM_URIS"
-          value = "http://localhost:1234"
+          value = "http://localhost:1234,${var.eks_upstream_uri}"
         }
       ]
     }
