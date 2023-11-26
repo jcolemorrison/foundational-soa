@@ -17,7 +17,7 @@ resource "kubernetes_manifest" "sameness_group" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "includeLocal"       = true
+      "includeLocal"       = false
       "defaultForFailover" = false
       "members"            = concat(local.peers, local.partitions)
     }
