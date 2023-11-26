@@ -8,6 +8,12 @@ variable "region" {
   description = "AWS region to deploy the transit gateway to.  Only used for naming purposes."
 }
 
+variable "runtime" {
+  type        = string
+  description = "Runtime"
+  default     = "ec2"
+}
+
 variable "transit_gateway_id" {
   type        = string
   description = "transit gateway ID to point traffic to for shared services, hcp, etc."
@@ -54,9 +60,15 @@ variable "vault_address" {
   default     = null
 }
 
-variable "vault_namespace" {
+variable "boundary_worker_vault_namespace" {
   type        = string
-  description = "Vault cluster namespace"
+  description = "Namespace in Vault for Boundary worker to store secret"
+  default     = null
+}
+
+variable "boundary_worker_vault_namespace_absolute" {
+  type        = string
+  description = "Namespace in Vault for Boundary worker to store secret, includes full path"
   default     = null
 }
 
@@ -82,4 +94,23 @@ variable "boundary_cluster_id" {
 variable "boundary_project_scope_id" {
   type        = string
   description = "Boundary project scope ID for EKS runtime"
+}
+
+## Deploy services in EC2 instances
+
+variable "deploy_services" {
+  type        = bool
+  description = "Deploy services in EC2 instances"
+  default     = false
+}
+
+variable "hcp_consul_cluster_id" {
+  type        = string
+  description = "HCP Consul cluster ID"
+}
+
+variable "hcp_consul_cluster_token" {
+  type        = string
+  description = "Consul bootstrap token for clients to start"
+  sensitive   = true
 }

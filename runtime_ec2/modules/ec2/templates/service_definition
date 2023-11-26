@@ -1,0 +1,30 @@
+service {
+  name = "${service_name}"
+  port = ${service_port}
+  token = "${consul_acl_token}"
+
+  check {
+    id = "${service_name}"
+    name = "HTTP ${service_name} on Port ${service_port}"
+    http = "http://localhost:${service_port}/health"
+    interval = "30s"
+  }
+
+  connect {
+    sidecar_service {
+      port = 20000
+      check {
+        name     = "Connect Envoy Sidecar"
+        tcp      = "127.0.0.1:20000"
+        interval = "10s"
+      }
+      proxy {
+%{if upstream_service_name != null}        upstreams {
+          destination_name   = "${upstream_service_name}"
+          local_bind_address = "127.0.0.1"
+          local_bind_port    = ${upstream_service_local_bind_port}
+        }%{endif}
+      }
+    }
+  }
+}

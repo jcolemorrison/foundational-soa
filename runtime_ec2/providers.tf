@@ -16,8 +16,18 @@ terraform {
       source  = "hashicorp/vault"
       version = "~> 3.22"
     }
+    hcp = {
+      source  = "hashicorp/hcp"
+      version = "~> 0.76"
+    }
+    consul = {
+      source  = "hashicorp/consul"
+      version = "~> 2.19"
+    }
   }
 }
+
+provider "hcp" {}
 
 provider "aws" {
   region = var.aws_default_region
@@ -50,6 +60,27 @@ provider "boundary" {
 
 provider "vault" {
   address   = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.address
-  namespace = local.boundary_worker_vault_namespace
+  namespace = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.namespace
   token     = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault.token
+}
+
+provider "consul" {
+  alias      = "us_east_1"
+  address    = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul.address
+  token      = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul.token
+  datacenter = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.consul.datacenter
+}
+
+provider "consul" {
+  alias      = "us_west_2"
+  address    = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul.address
+  token      = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul.token
+  datacenter = data.terraform_remote_state.shared_services.outputs.hcp_us_west_2.consul.datacenter
+}
+
+provider "consul" {
+  alias      = "eu_west_1"
+  address    = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.address
+  token      = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.token
+  datacenter = data.terraform_remote_state.shared_services.outputs.hcp_eu_west_1.consul.datacenter
 }
