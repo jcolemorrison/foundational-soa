@@ -97,6 +97,6 @@ resource "helm_release" "consul_client" {
 
   set {
     name  = "global.image"
-    value = "hashicorp/consul:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}"
+    value = "hashicorp/consul-enterprise:${replace(data.hcp_consul_cluster.cluster.consul_version, "v", "")}-ent"
   }
 }
