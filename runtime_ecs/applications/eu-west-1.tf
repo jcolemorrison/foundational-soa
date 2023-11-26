@@ -85,3 +85,24 @@ resource "consul_config_entry" "eu_west_1_ecs_api_to_ec2_payments" {
 
   provider = consul.eu_west_1
 }
+
+resource "consul_acl_policy" "eu_west_1_cross_partition_access" {
+  name = "eu_west_1_cross_partition_access"
+  
+  rules = <<-RULE
+  operator = "write"
+  agent_prefix "" {
+    policy = "read"
+  }
+  partition_prefix "" {
+    namespace_prefix "" {
+      acl = "write"
+      service_prefix "" {
+        policy = "write"
+      }
+    }
+  }
+  RULE
+
+  provider = consul.eu_west_1
+}
