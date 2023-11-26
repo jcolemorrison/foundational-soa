@@ -197,21 +197,6 @@ module "reports" {
   tags = merge(local.boundary_tag, local.application_tag)
 }
 
-resource "consul_config_entry" "service_resolver_payments_default" {
-  count     = var.deploy_services ? 1 : 0
-  kind      = "service-resolver"
-  name      = "payments"
-  partition = "default"
-
-  config_json = jsonencode({
-    Redirect = {
-      Service   = "payments"
-      Partition = "ec2"
-      Namespace = "default"
-    }
-  })
-}
-
 resource "consul_config_entry" "service_defaults_reports" {
   count     = var.deploy_services ? 1 : 0
   name      = "reports"
