@@ -22,24 +22,3 @@ module "fake_service_us_east_1" {
     consul     = consul.us_east_1
   }
 }
-
-resource "kubernetes_manifest" "service_resolver_store_to_customers" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceResolver"
-    "metadata" = {
-      "name"      = "customers"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "connectTimeout" = "0s"
-      "failover" = {
-        "*" = {
-          "samenessGroup" = module.fake_service_us_east_1.sameness_group
-        }
-      }
-    }
-  }
-
-  provider = kubernetes.us_east_1
-}
