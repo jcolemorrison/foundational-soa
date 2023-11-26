@@ -154,21 +154,3 @@ resource "kubernetes_manifest" "service_intentions_payments" {
     }
   }
 }
-
-resource "kubernetes_manifest" "service_resolver_store_to_payments" {
-  count = var.enable_payments_service ? 1 : 0
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceResolver"
-    "metadata" = {
-      "name"      = "payments"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "redirect" = {
-        "service"   = "payments"
-        "partition" = "ec2"
-      }
-    }
-  }
-}
