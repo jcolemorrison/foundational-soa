@@ -9,6 +9,10 @@ resource "kubernetes_manifest" "exported_services_default" {
     "spec" = {
       "services" = [
         {
+          "consumers" = local.partitions
+          "name"      = "mesh-gateway"
+        },
+        {
           "consumers" = [
             {
               "samenessGroup" = var.sameness_group_name
@@ -23,7 +27,7 @@ resource "kubernetes_manifest" "exported_services_default" {
             },
           ]
           "name" = "store"
-        }
+        },
       ]
     }
   }

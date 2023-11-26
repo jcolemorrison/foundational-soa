@@ -2,7 +2,7 @@ locals {
   peers = [for peer in var.peers_for_failover : {
     "peer" = peer
   }]
-  consul_partitions = ["default", "ec2", "ecs"]
+  consul_partitions = ["default", "ec2", "ecs", "frontend"]
   partitions = [for partition in local.consul_partitions : {
     "partition" = partition
   }]
