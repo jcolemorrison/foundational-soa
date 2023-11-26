@@ -99,7 +99,10 @@ resource "kubernetes_manifest" "deployment" {
       }
       "template" = {
         "metadata" = {
-          "annotations" = {
+          "annotations" = var.enable_load_balancer ? {
+            "consul.hashicorp.com/connect-inject"                          = "true"
+            "consul.hashicorp.com/transparent-proxy-exclude-inbound-ports" = "9090"
+            } : {
             "consul.hashicorp.com/connect-inject" = "true"
           }
           "labels" = {
