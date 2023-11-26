@@ -28,48 +28,56 @@ module "mesh_gateway" {
   tags = merge(local.boundary_tag, local.consul_tag)
 }
 
+locals {
+  peers = [for peer in var.peers_for_failover : {
+    "Peer" = peer
+  }]
+  consul_partitions = ["ec2", "ecs", "default"]
+  partitions = [for partition in local.consul_partitions : {
+    "Partition" = partition
+  }]
+}
+
+resource "consul_config_entry" "sameness_group" {
+  kind      = "sameness-group"
+  name      = var.sameness_group
+  partition = var.runtime
+
+  config_json = jsonencode({
+    DefaultForFailover = true
+    IncludeLocal       = false
+    Members            = concat(local.partitions, local.peers)
+  })
+}
+
 resource "consul_config_entry" "exported_services_payments_ec2" {
-  name      = "ec2"
+  name      = var.runtime
   kind      = "exported-services"
-  partition = "ec2"
+  partition = var.runtime
 
   config_json = jsonencode({
     Services = [{
       Name      = "payments"
       Namespace = "default"
-      Consumers = [
-        {
-          Partition = "default"
-        },
-        {
-          Partition = "ecs"
-        },
+      Consumers = concat([
         {
           SamenessGroup = var.sameness_group
         }
-      ]
+      ], local.partitions)
     }]
   })
 }
 
-resource "consul_config_entry" "sameness_group" {
-  name      = var.sameness_group
-  kind      = "sameness-group"
-  partition = var.runtime
+resource "consul_config_entry" "service_resolver_payments" {
+  kind = "service-resolver"
+  name = "payments"
 
   config_json = jsonencode({
-    Services = [{
-      IncludeLocal       = false
-      DefaultForFailover = false
-      Members = [{
-        Partition = "ec2"
-        },
-        {
-          Partition = "ecs"
-        },
-        {
-          Partition = "default"
-      }]
-    }]
+    ConnectTimeout = "0s"
+    Failover = {
+      "*" = {
+        SamenessGroup = var.sameness_group
+      }
+    }
   })
 }

@@ -118,5 +118,11 @@ variable "hcp_consul_cluster_token" {
 variable "sameness_group" {
   type        = string
   description = "Sameness group"
-  default     = "customers"
+  default     = "payments"
+}
+
+variable "peers_for_failover" {
+  type        = list(string)
+  description = "Cluster peers for failover"
+  default     = []
 }

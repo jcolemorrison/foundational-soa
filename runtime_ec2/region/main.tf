@@ -222,11 +222,11 @@ resource "consul_config_entry" "payments_intentions" {
         Partition  = var.runtime
       },
       {
-        Action        = "allow"
-        Name          = "store"
-        Precedence    = 9
-        Type          = "consul"
-        SamenessGroup = var.sameness_group
+        Action     = "allow"
+        Name       = "store"
+        Precedence = 9
+        Type       = "consul"
+        Partition  = "default"
       },
       {
         Action     = "allow"

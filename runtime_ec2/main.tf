@@ -7,7 +7,8 @@ locals {
   hcp_hvn_cidr_blocks         = data.terraform_remote_state.shared_services.outputs.hcp_hvn_cidr_blocks
   accessible_cidr_blocks      = data.terraform_remote_state.shared_services.outputs.accessible_cidr_blocks
 
-  name = "prod"
+  name    = "prod"
+  runtime = "ec2"
 }
 
 module "us_east_1" {
@@ -36,6 +37,8 @@ module "us_east_1" {
   deploy_services          = true
   hcp_consul_cluster_id    = local.consul_us_east_1.id
   hcp_consul_cluster_token = local.consul_us_east_1.token
+
+  peers_for_failover = values(local.peers)
 
   providers = {
     aws    = aws
@@ -70,6 +73,8 @@ module "us_west_2" {
   hcp_consul_cluster_id    = local.consul_us_west_2.id
   hcp_consul_cluster_token = local.consul_us_west_2.token
 
+  peers_for_failover = values(local.peers)
+
   providers = {
     aws    = aws.us_west_2
     consul = consul.us_west_2
@@ -102,6 +107,8 @@ module "eu_west_1" {
   deploy_services          = true
   hcp_consul_cluster_id    = local.consul_eu_west_1.id
   hcp_consul_cluster_token = local.consul_eu_west_1.token
+
+  peers_for_failover = values(local.peers)
 
   providers = {
     aws    = aws.eu_west_1
