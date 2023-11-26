@@ -151,6 +151,23 @@ module "payments" {
   tags = local.boundary_tag
 }
 
+module "mesh_gateway" {
+  source = "../modules/consul/mesh_gateway"
+
+  vpc_id         = module.network.vpc_id
+  vpc_cidr_block = module.network.vpc_cidr_block
+  subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.0.result]
+
+  security_group_ids = [aws_security_group.instances.id]
+
+  hcp_consul_cluster_id    = var.hcp_consul_cluster_id
+  hcp_consul_cluster_token = var.hcp_consul_cluster_token
+
+  key_pair_name = aws_key_pair.boundary.key_name
+
+  tags = local.boundary_tag
+}
+
 module "boundary_ec2_targets" {
   count  = var.deploy_services ? 1 : 0
   source = "../../modules/boundary/hosts"
