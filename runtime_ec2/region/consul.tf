@@ -69,8 +69,9 @@ resource "consul_config_entry" "exported_services_payments_ec2" {
 }
 
 resource "consul_config_entry" "service_resolver_payments" {
-  kind = "service-resolver"
-  name = "payments"
+  kind      = "service-resolver"
+  name      = "payments"
+  partition = var.runtime
 
   config_json = jsonencode({
     ConnectTimeout = "0s"
