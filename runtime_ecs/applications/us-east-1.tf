@@ -109,8 +109,6 @@ resource "consul_config_entry" "us_east_1_ecs_api_to_ec2_payments" {
 
 resource "consul_acl_policy" "us_east_1_cross_partition_access" {
   name = "us_east_1_cross_partition_access"
-  namespace = "default"
-  partition = "ecs"
   
   rules = <<-RULE
   operator = "write"
