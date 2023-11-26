@@ -207,6 +207,25 @@ module "reports" {
   tags = local.boundary_tag
 }
 
+resource "consul_config_entry" "payments_intentions" {
+  name      = "payments"
+  kind      = "service-intentions"
+  partition = var.runtime
+
+  config_json = jsonencode({
+    Sources = [
+      {
+        Action     = "allow"
+        Name       = "reports"
+        Precedence = 8
+        Type       = "consul"
+        Namespace  = "default"
+        Partition  = var.runtime
+      }
+    ]
+  })
+}
+
 module "boundary_ec2_targets" {
   source = "../../modules/boundary/hosts"
 
