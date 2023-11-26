@@ -178,7 +178,6 @@ module "payments" {
 }
 
 module "boundary_ec2_targets" {
-  count  = var.deploy_services ? 1 : 0
   source = "../../modules/boundary/hosts"
 
   name_prefix = "${replace(var.region, "-", "_")}_${var.runtime}"
