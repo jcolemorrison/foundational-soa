@@ -127,7 +127,7 @@ module "mesh_gateway" {
 
   vpc_id         = module.network.vpc_id
   vpc_cidr_block = module.network.vpc_cidr_block
-  subnet_id      = module.network.vpc_private_subnet_ids[random_integer.mesh_gateway.result]
+  subnet_id      = module.network.vpc_public_subnet_ids[random_integer.mesh_gateway.result]
 
   security_group_ids = [aws_security_group.instances.id]
 
