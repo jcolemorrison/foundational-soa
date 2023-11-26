@@ -56,10 +56,10 @@ resource "kubernetes_manifest" "exported_services_default" {
         {
           "consumers" = [
             {
-              "samenessGroup" = var.sameness_group_name
+              "partition" = "ecs"
             },
           ]
-          "name" = "payments"
+          "name" = "store"
         }
       ]
     }

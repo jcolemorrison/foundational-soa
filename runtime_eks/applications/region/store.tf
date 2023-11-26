@@ -122,6 +122,11 @@ resource "kubernetes_manifest" "service_intentions_store" {
         {
           "action" = "allow"
           "name"   = "api-gateway"
+        },
+        {
+          "action"    = "allow"
+          "name"      = "ecs-api"
+          "partition" = "ecs"
         }
       ]
     }
