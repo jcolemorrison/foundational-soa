@@ -217,7 +217,7 @@ resource "consul_config_entry" "payments_intentions" {
       {
         Action     = "allow"
         Name       = "reports"
-        Precedence = 8
+        Precedence = 9
         Type       = "consul"
         Namespace  = "default"
         Partition  = var.runtime
