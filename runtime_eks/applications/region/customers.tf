@@ -23,11 +23,11 @@ resource "kubernetes_manifest" "service_intentions_customers" {
       "sources" = [
         {
           "action" = "allow"
-          "name"   = "web"
+          "name"   = "store"
         },
         {
           "action"        = "allow"
-          "name"          = "web"
+          "name"          = "store"
           "samenessGroup" = var.sameness_group_name
         },
       ]
