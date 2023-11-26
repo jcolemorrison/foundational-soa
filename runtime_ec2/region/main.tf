@@ -85,6 +85,9 @@ locals {
   boundary_tag = {
     Boundary = "true"
   }
+  application_tag = {
+    Application = "true"
+  }
 }
 
 resource "aws_security_group" "instances" {
@@ -114,30 +117,6 @@ resource "aws_security_group_rule" "instances" {
   prefix_list_ids          = lookup(each.value, "prefix_list_ids", [])
   self                     = lookup(each.value, "self", null)
   source_security_group_id = lookup(each.value, "source_cluster_security_group", null)
-}
-
-## Deploy Consul mesh gateway
-resource "random_integer" "mesh_gateway" {
-  min = 0
-  max = length(module.network.vpc_private_subnet_ids) - 1
-}
-
-module "mesh_gateway" {
-  source = "../modules/consul/mesh_gateway"
-
-  vpc_id            = module.network.vpc_id
-  vpc_cidr_block    = module.network.vpc_cidr_block
-  subnet_id         = module.network.vpc_private_subnet_ids[random_integer.mesh_gateway.result]
-  public_subnet_ids = module.network.vpc_public_subnet_ids
-
-  security_group_ids = [aws_security_group.instances.id]
-
-  hcp_consul_cluster_id    = var.hcp_consul_cluster_id
-  hcp_consul_cluster_token = var.hcp_consul_cluster_token
-
-  key_pair_name = aws_key_pair.boundary.key_name
-
-  tags = local.boundary_tag
 }
 
 ## Deploy example service
@@ -174,7 +153,7 @@ module "payments" {
 
   key_pair_name = aws_key_pair.boundary.key_name
 
-  tags = local.boundary_tag
+  tags = merge(local.boundary_tag, local.application_tag)
 }
 
 module "reports_static" {
@@ -204,7 +183,7 @@ module "reports" {
 
   key_pair_name = aws_key_pair.boundary.key_name
 
-  tags = local.boundary_tag
+  tags = merge(local.boundary_tag, local.application_tag)
 }
 
 resource "consul_config_entry" "payments_intentions" {
@@ -232,19 +211,4 @@ resource "consul_config_entry" "payments_intentions" {
       }
     ]
   })
-}
-
-module "boundary_ec2_targets" {
-  source = "../../modules/boundary/hosts"
-
-  name_prefix = "${replace(var.region, "-", "_")}_${var.runtime}"
-  description = "EC2 instances in ${var.region}"
-  scope_id    = var.boundary_project_scope_id
-  target_ips  = zipmap(data.aws_instances.ec2.ids, data.aws_instances.ec2.private_ips)
-
-  ingress_worker_filter = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
-  egress_worker_filter  = "\"${var.runtime}\" in \"/tags/type\" and \"${var.region}\" in \"/tags/type\""
-  default_port          = 22
-
-  depends_on = [module.payments, data.aws_instances.ec2]
 }
