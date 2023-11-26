@@ -14,8 +14,8 @@ resource "aws_cloudfront_distribution" "frontend" {
   aliases = [var.subdomain_name]
 
   origin {
-    domain_name = aws_s3_bucket.frontend.bucket_regional_domain_name
-    origin_id   = local.origin_id
+    domain_name              = aws_s3_bucket.frontend.bucket_regional_domain_name
+    origin_id                = local.origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.frontend.id
   }
 
@@ -61,8 +61,8 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = aws_acm_certificate.frontend.arn
-    ssl_support_method = "sni-only"
+    acm_certificate_arn      = aws_acm_certificate.frontend.arn
+    ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
 
