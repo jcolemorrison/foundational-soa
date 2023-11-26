@@ -88,7 +88,7 @@ module "eu_west_1" {
   boundary_worker_vault_token              = local.boundary_worker_vault_tokens.us_west_2
   boundary_worker_vault_namespace          = local.boundary_worker_vault_namespace
   boundary_worker_vault_namespace_absolute = local.boundary_worker_vault_namespace_absolute
-  vault_address                            = local.vault_us_west_2.address
+  vault_address                            = local.vault_eu_west_1.address
 
   boundary_project_scope_id = boundary_scope.runtime_ec2.id
 
