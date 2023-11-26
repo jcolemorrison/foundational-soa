@@ -38,7 +38,7 @@ resource "kubernetes_manifest" "exported_services_default_us_west_2" {
               "samenessGroup" = module.fake_service_us_west_2.sameness_group
             },
           ]
-          "name" = "application"
+          "name" = "customers"
         },
       ]
     }
@@ -47,7 +47,7 @@ resource "kubernetes_manifest" "exported_services_default_us_west_2" {
   provider = kubernetes.us_west_2
 }
 
-resource "kubernetes_manifest" "service_resolver_application_to_database" {
+resource "kubernetes_manifest" "service_resolver_customers_to_database" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceResolver"

@@ -23,12 +23,12 @@ module "fake_service_us_east_1" {
   }
 }
 
-resource "kubernetes_manifest" "service_resolver_web_to_application" {
+resource "kubernetes_manifest" "service_resolver_store_to_customers" {
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceResolver"
     "metadata" = {
-      "name"      = "application"
+      "name"      = "customers"
       "namespace" = var.namespace
     }
     "spec" = {
