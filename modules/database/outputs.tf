@@ -4,7 +4,8 @@ output "address" {
 }
 
 output "read_only_address" {
-  value = aws_rds_cluster.database.reader_endpoint
+  value       = aws_rds_cluster.database.reader_endpoint
+  description = "Read-only address for a reader replica"
 }
 
 output "port" {

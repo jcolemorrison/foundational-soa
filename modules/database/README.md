@@ -68,6 +68,6 @@ No modules.
 | <a name="output_kms_key_id"></a> [kms\_key\_id](#output\_kms\_key\_id) | KMS Key ID for storage encryption |
 | <a name="output_password"></a> [password](#output\_password) | Password of database |
 | <a name="output_port"></a> [port](#output\_port) | Port of database |
-| <a name="output_read_only_address"></a> [read\_only\_address](#output\_read\_only\_address) | n/a |
+| <a name="output_read_only_address"></a> [read\_only\_address](#output\_read\_only\_address) | Read-only address for a reader replica |
 | <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | Security group ID for database |
 | <a name="output_username"></a> [username](#output\_username) | Username of database |
