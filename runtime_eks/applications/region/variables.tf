@@ -26,6 +26,12 @@ variable "enable_payments_service" {
   default     = false
 }
 
+variable "enable_inventory_v2" {
+  type        = bool
+  description = "Deploy second version of inventory service"
+  default     = false
+}
+
 variable "peers_for_failover" {
   type        = list(string)
   description = "Cluster peers for failover"
@@ -78,5 +84,6 @@ locals {
     store     = 9090
     customers = 9090
     database  = 9090
+    inventory = 9090
   }
 }
