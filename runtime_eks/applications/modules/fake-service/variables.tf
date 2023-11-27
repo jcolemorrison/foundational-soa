@@ -3,6 +3,12 @@ variable "name" {
   description = "Name of application"
 }
 
+variable "protocol" {
+  type        = string
+  description = "TCP or HTTP for Consul service. HTTP required for service splitting"
+  default     = "tcp"
+}
+
 variable "runtime" {
   type        = string
   description = "Runtime of application"

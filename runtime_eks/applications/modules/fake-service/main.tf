@@ -141,7 +141,7 @@ resource "kubernetes_manifest" "service_defaults" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "protocol" = "tcp"
+      "protocol" = var.protocol
     }
   }
 }
