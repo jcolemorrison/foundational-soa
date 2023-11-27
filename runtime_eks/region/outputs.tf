@@ -41,3 +41,8 @@ output "database_kms_key_id" {
   value       = var.create_database ? module.database.0.kms_key_id : null
   description = "Database KMS key ID"
 }
+
+output "certificate_arn" {
+  value       = aws_acm_certificate.subdomain.arn
+  description = "ARN of certificate for load balancer"
+}

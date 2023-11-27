@@ -18,6 +18,6 @@ variable "terraform_cloud_organization" {
 }
 
 variable "public_subdomain_name" {
-  type = string
+  type        = string
   description = "Public subdomain of this runtime.  i.e. eks.hashidemo.com"
 }

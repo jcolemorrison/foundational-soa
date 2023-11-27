@@ -159,11 +159,11 @@ variable "db_name" {
 }
 
 variable "public_subdomain_name" {
-  type = string
+  type        = string
   description = "Public Subdomain name of runtime.  i.e. eks.hashidemo.com"
 }
 
 variable "subdomain_zone_id" {
-  type = string
+  type        = string
   description = "Zone ID of the subdomain route53 hosted zone"
 }

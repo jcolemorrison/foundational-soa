@@ -54,7 +54,7 @@ module "us_east_1" {
   db_name                 = local.db_name
 
   public_subdomain_name = var.public_subdomain_name
-  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
+  subdomain_zone_id     = aws_route53_zone.subdomain.zone_id
 
   providers = {
     aws    = aws
@@ -97,7 +97,7 @@ module "us_west_2" {
   db_name                 = local.db_name
 
   public_subdomain_name = var.public_subdomain_name
-  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
+  subdomain_zone_id     = aws_route53_zone.subdomain.zone_id
 
   providers = {
     aws    = aws.us_west_2
@@ -140,7 +140,7 @@ module "eu_west_1" {
   db_name                 = local.db_name
 
   public_subdomain_name = var.public_subdomain_name
-  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
+  subdomain_zone_id     = aws_route53_zone.subdomain.zone_id
 
   providers = {
     aws    = aws.eu_west_1
