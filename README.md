@@ -5,6 +5,19 @@ and multi-runtime on AWS.
 
 ![Architecture](assets/architecture.png)
 
+## Directories
+
+Top-level directories have Terraform configuration for each AWS account.
+
+You'll find additional configuration in each directory.
+
+- `scripts` - additional scripts that...
+   - Reset Boundary workers (due to instances not being in autoscaling group)
+   - Load data into a database
+   - Retrieve SSH keys to connect to Boundary (TODO: Add these SSH keys to Vault)
+- `modules` - Terraform modules used for a specific runtime or across runtimes
+- `region` - module to duplicate resources across regions
+
 ## Setup
 
 1. Fork this repository.
