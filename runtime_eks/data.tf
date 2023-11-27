@@ -46,6 +46,17 @@ data "terraform_remote_state" "shared_services_boundary" {
   }
 }
 
+data "terraform_remote_state" "shared_services_runtime_eks_applications" {
+  backend = "remote"
+
+  config = {
+    organization = var.terraform_cloud_organization
+    workspaces = {
+      name = "runtime-eks-applications"
+    }
+  }
+}
+
 locals {
   boundary_cluster_id                      = split(".", replace(data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.boundary.address, "https://", "", ))[0]
   vault_us_east_1                          = data.terraform_remote_state.shared_services.outputs.hcp_us_east_1.vault

@@ -37,3 +37,17 @@ output "vault_database" {
   description = "Vault database secrets role"
   sensitive   = true
 }
+
+output "certificate_arns" {
+  value = {
+    us_east_1 = module.us_east_1.certificate_arn
+    us_west_2 = module.us_west_2.certificate_arn
+    eu_west_1 = module.eu_west_1.certificate_arn
+  }
+  description = "Certificates for load balancer"
+}
+
+output "subdomain_name_servers" {
+  value       = aws_route53_zone.subdomain.name_servers
+  description = "list of name servers for the subdomain"
+}

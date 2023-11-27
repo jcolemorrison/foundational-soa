@@ -17,6 +17,8 @@ module "fake_service_eu_west_1" {
 
   vault_namespace = trimsuffix(local.vault_database.namespace, "/")
 
+  certificate_arn = local.certificate_arns.eu_west_1
+
   providers = {
     kubernetes = kubernetes.eu_west_1
     vault      = vault.us_east_1

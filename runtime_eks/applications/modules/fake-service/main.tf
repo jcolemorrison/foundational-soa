@@ -13,13 +13,16 @@ resource "kubernetes_manifest" "service" {
     "metadata" = {
       "name"      = var.name
       "namespace" = var.namespace
+      "annotations" = var.enable_load_balancer ? {
+        "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" = "${var.certificate_arn}"
+      } : {}
     }
     "spec" = {
       "type" = var.enable_load_balancer ? "LoadBalancer" : "ClusterIP"
       "ports" = [
         {
           "name"       = "http"
-          "port"       = var.enable_load_balancer ? 80 : var.port
+          "port"       = var.enable_load_balancer ? 443 : var.port
           "protocol"   = "TCP"
           "targetPort" = var.port
         },

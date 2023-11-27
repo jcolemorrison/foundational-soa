@@ -17,3 +17,11 @@ resource "aws_route53_record" "subdomain_frontend" {
   ttl     = "30"
   records = data.terraform_remote_state.runtime_frontend.outputs.subdomain_name_servers
 }
+
+resource "aws_route53_record" "subdomain_eks" {
+  zone_id = data.aws_route53_zone.main.zone_id
+  name    = "eks.${var.domain_name}"
+  type    = "NS"
+  ttl     = "30"
+  records = data.terraform_remote_state.runtime_eks.outputs.subdomain_name_servers
+}
