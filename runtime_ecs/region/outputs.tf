@@ -11,9 +11,9 @@ output "ssh_private_key" {
 
 output "public_alb_dns_values" {
   value = {
-    region = var.region
+    region   = var.region
     dns_name = aws_lb.public_alb.dns_name
-    zone_id = aws_lb.public_alb.zone_id
+    zone_id  = aws_lb.public_alb.zone_id
   }
   description = "DNS Name and Zone ID of regional public application load balancer for the ECS API"
 }

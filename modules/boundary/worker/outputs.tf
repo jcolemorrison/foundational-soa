@@ -4,11 +4,11 @@ output "security_group_id" {
 }
 
 output "private_dns" {
-  value = aws_instance.worker.private_dns
+  value       = aws_instance.worker.private_dns
   description = "Private DNS for Boundary"
 }
 
 output "instance_id" {
-  value = aws_instance.worker.id
+  value       = aws_instance.worker.id
   description = "Instance ID for checking status"
 }

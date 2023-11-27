@@ -266,16 +266,16 @@ variable "boundary_project_scope_id" {
 ## Vault Secrets
 
 variable "vault_secrets_namespace" {
-  type = string
+  type        = string
   description = "Namespace used for Vault secrets for ECS"
 }
 
 ## Testing
 
 variable "test_failover" {
-  type = bool
+  type        = bool
   description = "whether or not to trigger failover"
-  default = false
+  default     = false
 }
 
 variable "test_bastion_enabled" {
@@ -297,6 +297,6 @@ variable "test_bastion_cidr_blocks" {
 }
 
 variable "eks_upstream_uri" {
-  type = string
+  type        = string
   description = "endpoint for EKS upstream"
 }
