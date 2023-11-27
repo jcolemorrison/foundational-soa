@@ -41,3 +41,7 @@ You must run workspaces in the following order:
   - `shared-services-dns`
   - `runtime-eks-kubernetes`
   - `runtime-eks-applicatios`
+
+## Scripts
+
+Run `scripts/db.sh` to load data into the database.
