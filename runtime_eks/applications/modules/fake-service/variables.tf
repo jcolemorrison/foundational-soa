@@ -3,6 +3,12 @@ variable "name" {
   description = "Name of application"
 }
 
+variable "create_service_default" {
+  type        = bool
+  description = "Create service default"
+  default     = true
+}
+
 variable "protocol" {
   type        = string
   description = "TCP or HTTP for Consul service. HTTP required for service splitting"

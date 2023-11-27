@@ -133,6 +133,7 @@ resource "kubernetes_manifest" "deployment" {
 }
 
 resource "kubernetes_manifest" "service_defaults" {
+  count = var.create_service_default ? 1 : 0
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceDefaults"

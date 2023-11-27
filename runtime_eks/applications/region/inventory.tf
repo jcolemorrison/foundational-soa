@@ -1,44 +1,44 @@
-# module "inventory" {
-#   source = "../modules/fake-service"
+module "inventory" {
+  source = "../modules/fake-service"
 
-#   region        = var.region
-#   name          = "inventory"
-#   port          = local.service_ports.inventory
-#   upstream_uris = ""
-#   protocol      = "http"
-# }
+  region                 = var.region
+  name                   = "inventory"
+  port                   = local.service_ports.inventory
+  upstream_uris          = ""
+  create_service_default = false
+}
 
-# module "inventory_v2" {
-#   source = "../modules/fake-service"
+module "inventory_v2" {
+  source = "../modules/fake-service"
 
-#   region        = var.region
-#   name          = "inventory-v2"
-#   port          = local.service_ports.inventory
-#   upstream_uris = ""
-#   protocol      = "http"
-# }
+  region                 = var.region
+  name                   = "inventory-v2"
+  port                   = local.service_ports.inventory
+  upstream_uris          = ""
+  create_service_default = false
+}
 
-# resource "kubernetes_manifest" "service_intentions_inventory" {
-#   manifest = {
-#     "apiVersion" = "consul.hashicorp.com/v1alpha1"
-#     "kind"       = "ServiceIntentions"
-#     "metadata" = {
-#       "name"      = "inventory"
-#       "namespace" = var.namespace
-#     }
-#     "spec" = {
-#       "destination" = {
-#         "name" = "inventory"
-#       }
-#       "sources" = [
-#         {
-#           "action" = "allow"
-#           "name"   = "store"
-#         }
-#       ]
-#     }
-#   }
-# }
+resource "kubernetes_manifest" "service_intentions_inventory" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceIntentions"
+    "metadata" = {
+      "name"      = "inventory"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "destination" = {
+        "name" = "inventory"
+      }
+      "sources" = [
+        {
+          "action" = "allow"
+          "name"   = "store"
+        }
+      ]
+    }
+  }
+}
 
 # resource "kubernetes_manifest" "service_splitter_inventory" {
 #   manifest = {
