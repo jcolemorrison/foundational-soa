@@ -53,6 +53,9 @@ module "us_east_1" {
   database_engine_version = aws_rds_global_cluster.database.engine_version
   db_name                 = local.db_name
 
+  public_subdomain_name = var.public_subdomain_name
+  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
+
   providers = {
     aws    = aws
     consul = consul.us_east_1
@@ -93,6 +96,9 @@ module "us_west_2" {
   database_engine_version = aws_rds_global_cluster.database.engine_version
   db_name                 = local.db_name
 
+  public_subdomain_name = var.public_subdomain_name
+  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
+
   providers = {
     aws    = aws.us_west_2
     consul = consul.us_west_2
@@ -132,6 +138,9 @@ module "eu_west_1" {
   database_engine         = aws_rds_global_cluster.database.engine
   database_engine_version = aws_rds_global_cluster.database.engine_version
   db_name                 = local.db_name
+
+  public_subdomain_name = var.public_subdomain_name
+  subdomain_zone_id = aws_route53_zone.subdomain.zone_id
 
   providers = {
     aws    = aws.eu_west_1

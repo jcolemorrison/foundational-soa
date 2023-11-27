@@ -157,3 +157,13 @@ variable "db_name" {
   description = "Database name to create in instance"
   default     = null
 }
+
+variable "public_subdomain_name" {
+  type = string
+  description = "Public Subdomain name of runtime.  i.e. eks.hashidemo.com"
+}
+
+variable "subdomain_zone_id" {
+  type = string
+  description = "Zone ID of the subdomain route53 hosted zone"
+}
