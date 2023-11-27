@@ -32,6 +32,6 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_container_image"></a> [container\_image](#output\_container\_image) | n/a |
-| <a name="output_message"></a> [message](#output\_message) | n/a |
-| <a name="output_name"></a> [name](#output\_name) | n/a |
+| <a name="output_container_image"></a> [container\_image](#output\_container\_image) | Container image version to use for fake-service |
+| <a name="output_message"></a> [message](#output\_message) | Fake-service message to pass to MESSAGE environment variable |
+| <a name="output_name"></a> [name](#output\_name) | Fake-service name to pass to NAME environment variable |
