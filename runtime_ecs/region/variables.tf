@@ -56,13 +56,13 @@ variable "name" {
 variable "max_container_instances" {
   type        = number
   description = "Maximum number of EC2 instances for the ECS Cluster."
-  default     = 9
+  default     = 12
 }
 
 variable "min_container_instances" {
   type        = number
   description = "Minimum number of EC2 instances for the ECS Cluster."
-  default     = 6
+  default     = 9
 }
 
 variable "min_scaling_step_size" {
