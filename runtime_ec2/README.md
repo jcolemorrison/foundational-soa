@@ -12,6 +12,8 @@ Terraform configuration creates resources for the EC2 runtime.
 
  ## Terraform Cloud
 
+Name: `runtime-ec2`
+
  - Workspace variables
    - `TFC_AWS_PROVIDER_AUTH = true`
    - `TFC_AWS_RUN_ROLE_ARN = <role in AWS that generates dynamic access keys`

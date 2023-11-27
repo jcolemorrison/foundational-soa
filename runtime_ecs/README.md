@@ -17,6 +17,8 @@ Terraform configuration creates resources for the ECS runtime.
 
  ## Terraform Cloud
 
+ Name: `runtime-ecs`
+
  - Workspace variables
    - `TFC_AWS_PROVIDER_AUTH = true`
    - `TFC_AWS_RUN_ROLE_ARN = <role in AWS that generates dynamic access keys`
