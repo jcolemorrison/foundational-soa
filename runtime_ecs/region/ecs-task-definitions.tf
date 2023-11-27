@@ -35,7 +35,7 @@ module "ecs_api" {
       environment = [
         {
           name  = "NAME"
-          value = "hashidemo-api"
+          value = "HashiDemo API"
         },
         {
           name  = "MESSAGE"
@@ -43,7 +43,7 @@ module "ecs_api" {
         },
         {
           name  = "UPSTREAM_URIS"
-          value = "http://localhost:1234,${var.eks_upstream_uri}"
+          value = "http://localhost:1234,http://localhost:1235,${var.eks_upstream_uri}"
         }
       ]
     }
@@ -53,6 +53,10 @@ module "ecs_api" {
     {
       destinationName = "ecs-upstream" #consul service name
       localBindPort   = 1234
+    },
+    {
+      destinationName = "ecs-upstream-users" #consul service name
+      localBindPort   = 1235
     }
   ]
 
@@ -177,6 +181,83 @@ module "ecs_upstream" {
 
   consul_server_hosts = var.consul_server_hosts
   consul_service_name = "ecs-upstream"
+
+  http_config = {
+    port = 443
+  }
+  grpc_config = {
+    port = 8502
+  }
+}
+
+module "ecs_upstream_users" {
+  source  = "hashicorp/consul-ecs/aws//modules/mesh-task"
+  version = "0.7.0"
+
+  family = "${var.region}-ecs-upstream-users"
+
+  cpu                      = 128
+  memory                   = 256
+  requires_compatibilities = ["EC2"]
+
+  container_definitions = [
+    {
+      name      = "upstream-users"
+      image     = "ghcr.io/nicholasjackson/fake-service:v0.26.0"
+      cpu       = 0 # take up proportional cpu
+      essential = true
+
+      portMappings = [
+        {
+          containerPort = 9090
+          # hostPort = 9090 # omitting maps to ephemeral port on host
+          protocol = "tcp"
+        }
+      ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = aws_cloudwatch_log_group.ecs_upstream_users.name
+          awslogs-region        = var.region
+          awslogs-stream-prefix = "container-"
+        }
+      }
+
+      environment = [
+        {
+          name  = "NAME"
+          value = "Users"
+        },
+        {
+          name  = "MESSAGE"
+          value = "Hello from the upstream Users services in ${var.region} region!"
+        }
+      ]
+    }
+  ]
+
+  log_configuration = {
+    logDriver = "awslogs"
+    options = {
+      awslogs-group         = aws_cloudwatch_log_group.ecs_upstream_users.name
+      awslogs-region        = var.region
+      awslogs-stream-prefix = "task-"
+    }
+  }
+
+  additional_task_role_policies = [var.execute_command_policy]
+
+  acls                   = true
+  port                   = "9090"
+  tls                    = true
+  consul_ecs_image       = var.consul_ecs_image
+  consul_dataplane_image = var.consul_dataplane_image
+  consul_namespace       = var.consul_namespace
+  consul_partition       = var.consul_admin_partition
+
+  consul_server_hosts = var.consul_server_hosts
+  consul_service_name = "ecs-upstream-users"
 
   http_config = {
     port = 443

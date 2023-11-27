@@ -73,6 +73,39 @@ resource "aws_ecs_service" "ecs_upstream" {
   }
 }
 
+## ECS Upstream Users
+
+resource "aws_ecs_service" "ecs_upstream_users" {
+  name                               = "ecs-upstream-users"
+  cluster                            = aws_ecs_cluster.main.arn
+  desired_count                      = var.upstream_desired_count
+  deployment_minimum_healthy_percent = var.upstream_deployment_minimum_healthy_percent
+  deployment_maximum_percent         = var.upstream_deployment_maximum_percent
+  # iam_role = var.ecs_service_role # service linked role exists
+  enable_execute_command = true
+  launch_type            = "EC2"
+  propagate_tags         = "TASK_DEFINITION"
+  task_definition        = module.ecs_upstream_users.task_definition_arn
+
+  network_configuration {
+    subnets         = module.network.vpc_private_subnet_ids
+    security_groups = [aws_security_group.consul_client.id]
+  }
+
+  ordered_placement_strategy {
+    type  = "spread"
+    field = "attribute:ecs.availability-zone"
+  }
+
+  ordered_placement_strategy {
+    type  = "binpack"
+    field = "memory"
+  }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+}
 
 module "ecs_controller" {
   source  = "hashicorp/consul-ecs/aws//modules/controller"
@@ -109,48 +142,6 @@ module "ecs_controller" {
     port = 8502
   }
 }
-
-## AutoScaling for Tasks
-
-# resource "aws_appautoscaling_target" "ecs_api" {
-#   max_capacity       = var.api_task_max_count
-#   min_capacity       = var.api_task_min_count
-#   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.ecs_api.name}"
-#   scalable_dimension = "ecs:service:DesiredCount"
-#   service_namespace  = "ecs"
-# }
-
-# resource "aws_appautoscaling_policy" "ecs_api_cpu" {
-#   name               = "ecs_api_cpu_target_tracking"
-#   policy_type        = "TargetTrackingScaling"
-#   resource_id        = aws_appautoscaling_target.ecs_api.resource_id
-#   scalable_dimension = aws_appautoscaling_target.ecs_api.scalable_dimension
-#   service_namespace  = aws_appautoscaling_target.ecs_api.service_namespace
-
-#   target_tracking_scaling_policy_configuration {
-#     target_value = 70
-
-#     predefined_metric_specification {
-#       predefined_metric_type = "ECSServiceAverageCPUUtilization"
-#     }
-#   }
-# }
-
-# resource "aws_appautoscaling_policy" "ecs_api_memory" {
-#   name               = "ecs_api_cpu_target_tracking"
-#   policy_type        = "TargetTrackingScaling"
-#   resource_id        = aws_appautoscaling_target.ecs_api.resource_id
-#   scalable_dimension = aws_appautoscaling_target.ecs_api.scalable_dimension
-#   service_namespace  = aws_appautoscaling_target.ecs_api.service_namespace
-
-#   target_tracking_scaling_policy_configuration {
-#     target_value = 70
-
-#     predefined_metric_specification {
-#       predefined_metric_type = "ECSServiceAverageMemoryUtilization"
-#     }
-#   }
-# }
 
 ## Consul Mesh Gateway
 
@@ -198,3 +189,45 @@ module "mesh_gateway" {
     }
   }
 }
+
+## Example AutoScaling for API Tasks
+
+# resource "aws_appautoscaling_target" "ecs_api" {
+#   max_capacity       = var.api_task_max_count
+#   min_capacity       = var.api_task_min_count
+#   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.ecs_api.name}"
+#   scalable_dimension = "ecs:service:DesiredCount"
+#   service_namespace  = "ecs"
+# }
+
+# resource "aws_appautoscaling_policy" "ecs_api_cpu" {
+#   name               = "ecs_api_cpu_target_tracking"
+#   policy_type        = "TargetTrackingScaling"
+#   resource_id        = aws_appautoscaling_target.ecs_api.resource_id
+#   scalable_dimension = aws_appautoscaling_target.ecs_api.scalable_dimension
+#   service_namespace  = aws_appautoscaling_target.ecs_api.service_namespace
+
+#   target_tracking_scaling_policy_configuration {
+#     target_value = 70
+
+#     predefined_metric_specification {
+#       predefined_metric_type = "ECSServiceAverageCPUUtilization"
+#     }
+#   }
+# }
+
+# resource "aws_appautoscaling_policy" "ecs_api_memory" {
+#   name               = "ecs_api_cpu_target_tracking"
+#   policy_type        = "TargetTrackingScaling"
+#   resource_id        = aws_appautoscaling_target.ecs_api.resource_id
+#   scalable_dimension = aws_appautoscaling_target.ecs_api.scalable_dimension
+#   service_namespace  = aws_appautoscaling_target.ecs_api.service_namespace
+
+#   target_tracking_scaling_policy_configuration {
+#     target_value = 70
+
+#     predefined_metric_specification {
+#       predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+#     }
+#   }
+# }
