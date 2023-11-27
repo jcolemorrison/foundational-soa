@@ -2,6 +2,11 @@
 
 Terraform configuration creates resources for the ECS runtime.
 
+You must run workspaces in the following order:
+
+- `runtime-ecs`
+- `runtime-ecs-applications`
+
 ## Details
 
  - Consul partition: `ecs`
@@ -30,4 +35,4 @@ Terraform configuration creates resources for the ECS runtime.
 - VCS
   - Working directory: `runtime_ecs`
 - Remote state sharing
-  - `shared_services_dns`
+  - `shared-services-dns`
