@@ -6,8 +6,8 @@ resource "aws_launch_template" "container_instance" {
   description            = "launch template for ECS container instances"
   image_id               = data.aws_ssm_parameter.ecs_optimized_ami.value
   instance_type          = var.instance_type
-  # key_name               = aws_key_pair.boundary.key_name
-  key_name = var.test_bastion_keypair
+  key_name               = aws_key_pair.boundary.key_name
+  # key_name = var.test_bastion_keypair
   name_prefix            = "${var.region}-ecs-instance"
   vpc_security_group_ids = [
     aws_security_group.container_instance.id,

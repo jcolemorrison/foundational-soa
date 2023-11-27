@@ -35,6 +35,15 @@ resource "consul_config_entry" "eu_west_1_export_upstream" {
             SamenessGroup = "ecs-sameness-group"
           }
         ]
+      },
+      {
+        Name = "ecs-upstream-users"
+        Namespace = "default"
+        Consumers = [
+          {
+            SamenessGroup = "ecs-sameness-group"
+          }
+        ]
       }
     ]
   })
@@ -43,7 +52,6 @@ resource "consul_config_entry" "eu_west_1_export_upstream" {
 
   provider = consul.eu_west_1
 }
-
 
 ## Service Intentions
 
@@ -69,3 +77,63 @@ resource "consul_config_entry" "eu_west_1_api_to_upstreams" {
 
   provider = consul.eu_west_1
 }
+
+resource "consul_config_entry" "eu_west_1_api_to_upstream_users" {
+  kind = "service-intentions"
+  name = "ecs-upstream-users"
+  namespace = "default"
+  partition = "ecs"
+  config_json = jsonencode({
+    Sources = [
+      {
+        Name = "ecs-api"
+        Action = "allow"
+        # Peer = "prod-${local.eu_west_1}-ecs"
+        Namespace = "default"
+        # Partition = "ecs"
+        SamenessGroup = "ecs-sameness-group"
+      }
+    ]
+  })
+
+  depends_on = [ consul_config_entry.eu_west_1_ecs_sameness_group ]
+
+  provider = consul.eu_west_1
+}
+
+# resource "consul_config_entry" "eu_west_1_ecs_api_to_ec2_payments" {
+#   kind = "service-resolver"
+#   name = "payments"
+#   partition = "ecs"
+#   namespace = "default"
+
+#   config_json = jsonencode({
+#     Redirect = {
+#       Service = "payments"
+#       Peer    = "prod-${local.eu_west_1}-ec2"
+#     }
+#   })
+
+#   provider = consul.eu_west_1
+# }
+
+# resource "consul_acl_policy" "eu_west_1_cross_partition_access" {
+#   name = "eu_west_1_cross_partition_access"
+  
+#   rules = <<-RULE
+#   operator = "write"
+#   agent_prefix "" {
+#     policy = "read"
+#   }
+#   partition_prefix "" {
+#     namespace_prefix "" {
+#       acl = "write"
+#       service_prefix "" {
+#         policy = "write"
+#       }
+#     }
+#   }
+#   RULE
+
+#   provider = consul.eu_west_1
+# }

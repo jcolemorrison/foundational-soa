@@ -53,6 +53,8 @@ module "us_east_1" {
     local.accessible_cidr_blocks.runtime_ecs_us_west_2,
     local.accessible_cidr_blocks.runtime_ecs_eu_west_1
   ]
+
+  eks_upstream_uri = data.terraform_remote_state.runtime_eks_applications.outputs.store_endpoints.us_east_1
 }
 
 module "us_west_2" {
@@ -98,6 +100,8 @@ module "us_west_2" {
     local.accessible_cidr_blocks.runtime_ecs_us_west_2,
     local.accessible_cidr_blocks.runtime_ecs_eu_west_1
   ]
+
+  eks_upstream_uri = data.terraform_remote_state.runtime_eks_applications.outputs.store_endpoints.us_west_2
 
   providers = {
     aws = aws.us_west_2
@@ -147,6 +151,8 @@ module "eu_west_1" {
     local.accessible_cidr_blocks.runtime_ecs_us_west_2,
     local.accessible_cidr_blocks.runtime_ecs_eu_west_1
   ]
+
+  eks_upstream_uri = data.terraform_remote_state.runtime_eks_applications.outputs.store_endpoints.eu_west_1
 
   providers = {
     aws = aws.eu_west_1

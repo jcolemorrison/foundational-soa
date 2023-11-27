@@ -2,6 +2,7 @@ resource "aws_ecs_cluster" "main" {
   name = "${var.region}-cluster"
 }
 
+# Example Cluster Autoscaling binding to EC2
 # resource "aws_ecs_capacity_provider" "main" {
 #   name = "${var.region}-cluster"
 
