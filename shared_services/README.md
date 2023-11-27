@@ -25,6 +25,6 @@ Name: `shared-services`
 - Variable sets
   - HCP Credentials
 - VCS
-  - Working directory: `runtime_eks`
+  - Working directory: `shared_services`
 - Remote state sharing
   - global
