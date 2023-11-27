@@ -5,6 +5,10 @@ and multi-runtime on AWS.
 
 ![Architecture](assets/architecture.png)
 
+The services connect across runtimes
+
+![Services](assets/services.png)
+
 ## Directories
 
 Top-level directories have Terraform configuration for each AWS account.
