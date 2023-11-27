@@ -27,12 +27,12 @@ You must run workspaces in the following order:
 
  ## Terraform Cloud
 
- Name: `runtime-eks`
+Name: `runtime-eks`
 
- - Workspace variables
-   - `TFC_AWS_PROVIDER_AUTH = true`
-   - `TFC_AWS_RUN_ROLE_ARN = <role in AWS that generates dynamic access keys`
-   - `public_subdomain_name` - subdomain mane
+- Workspace variables
+  - `TFC_AWS_PROVIDER_AUTH = true`
+  - `TFC_AWS_RUN_ROLE_ARN = <role in AWS that generates dynamic access keys`
+  - `public_subdomain_name` - subdomain mane
 - Variable sets
   - `terraform_cloud_organization`
 - VCS
