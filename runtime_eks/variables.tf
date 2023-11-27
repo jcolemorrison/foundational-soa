@@ -16,3 +16,8 @@ variable "terraform_cloud_organization" {
   type        = string
   description = "Terraform Cloud organization that outputs HCP Consul address, token, and datacenter"
 }
+
+variable "public_subdomain_name" {
+  type = string
+  description = "Public subdomain of this runtime.  i.e. eks.hashidemo.com"
+}
