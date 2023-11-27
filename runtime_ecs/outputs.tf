@@ -19,6 +19,6 @@ output "subdomain_name_servers" {
 }
 
 output "public_alb_dns_values" {
-  value = local.public_alb_dns_values
+  value       = local.public_alb_dns_values
   description = "DNS names and Zone IDs of each regional public ALB that maps to its regional public API"
 }
