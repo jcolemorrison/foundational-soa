@@ -36,6 +36,12 @@ variable "enable_load_balancer" {
   default     = false
 }
 
+variable "certificate_arn" {
+  type        = string
+  description = "Certificate ARN for load balancer"
+  default     = null
+}
+
 variable "error_rate" {
   type        = number
   description = "Error rate as a percentage to pass onto the application"

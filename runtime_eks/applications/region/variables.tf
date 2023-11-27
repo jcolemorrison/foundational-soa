@@ -68,6 +68,11 @@ variable "vault_database_secret_policy" {
   description = "Vault database secret read policy"
 }
 
+variable "certificate_arn" {
+  type        = string
+  description = "Certificate ARN for load balancer"
+}
+
 locals {
   service_ports = {
     store     = 9090
