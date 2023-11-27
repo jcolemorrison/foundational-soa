@@ -1,37 +1,19 @@
-resource "consul_config_entry" "service_defaults_inventory_ec2" {
+resource "consul_config_entry" "service_defaults_inventory" {
+  for_each  = toset(local.consul_partitions)
   name      = "inventory"
   kind      = "service-defaults"
-  partition = "ec2"
+  partition = each.value
 
   config_json = jsonencode({
     Protocol = "http"
   })
 }
 
-resource "consul_config_entry" "service_defaults_inventory_ecs" {
-  name      = "inventory"
+resource "consul_config_entry" "service_defaults_inventory_v2" {
+  for_each  = toset(local.consul_partitions)
+  name      = "inventory-v2"
   kind      = "service-defaults"
-  partition = "ecs"
-
-  config_json = jsonencode({
-    Protocol = "http"
-  })
-}
-
-resource "consul_config_entry" "service_defaults_inventory_v2_ec2" {
-  name      = "inventory"
-  kind      = "service-defaults"
-  partition = "ec2"
-
-  config_json = jsonencode({
-    Protocol = "http"
-  })
-}
-
-resource "consul_config_entry" "service_defaults_inventory_v2_ecs" {
-  name      = "inventory"
-  kind      = "service-defaults"
-  partition = "ecs"
+  partition = each.value
 
   config_json = jsonencode({
     Protocol = "http"
