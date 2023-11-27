@@ -7,11 +7,11 @@ resource "aws_ecs_service" "ecs_api" {
   deployment_minimum_healthy_percent = var.api_deployment_minimum_healthy_percent
   deployment_maximum_percent         = var.api_deployment_maximum_percent
   # iam_role = var.ecs_service_role # service linked role exists
-  enable_execute_command = true
+  enable_execute_command            = true
   health_check_grace_period_seconds = 60
-  launch_type            = "EC2"
-  propagate_tags         = "TASK_DEFINITION"
-  task_definition        = module.ecs_api.task_definition_arn
+  launch_type                       = "EC2"
+  propagate_tags                    = "TASK_DEFINITION"
+  task_definition                   = module.ecs_api.task_definition_arn
 
   load_balancer {
     target_group_arn = aws_lb_target_group.public_alb_targets.arn
@@ -146,7 +146,7 @@ module "ecs_controller" {
 ## Consul Mesh Gateway
 
 module "mesh_gateway" {
-  source  = "github.com/jcolemorrison/terraform-aws-consul-ecs//modules/gateway-task?ref=fix-cert-iam-execution-policy"
+  source = "github.com/jcolemorrison/terraform-aws-consul-ecs//modules/gateway-task?ref=fix-cert-iam-execution-policy"
   # version = "0.7.0"
 
   consul_server_hosts = var.consul_server_hosts

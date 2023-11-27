@@ -127,7 +127,7 @@ resource "aws_security_group_rule" "container_instance_allow_ssh_boundary" {
   to_port                  = 22
   protocol                 = "tcp"
   security_group_id        = aws_security_group.container_instance.id
-  source_security_group_id =  module.boundary_worker.0.security_group_id
+  source_security_group_id = module.boundary_worker.0.security_group_id
 }
 
 resource "aws_security_group_rule" "container_instance_allow_ssh_test_bastion" {

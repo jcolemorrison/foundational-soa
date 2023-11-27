@@ -20,15 +20,15 @@ resource "consul_config_entry" "us_west_2_ecs_sameness_group" {
 ## Service Exports
 
 resource "consul_config_entry" "us_west_2_export_upstream" {
-  kind = "exported-services"
-  name = "ecs" # this is the partition
+  kind      = "exported-services"
+  name      = "ecs" # this is the partition
   partition = "ecs" # unused
 
   config_json = jsonencode({
     # Name = "default"
     Services = [
       {
-        Name = "ecs-upstream"
+        Name      = "ecs-upstream"
         Namespace = "default"
         Consumers = [
           {
@@ -37,7 +37,7 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
         ]
       },
       {
-        Name = "ecs-upstream-users"
+        Name      = "ecs-upstream-users"
         Namespace = "default"
         Consumers = [
           {
@@ -48,7 +48,7 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
     ]
   })
 
-  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
+  depends_on = [consul_config_entry.us_west_2_ecs_sameness_group]
 
   provider = consul.us_west_2
 }
@@ -56,14 +56,14 @@ resource "consul_config_entry" "us_west_2_export_upstream" {
 ## Service Intentions
 
 resource "consul_config_entry" "us_west_2_api_to_upstreams" {
-  kind = "service-intentions"
-  name = "ecs-upstream"
+  kind      = "service-intentions"
+  name      = "ecs-upstream"
   namespace = "default"
   partition = "ecs"
   config_json = jsonencode({
     Sources = [
       {
-        Name = "ecs-api"
+        Name   = "ecs-api"
         Action = "allow"
         # Peer = "prod-${local.us_west_2}-ecs"
         Namespace = "default"
@@ -73,20 +73,20 @@ resource "consul_config_entry" "us_west_2_api_to_upstreams" {
     ]
   })
 
-  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
+  depends_on = [consul_config_entry.us_west_2_ecs_sameness_group]
 
   provider = consul.us_west_2
 }
 
 resource "consul_config_entry" "us_west_2_api_to_upstream_users" {
-  kind = "service-intentions"
-  name = "ecs-upstream-users"
+  kind      = "service-intentions"
+  name      = "ecs-upstream-users"
   namespace = "default"
   partition = "ecs"
   config_json = jsonencode({
     Sources = [
       {
-        Name = "ecs-api"
+        Name   = "ecs-api"
         Action = "allow"
         # Peer = "prod-${local.us_west_2}-ecs"
         Namespace = "default"
@@ -96,7 +96,7 @@ resource "consul_config_entry" "us_west_2_api_to_upstream_users" {
     ]
   })
 
-  depends_on = [ consul_config_entry.us_west_2_ecs_sameness_group ]
+  depends_on = [consul_config_entry.us_west_2_ecs_sameness_group]
 
   provider = consul.us_west_2
 }
@@ -119,7 +119,7 @@ resource "consul_config_entry" "us_west_2_api_to_upstream_users" {
 
 # resource "consul_acl_policy" "us_west_2_cross_partition_access" {
 #   name = "us_west_2_cross_partition_access"
-  
+
 #   rules = <<-RULE
 #   operator = "write"
 #   agent_prefix "" {

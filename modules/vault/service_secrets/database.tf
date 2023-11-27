@@ -26,17 +26,17 @@ data "vault_policy_document" "database_admin" {
 }
 
 resource "vault_policy" "database_admin" {
-  count     = var.db_password != null ? 1 : 0
-  name      = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-admin"
-  policy    = data.vault_policy_document.database_admin.0.hcl
+  count  = var.db_password != null ? 1 : 0
+  name   = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-admin"
+  policy = data.vault_policy_document.database_admin.0.hcl
 }
 
 # Enable database secrets engine.
 
 resource "vault_mount" "database" {
-  count     = var.db_name != null ? 1 : 0
-  path      = "database/${var.db_name}"
-  type      = "database"
+  count = var.db_name != null ? 1 : 0
+  path  = "database/${var.db_name}"
+  type  = "database"
 }
 
 resource "vault_database_secret_backend_connection" "database" {
@@ -73,7 +73,7 @@ data "vault_policy_document" "database" {
 }
 
 resource "vault_policy" "database" {
-  count     = var.db_name != null ? 1 : 0
-  name      = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-read"
-  policy    = data.vault_policy_document.database.0.hcl
+  count  = var.db_name != null ? 1 : 0
+  name   = "${var.service}-database-${vault_database_secret_backend_role.database.0.name}-read"
+  policy = data.vault_policy_document.database.0.hcl
 }

@@ -134,15 +134,15 @@ module "ecs_upstream" {
           value = "Hello from the upstream Messages services in ${var.region} region!"
         },
         {
-          name = "ERROR_RATE"
+          name  = "ERROR_RATE"
           value = var.region == "us-east-1" && var.test_failover ? "100" : "0" // to simulate outage
         },
         {
-          name = "ERROR_TYPE"
+          name  = "ERROR_TYPE"
           value = "delay" // to simulate outage
         },
         {
-          name = "ERROR_DELAY"
+          name  = "ERROR_DELAY"
           value = "30s" // to simulate outage
         }
       ]

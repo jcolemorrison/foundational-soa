@@ -4,6 +4,6 @@ variable "terraform_cloud_organization" {
 }
 
 variable "domain_name" {
-  type = string
+  type        = string
   description = "apex domain name of all services. i.e. hashidemo.com"
 }
