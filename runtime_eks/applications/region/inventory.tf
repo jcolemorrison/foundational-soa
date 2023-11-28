@@ -40,24 +40,24 @@ resource "kubernetes_manifest" "service_intentions_inventory" {
   }
 }
 
-# resource "kubernetes_manifest" "service_splitter_inventory" {
-#   manifest = {
-#     "apiVersion" = "consul.hashicorp.com/v1alpha1"
-#     "kind"       = "ServiceSplitter"
-#     "metadata" = {
-#       "name"      = "inventory"
-#       "namespace" = var.namespace
-#     }
-#     "spec" = {
-#       "splits" = [
-#         {
-#           "weight" = var.enable_inventory_v2 ? 50 : 100
-#         },
-#         {
-#           "service" = "inventory-v2"
-#           "weight"  = var.enable_inventory_v2 ? 50 : 0
-#         },
-#       ]
-#     }
-#   }
-# }
+resource "kubernetes_manifest" "service_splitter_inventory" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceSplitter"
+    "metadata" = {
+      "name"      = "inventory"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "splits" = [
+        {
+          "weight" = var.enable_inventory_v2 ? 50 : 100
+        },
+        {
+          "service" = "inventory-v2"
+          "weight"  = var.enable_inventory_v2 ? 50 : 0
+        },
+      ]
+    }
+  }
+}
