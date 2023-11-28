@@ -57,7 +57,7 @@ resource "kubernetes_manifest" "service_intentions_inventory" {
 #   })
 # }
 
-resource "consul_config_entry" "inventory_service_defaults" {
+resource "consul_config_entry" "inventory_service_defaults_partitions" {
   for_each  = toset(local.consul_partitions)
   name      = "inventory"
   kind      = "service-defaults"
@@ -68,7 +68,7 @@ resource "consul_config_entry" "inventory_service_defaults" {
   })
 }
 
-resource "consul_config_entry" "inventory_service_defaults" {
+resource "consul_config_entry" "inventory_v2_service_defaults_partitions" {
   for_each  = toset(local.consul_partitions)
   name      = "inventory-v2"
   kind      = "service-defaults"
