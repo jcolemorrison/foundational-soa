@@ -45,7 +45,8 @@ locals {
 
   vault_kubernetes_auth_path = data.terraform_remote_state.runtime_eks_kubernetes.outputs.kubernetes_auth_path
 
-  certificate_arns = data.terraform_remote_state.runtime_eks.outputs.certificate_arns
+  certificate_arns  = data.terraform_remote_state.runtime_eks.outputs.certificate_arns
+  public_subnet_ids = data.terraform_remote_state.runtime_eks.outputs.public_subnet_ids
 }
 
 data "aws_eks_cluster" "us_east_1" {

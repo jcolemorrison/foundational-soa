@@ -5,6 +5,7 @@ module "fake_service_us_west_2" {
   namespace = var.namespace
 
   enable_payments_service = true
+  enable_inventory_v2     = true
 
   peers_for_failover = [local.peers.us_east_1, local.peers.us_west_2, local.peers.eu_west_1]
 
@@ -17,7 +18,8 @@ module "fake_service_us_west_2" {
 
   vault_namespace = trimsuffix(local.vault_database.namespace, "/")
 
-  certificate_arn = local.certificate_arns.us_west_2
+  certificate_arn   = local.certificate_arns.us_west_2
+  public_subnet_ids = local.public_subnet_ids.us_west_2
 
   providers = {
     kubernetes = kubernetes.us_west_2

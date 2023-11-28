@@ -3,6 +3,18 @@ variable "name" {
   description = "Name of application"
 }
 
+variable "create_service_default" {
+  type        = bool
+  description = "Create service default"
+  default     = true
+}
+
+variable "protocol" {
+  type        = string
+  description = "TCP or HTTP for Consul service. HTTP required for service splitting"
+  default     = "http"
+}
+
 variable "runtime" {
   type        = string
   description = "Runtime of application"
@@ -39,6 +51,12 @@ variable "enable_load_balancer" {
 variable "certificate_arn" {
   type        = string
   description = "Certificate ARN for load balancer"
+  default     = null
+}
+
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "Public subnet IDs for load balancer"
   default     = null
 }
 

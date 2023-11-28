@@ -15,6 +15,8 @@ resource "kubernetes_manifest" "service" {
       "namespace" = var.namespace
       "annotations" = var.enable_load_balancer ? {
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" = "${var.certificate_arn}"
+        "service.beta.kubernetes.io/aws-load-balancer-scheme"   = "internet-facing"
+        "service.beta.kubernetes.io/aws-load-balancer-subnets"  = join(",", var.public_subnet_ids)
       } : {}
     }
     "spec" = {
@@ -133,6 +135,7 @@ resource "kubernetes_manifest" "deployment" {
 }
 
 resource "kubernetes_manifest" "service_defaults" {
+  count = var.create_service_default ? 1 : 0
   manifest = {
     "apiVersion" = "consul.hashicorp.com/v1alpha1"
     "kind"       = "ServiceDefaults"
@@ -141,7 +144,7 @@ resource "kubernetes_manifest" "service_defaults" {
       "namespace" = var.namespace
     }
     "spec" = {
-      "protocol" = "tcp"
+      "protocol" = var.protocol
     }
   }
 }

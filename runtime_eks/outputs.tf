@@ -51,3 +51,12 @@ output "subdomain_name_servers" {
   value       = aws_route53_zone.subdomain.name_servers
   description = "list of name servers for the subdomain"
 }
+
+output "public_subnet_ids" {
+  value = {
+    us_east_1 = module.us_east_1.public_subnet_ids
+    us_west_2 = module.us_west_2.public_subnet_ids
+    eu_west_1 = module.eu_west_1.public_subnet_ids
+  }
+  description = "Public subnet IDs for each region"
+}

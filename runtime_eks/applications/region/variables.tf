@@ -26,6 +26,12 @@ variable "enable_payments_service" {
   default     = false
 }
 
+variable "enable_inventory_v2" {
+  type        = bool
+  description = "Deploy second version of inventory service"
+  default     = false
+}
+
 variable "peers_for_failover" {
   type        = list(string)
   description = "Cluster peers for failover"
@@ -73,10 +79,16 @@ variable "certificate_arn" {
   description = "Certificate ARN for load balancer"
 }
 
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "List of public subnet IDs for load balancer"
+}
+
 locals {
   service_ports = {
     store     = 9090
     customers = 9090
     database  = 9090
+    inventory = 9090
   }
 }

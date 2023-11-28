@@ -50,9 +50,10 @@ resource "consul_service" "database" {
 }
 
 resource "consul_config_entry" "service_defaults" {
-  count = var.create_database ? 1 : 0
-  name  = "${var.name}-database"
-  kind  = "service-defaults"
+  for_each  = toset(["default", "ecs", "ec2"])
+  name      = "${var.name}-database"
+  kind      = "service-defaults"
+  partition = each.value
 
   config_json = jsonencode({
     Protocol         = "tcp"

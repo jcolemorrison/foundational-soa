@@ -163,7 +163,7 @@ resource "consul_config_entry" "service_defaults_payments" {
   partition = "ec2"
 
   config_json = jsonencode({
-    Protocol = "tcp"
+    Protocol = "http"
   })
 }
 
@@ -204,7 +204,7 @@ resource "consul_config_entry" "service_defaults_reports" {
   partition = "ec2"
 
   config_json = jsonencode({
-    Protocol = "tcp"
+    Protocol = "http"
   })
 }
 
