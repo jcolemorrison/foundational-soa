@@ -121,122 +121,122 @@ resource "aws_security_group_rule" "instances" {
 
 ## Deploy example service
 
-# module "payments_static" {
-#   count   = var.deploy_services ? 1 : 0
-#   source  = "../../modules/fake_service"
-#   region  = var.region
-#   service = "payments"
-#   runtime = var.runtime
-# }
+module "payments_static" {
+  count   = var.deploy_services ? 1 : 0
+  source  = "../../modules/fake_service"
+  region  = var.region
+  service = "payments"
+  runtime = var.runtime
+}
 
-# resource "random_integer" "payments_subnet" {
-#   count = var.deploy_services ? 1 : 0
-#   min   = 0
-#   max   = length(module.network.vpc_private_subnet_ids) - 1
-# }
+resource "random_integer" "payments_subnet" {
+  count = var.deploy_services ? 1 : 0
+  min   = 0
+  max   = length(module.network.vpc_private_subnet_ids) - 1
+}
 
-# module "payments" {
-#   count                = var.deploy_services ? 1 : 0
-#   source               = "../modules/ec2"
-#   name                 = "payments"
-#   fake_service_name    = module.payments_static.0.name
-#   fake_service_message = module.payments_static.0.message
+module "payments" {
+  count                = var.deploy_services ? 1 : 0
+  source               = "../modules/ec2"
+  name                 = "payments"
+  fake_service_name    = module.payments_static.0.name
+  fake_service_message = module.payments_static.0.message
 
-#   vpc_id         = module.network.vpc_id
-#   vpc_cidr_block = module.network.vpc_cidr_block
-#   subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.0.result]
+  vpc_id         = module.network.vpc_id
+  vpc_cidr_block = module.network.vpc_cidr_block
+  subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.0.result]
 
-#   security_group_ids = [aws_security_group.instances.id]
+  security_group_ids = [aws_security_group.instances.id]
 
-#   hcp_consul_cluster_id    = var.hcp_consul_cluster_id
-#   hcp_consul_cluster_token = var.hcp_consul_cluster_token
+  hcp_consul_cluster_id    = var.hcp_consul_cluster_id
+  hcp_consul_cluster_token = var.hcp_consul_cluster_token
 
-#   key_pair_name = aws_key_pair.boundary.key_name
+  key_pair_name = aws_key_pair.boundary.key_name
 
-#   tags = merge(local.boundary_tag, local.application_tag)
-# }
+  tags = merge(local.boundary_tag, local.application_tag)
+}
 
-# resource "consul_config_entry" "service_defaults_payments" {
-#   count     = var.deploy_services ? 1 : 0
-#   name      = "payments"
-#   kind      = "service-defaults"
-#   partition = "ec2"
+resource "consul_config_entry" "service_defaults_payments" {
+  count     = var.deploy_services ? 1 : 0
+  name      = "payments"
+  kind      = "service-defaults"
+  partition = "ec2"
 
-#   config_json = jsonencode({
-#     Protocol = "http"
-#   })
-# }
+  config_json = jsonencode({
+    Protocol = "http"
+  })
+}
 
-# module "reports_static" {
-#   count   = var.deploy_services ? 1 : 0
-#   source  = "../../modules/fake_service"
-#   region  = var.region
-#   service = "reports"
-#   runtime = var.runtime
-# }
+module "reports_static" {
+  count   = var.deploy_services ? 1 : 0
+  source  = "../../modules/fake_service"
+  region  = var.region
+  service = "reports"
+  runtime = var.runtime
+}
 
-# module "reports" {
-#   count                 = var.deploy_services ? 1 : 0
-#   source                = "../modules/ec2"
-#   name                  = "reports"
-#   fake_service_name     = module.reports_static.0.name
-#   fake_service_message  = module.reports_static.0.message
-#   upstream_service_name = "payments"
+module "reports" {
+  count                 = var.deploy_services ? 1 : 0
+  source                = "../modules/ec2"
+  name                  = "reports"
+  fake_service_name     = module.reports_static.0.name
+  fake_service_message  = module.reports_static.0.message
+  upstream_service_name = "payments"
 
-#   vpc_id         = module.network.vpc_id
-#   vpc_cidr_block = module.network.vpc_cidr_block
-#   subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.0.result]
+  vpc_id         = module.network.vpc_id
+  vpc_cidr_block = module.network.vpc_cidr_block
+  subnet_id      = module.network.vpc_private_subnet_ids[random_integer.payments_subnet.0.result]
 
-#   security_group_ids = [aws_security_group.instances.id]
+  security_group_ids = [aws_security_group.instances.id]
 
-#   hcp_consul_cluster_id    = var.hcp_consul_cluster_id
-#   hcp_consul_cluster_token = var.hcp_consul_cluster_token
+  hcp_consul_cluster_id    = var.hcp_consul_cluster_id
+  hcp_consul_cluster_token = var.hcp_consul_cluster_token
 
-#   key_pair_name = aws_key_pair.boundary.key_name
+  key_pair_name = aws_key_pair.boundary.key_name
 
-#   tags = merge(local.boundary_tag, local.application_tag)
-# }
+  tags = merge(local.boundary_tag, local.application_tag)
+}
 
-# resource "consul_config_entry" "service_defaults_reports" {
-#   count     = var.deploy_services ? 1 : 0
-#   name      = "reports"
-#   kind      = "service-defaults"
-#   partition = "ec2"
+resource "consul_config_entry" "service_defaults_reports" {
+  count     = var.deploy_services ? 1 : 0
+  name      = "reports"
+  kind      = "service-defaults"
+  partition = "ec2"
 
-#   config_json = jsonencode({
-#     Protocol = "http"
-#   })
-# }
+  config_json = jsonencode({
+    Protocol = "http"
+  })
+}
 
-# resource "consul_config_entry" "payments_intentions" {
-#   name      = "payments"
-#   kind      = "service-intentions"
-#   partition = var.runtime
+resource "consul_config_entry" "payments_intentions" {
+  name      = "payments"
+  kind      = "service-intentions"
+  partition = var.runtime
 
-#   config_json = jsonencode({
-#     Sources = [
-#       {
-#         Action     = "allow"
-#         Name       = "reports"
-#         Precedence = 9
-#         Type       = "consul"
-#         Namespace  = "default"
-#         Partition  = var.runtime
-#       },
-#       {
-#         Action     = "allow"
-#         Name       = "store"
-#         Precedence = 9
-#         Type       = "consul"
-#         Partition  = "default"
-#       },
-#       {
-#         Action     = "allow"
-#         Name       = "ecs-api"
-#         Precedence = 9
-#         Type       = "consul"
-#         Partition  = "ecs"
-#       }
-#     ]
-#   })
-# }
+  config_json = jsonencode({
+    Sources = [
+      {
+        Action     = "allow"
+        Name       = "reports"
+        Precedence = 9
+        Type       = "consul"
+        Namespace  = "default"
+        Partition  = var.runtime
+      },
+      {
+        Action     = "allow"
+        Name       = "store"
+        Precedence = 9
+        Type       = "consul"
+        Partition  = "default"
+      },
+      {
+        Action     = "allow"
+        Name       = "ecs-api"
+        Precedence = 9
+        Type       = "consul"
+        Partition  = "ecs"
+      }
+    ]
+  })
+}
