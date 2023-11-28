@@ -5,7 +5,7 @@ module "inventory" {
   name                   = "inventory"
   port                   = local.service_ports.inventory
   upstream_uris          = ""
-  create_service_default = true
+  create_service_default = false
 }
 
 module "inventory_v2" {
@@ -15,7 +15,7 @@ module "inventory_v2" {
   name                   = "inventory-v2"
   port                   = local.service_ports.inventory
   upstream_uris          = ""
-  create_service_default = true
+  create_service_default = false
 }
 
 resource "kubernetes_manifest" "service_intentions_inventory" {
@@ -54,5 +54,27 @@ resource "consul_config_entry" "service_splitter_inventory" {
         Service = "inventory-v2"
       },
     ]
+  })
+}
+
+resource "consul_config_entry" "inventory_service_defaults" {
+  for_each  = toset(local.consul_partitions)
+  name      = "inventory"
+  kind      = "service-defaults"
+  partition = each.value
+
+  config_json = jsonencode({
+    Protocol = "http"
+  })
+}
+
+resource "consul_config_entry" "inventory_service_defaults" {
+  for_each  = toset(local.consul_partitions)
+  name      = "inventory-v2"
+  kind      = "service-defaults"
+  partition = each.value
+
+  config_json = jsonencode({
+    Protocol = "http"
   })
 }
