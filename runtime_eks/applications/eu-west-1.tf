@@ -5,6 +5,7 @@ module "fake_service_eu_west_1" {
   namespace = var.namespace
 
   enable_payments_service = true
+  enable_inventory_v2     = true
 
   peers_for_failover = [local.peers.us_east_1, local.peers.us_west_2, local.peers.eu_west_1]
 
