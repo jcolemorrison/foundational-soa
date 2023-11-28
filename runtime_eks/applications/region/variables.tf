@@ -79,6 +79,11 @@ variable "certificate_arn" {
   description = "Certificate ARN for load balancer"
 }
 
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "List of public subnet IDs for load balancer"
+}
+
 locals {
   service_ports = {
     store     = 9090

@@ -54,6 +54,12 @@ variable "certificate_arn" {
   default     = null
 }
 
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "Public subnet IDs for load balancer"
+  default     = null
+}
+
 variable "error_rate" {
   type        = number
   description = "Error rate as a percentage to pass onto the application"

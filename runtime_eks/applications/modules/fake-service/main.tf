@@ -15,6 +15,8 @@ resource "kubernetes_manifest" "service" {
       "namespace" = var.namespace
       "annotations" = var.enable_load_balancer ? {
         "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" = "${var.certificate_arn}"
+        "service.beta.kubernetes.io/aws-load-balancer-scheme"   = "internet-facing"
+        "service.beta.kubernetes.io/aws-load-balancer-subnets"  = join(",", var.public_subnet_ids)
       } : {}
     }
     "spec" = {

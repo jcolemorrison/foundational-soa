@@ -15,6 +15,7 @@ module "store" {
   upstream_uris        = var.enable_payments_service ? "${local.store_upstream_uri_base},${local.payments_url}" : local.store_upstream_uri_base
   enable_load_balancer = true
   certificate_arn      = var.certificate_arn
+  public_subnet_ids    = var.public_subnet_ids
 }
 
 resource "kubernetes_manifest" "service_intentions_store" {
