@@ -40,24 +40,19 @@ resource "kubernetes_manifest" "service_intentions_inventory" {
   }
 }
 
-resource "kubernetes_manifest" "service_splitter_inventory" {
-  manifest = {
-    "apiVersion" = "consul.hashicorp.com/v1alpha1"
-    "kind"       = "ServiceSplitter"
-    "metadata" = {
-      "name"      = "inventory"
-      "namespace" = var.namespace
-    }
-    "spec" = {
-      "splits" = [
-        {
-          "weight" = var.enable_inventory_v2 ? 50 : 100
-        },
-        {
-          "service" = "inventory-v2"
-          "weight"  = var.enable_inventory_v2 ? 50 : 0
-        },
-      ]
-    }
-  }
+resource "consul_config_entry" "service_splitter_inventory" {
+  kind = "service-splitter"
+  name = "inventory"
+
+  config_json = jsonencode({
+    Splits = [
+      {
+        Weight = var.enable_inventory_v2 ? 50 : 100
+      },
+      {
+        Weight  = var.enable_inventory_v2 ? 50 : 0
+        Service = "inventory-v2"
+      },
+    ]
+  })
 }
