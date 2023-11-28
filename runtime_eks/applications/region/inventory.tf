@@ -40,6 +40,28 @@ resource "kubernetes_manifest" "service_intentions_inventory" {
   }
 }
 
+resource "kubernetes_manifest" "service_intentions_inventory_v2" {
+  manifest = {
+    "apiVersion" = "consul.hashicorp.com/v1alpha1"
+    "kind"       = "ServiceIntentions"
+    "metadata" = {
+      "name"      = "inventory-v2"
+      "namespace" = var.namespace
+    }
+    "spec" = {
+      "destination" = {
+        "name" = "inventory-v2"
+      }
+      "sources" = [
+        {
+          "action" = "allow"
+          "name"   = "store"
+        }
+      ]
+    }
+  }
+}
+
 resource "consul_config_entry" "service_splitter_inventory" {
   kind = "service-splitter"
   name = "inventory"
