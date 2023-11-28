@@ -40,22 +40,22 @@ resource "kubernetes_manifest" "service_intentions_inventory" {
   }
 }
 
-# resource "consul_config_entry" "service_splitter_inventory" {
-#   kind = "service-splitter"
-#   name = "inventory"
+resource "consul_config_entry" "service_splitter_inventory" {
+  kind = "service-splitter"
+  name = "inventory"
 
-#   config_json = jsonencode({
-#     Splits = [
-#       {
-#         Weight = var.enable_inventory_v2 ? 50 : 100
-#       },
-#       {
-#         Weight  = var.enable_inventory_v2 ? 50 : 0
-#         Service = "inventory-v2"
-#       },
-#     ]
-#   })
-# }
+  config_json = jsonencode({
+    Splits = [
+      {
+        Weight = var.enable_inventory_v2 ? 50 : 100
+      },
+      {
+        Weight  = var.enable_inventory_v2 ? 50 : 0
+        Service = "inventory-v2"
+      },
+    ]
+  })
+}
 
 resource "consul_config_entry" "inventory_service_defaults_partitions" {
   for_each  = toset(local.consul_partitions)
