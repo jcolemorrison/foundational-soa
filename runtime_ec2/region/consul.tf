@@ -38,36 +38,36 @@ locals {
   }]
 }
 
-resource "consul_config_entry" "sameness_group" {
-  kind      = "sameness-group"
-  name      = var.sameness_group
-  partition = var.runtime
+# resource "consul_config_entry" "sameness_group" {
+#   kind      = "sameness-group"
+#   name      = var.sameness_group
+#   partition = var.runtime
 
-  config_json = jsonencode({
-    DefaultForFailover = true
-    IncludeLocal       = false
-    Members            = concat(local.partitions, local.peers)
-  })
-}
+#   config_json = jsonencode({
+#     DefaultForFailover = true
+#     IncludeLocal       = false
+#     Members            = concat(local.partitions, local.peers)
+#   })
+# }
 
-resource "consul_config_entry" "exported_services_payments_ec2" {
-  count     = var.deploy_services ? 1 : 0
-  name      = var.runtime
-  kind      = "exported-services"
-  partition = var.runtime
+# resource "consul_config_entry" "exported_services_payments_ec2" {
+#   count     = var.deploy_services ? 1 : 0
+#   name      = var.runtime
+#   kind      = "exported-services"
+#   partition = var.runtime
 
-  config_json = jsonencode({
-    Services = [{
-      Name      = "payments"
-      Namespace = "default"
-      Consumers = [
-        {
-          SamenessGroup = var.sameness_group
-        }
-      ] }, {
-      Name      = "mesh-gateway"
-      Namespace = "default"
-      Consumers = local.partitions
-    }]
-  })
-}
+#   config_json = jsonencode({
+#     Services = [{
+#       Name      = "payments"
+#       Namespace = "default"
+#       Consumers = [
+#         {
+#           SamenessGroup = var.sameness_group
+#         }
+#       ] }, {
+#       Name      = "mesh-gateway"
+#       Namespace = "default"
+#       Consumers = local.partitions
+#     }]
+#   })
+# }
