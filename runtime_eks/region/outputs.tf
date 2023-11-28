@@ -46,3 +46,8 @@ output "certificate_arn" {
   value       = aws_acm_certificate.subdomain.arn
   description = "ARN of certificate for load balancer"
 }
+
+output "public_subnet_ids" {
+  value       = module.network.vpc_public_subnet_ids
+  description = "Public subnet IDs for load balancers"
+}
