@@ -5,7 +5,7 @@ module "inventory" {
   name                   = "inventory"
   port                   = local.service_ports.inventory
   upstream_uris          = ""
-  create_service_default = false
+  create_service_default = true
 }
 
 module "inventory_v2" {
@@ -15,7 +15,7 @@ module "inventory_v2" {
   name                   = "inventory-v2"
   port                   = local.service_ports.inventory
   upstream_uris          = ""
-  create_service_default = false
+  create_service_default = true
 }
 
 resource "kubernetes_manifest" "service_intentions_inventory" {
