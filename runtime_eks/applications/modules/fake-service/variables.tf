@@ -12,7 +12,7 @@ variable "create_service_default" {
 variable "protocol" {
   type        = string
   description = "TCP or HTTP for Consul service. HTTP required for service splitting"
-  default     = "tcp"
+  default     = "http"
 }
 
 variable "runtime" {
