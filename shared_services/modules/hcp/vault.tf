@@ -11,6 +11,7 @@ resource "hcp_vault_cluster" "vault" {
 }
 
 resource "hcp_vault_cluster_admin_token" "vault" {
-  count      = var.hcp_vault_name != null ? 1 : 0
+  # count      = var.hcp_vault_name != null ? 1 : 0
+  count = 0
   cluster_id = hcp_vault_cluster.vault.0.cluster_id
 }
