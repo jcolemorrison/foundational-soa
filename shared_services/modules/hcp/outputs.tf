@@ -22,7 +22,7 @@ output "hcp_consul" {
     datacenter      = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.datacenter : ""
     address         = var.hcp_consul_name != null && var.hcp_consul_public_endpoint ? hcp_consul_cluster.consul.0.consul_public_endpoint_url : ""
     private_address = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.consul_private_endpoint_url : ""
-    token           = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.consul_root_token_secret_id : ""
+    # token           = var.hcp_consul_name != null ? hcp_consul_cluster.consul.0.consul_root_token_secret_id : ""
     retry_join      = var.hcp_consul_name != null ? jsondecode(base64decode(hcp_consul_cluster.consul.0.consul_config_file))["retry_join"][0] : ""
   }
   description = "HCP Consul cluster details"
