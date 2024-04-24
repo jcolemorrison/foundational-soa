@@ -38,7 +38,7 @@ output "hcp_vault" {
     namespace       = var.hcp_vault_name != null ? hcp_vault_cluster.vault.0.namespace : ""
     address         = var.hcp_vault_name != null && var.hcp_vault_public_endpoint ? hcp_vault_cluster.vault.0.vault_public_endpoint_url : ""
     private_address = var.hcp_vault_name != null ? hcp_vault_cluster.vault.0.vault_private_endpoint_url : ""
-    token           = var.hcp_vault_name != null ? hcp_vault_cluster_admin_token.vault.0.token : ""
+    # token           = var.hcp_vault_name != null ? hcp_vault_cluster_admin_token.vault.0.token : ""
   }
   description = "HCP Vault cluster details"
   sensitive   = true
