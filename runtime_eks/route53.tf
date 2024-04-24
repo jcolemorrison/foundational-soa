@@ -1,5 +1,5 @@
 locals {
-  public_alb_dns_values = data.terraform_remote_state.shared_services_runtime_eks_applications.outputs.public_alb_dns_values
+  public_alb_dns_values = var.public_alb_dns_values != null ? var.public_alb_dns_values : data.terraform_remote_state.shared_services_runtime_eks_applications.outputs.public_alb_dns_values
 }
 
 resource "aws_route53_zone" "subdomain" {

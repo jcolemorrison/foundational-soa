@@ -21,3 +21,12 @@ variable "public_subdomain_name" {
   type        = string
   description = "Public subdomain of this runtime.  i.e. eks.hashidemo.com"
 }
+
+variable "public_alb_dns_values" {
+  type = map(object({
+    dns_name = string
+    zone_id  = string
+  }))
+  description = "values for the public ALB DNS records"
+  default = null
+}
