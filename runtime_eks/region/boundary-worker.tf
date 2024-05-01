@@ -1,4 +1,4 @@
-# Register worker into Boundary after its token is stored in Vault
+Register worker into Boundary after its token is stored in Vault
 
 data "aws_instances" "boundary_worker" {
   filter {
