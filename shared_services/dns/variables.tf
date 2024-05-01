@@ -21,3 +21,21 @@ variable "aws_default_tags" {
     Project = "foundational-soa-shared-services"
   }
 }
+
+variable "runtime_ecs_subdomain_name_servers" {
+  type        = list(string)
+  description = "List of name servers for the ECS subdomain."
+  default = null
+}
+
+variable "runtime_frontend_subdomain_name_servers" {
+  type        = list(string)
+  description = "List of name servers for the frontend subdomain."
+  default = null
+}
+
+variable "runtime_eks_subdomain_name_servers" {
+  type        = list(string)
+  description = "List of name servers for the EKS subdomain."
+  default = null
+}
