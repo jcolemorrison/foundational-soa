@@ -44,6 +44,6 @@ data "terraform_remote_state" "runtime_eks" {
 
 
 locals {
-  aws_default_region = data.terraform_remote_state.shared_services.outputs.default_region.id
-  aws_default_tags   = data.terraform_remote_state.shared_services.outputs.default_tags
+  aws_default_region = var.aws_default_region != null ? var.aws_default_region : data.terraform_remote_state.shared_services.outputs.default_region.id
+  aws_default_tags   = var.aws_default_tags != null ? var.aws_default_tags : data.terraform_remote_state.shared_services.outputs.default_tags
 }
